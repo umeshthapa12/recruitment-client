@@ -1,0 +1,87 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-10">
+            <h5 class="m--font-brand">
+                Mandatory Fields <span style="font-size: 12px;color: #9e9d9f;">(Validates whether the
+                    candidate's profile fields are empty)</span>
+            </h5>
+        </div>
+        <div class="col-md-2">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<div [@fadeIn]="response || errors?.length || isLoading">
+    <div *ngIf="isLoading">
+        <h5>Loading..</h5>
+        <mat-progress-bar color="warn" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="alert mb-5" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+        *ngIf="response || errors?.length>0">
+        <button type="button" class="close pt-0" (click)="clearStates()">
+            <span><i class="la la-close"></i></span>
+        </button>
+        <i class="flaticon-warning"></i>
+        <span *ngIf="errors?.length > 0; else msgBlock">
+            <span class="row" [@fadeIn]="errors?.length">
+                <div class="col-12 mb-1 m--font-bolder"> {{ response.messageBody}} </div>
+                <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+            </span>
+        </span>
+        <ng-template #msgBlock> {{ response.messageBody}} </ng-template>
+    </div>
+</div>
+<div matDialogContent class="mx-0 px-0 pt-0">
+    <div class="col" style="min-height: 200px;">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mb-5">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node; " matTreeNodePadding>
+                <!-- use a disabled button to provide padding for tree leaf -->
+                <button mat-icon-button disabled class="toggle-btn"></button>
+                <!-- <i class="fa fa-info"></i> -->
+                <mat-checkbox disableRipple (click)="treeChanged = true" [checked]="checklistSelection.isSelected(node)"
+                    (change)="leafItemSelectionToggle(node)">
+                    {{node.name}}
+                </mat-checkbox>
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                <button class="toggle-btn" disableRipple mat-icon-button matTreeNodeToggle
+                    [attr.aria-label]="'toggle ' + node?.name">
+                    <mat-icon class="mat-icon-rtl-mirror mt-0">
+                        {{treeControl?.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                </button>
+                <i [ngClass]="{'fa-folder-open':treeControl?.isExpanded(node), 'fa-folder': !treeControl?.isExpanded(node)}"
+                    class=" fa m--font-warning"></i>
+                <mat-checkbox disableRipple (click)="treeChanged = true" style="margin-left: 8px; margin-top: 5px"
+                    [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
+                    (change)="itemSelectionToggle(node)">
+                    {{node.name}}
+                </mat-checkbox>
+            </mat-tree-node>
+
+        </mat-tree>
+    </div>
+</div>
+<div matDialogActions style="display: flex;justify-content: center; margin: 1rem 0">
+    <button type="button" [disabled]="isWorking" matTooltip="Save Changes" matTooltipPosition="above"
+        (click)="saveChanges('save')" class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--info':isWorking && workingFor === 'save', 'm-btn--hover-accent':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'save')" class="la la-check"></i>
+    </button>
+    <button matTooltip="Cancel" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+    <button type="button" [disabled]="notExist || isWorking || isLoading" matTooltip="Remove saved mandatory data"
+        matTooltipPosition="above" class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--danger':isWorking && workingFor === 'remove', 'm-btn--hover-danger':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'remove')" class="flaticon-delete" (click)="saveChanges('remove')"></i>
+    </button>
+</div>

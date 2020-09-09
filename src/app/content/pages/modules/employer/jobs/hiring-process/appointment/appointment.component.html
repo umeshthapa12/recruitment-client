@@ -1,0 +1,163 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+    <div class="row pt-2 mb-2 mx-0">
+        <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-calendar-with-a-clock-time-tools"></i>
+                    Appointment / Shortlisted
+                </h4>
+            </div>
+            <div [@fadeIn]="query?.filters?.length >0 || !selection.isEmpty()">
+                <button *ngIf="query?.filters?.length >0 || hasFilter" type="button" (click)="resetFilters()"
+                    class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                    matTooltip="Clear filters">
+                    <i class="flaticon-refresh"></i>
+                </button>
+                <button *ngIf="!selection.isEmpty()" class="btn btn-primary btn-sm" type="button"
+                    [matMenuTriggerFor]="xops"><i class="flaticon-more"></i></button>
+                <mat-menu #xops="matMenu" xPosition="before">
+                    <button (click)="exportTo(0, 'excel')" disableRipple mat-menu-item><i
+                            class="la la-file-excel-o m--font-success"></i>
+                        Export as Excel-sheet
+                    </button>
+                    <button (click)="exportTo(0, 'pdf')" disableRipple mat-menu-item><i
+                            class="la la-file-pdf-o m--font-danger"></i>
+                        Export as PDF
+                    </button>
+                    <button (click)="cancelAppointmentTimer(0)" disableRipple mat-menu-item><i class="la la-hand-stop-o m--font-warning"></i>
+                        Cancel Auto Send Timer
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="loading-shade" *ngIf="isLoadingResults || isFileDownloading">
+        <mat-spinner *ngIf="isLoadingResults" strokeWidth="3" diameter="60"></mat-spinner>
+        <div *ngIf="isFileDownloading" style="background: #f6f5f8;padding: 5px;border-radius: 6px; display: flex;">
+            File download in progress <mat-spinner class="ml-3" strokeWidth="2" diameter="20"></mat-spinner>
+        </div>
+    </div>
+
+    <div style="height: calc(100vh - 295px);" *ngIf="!(isLoadingResults || items?.length >0 ) else table"
+        class="alert alert-secondary" role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="table-container" perfectScrollbar style="height: calc(100vh - 295px);">
+            <div class="row mx-0 mt-3" [@fadeIn]="items.length">
+                <div class="col-md-4 pb-4 appointment-col" *ngFor="let item of items; let o = odd">
+                    <mat-card [style.background]="selected.checked ? '#f3f4ff':''">
+                        <mat-card-header (click)="toggleSelection(item)" style="margin:0 -16px; cursor: pointer;">
+                            <mat-card-title [title]="item.jobTitle" style="font-size: 16px; margin-bottom: 10px">
+                                {{(item.jobTitle || '').trim() | slice:0:35}}
+                                {{(item.jobTitle || '').trim().length >35 ? '..':''}}
+                            </mat-card-title>
+                            <mat-card-subtitle style="font-size: 12px" class="mb-4"
+                                [ngClass]="(item.scheduledAppointments >0 && item.appointmentAttendees>0)?'m--font-accent':'m--font-warning'">
+                                <i class="la la-lightbulb-o m--font-warning" style="font-size: 14px" *ngIf="item.scheduledAppointments <= 0 || item.appointmentAttendees <= 0"></i>
+                                {{
+                                    item.scheduledAppointments <= 0
+                                    ? 'No appointments are scheduled'
+                                    : item.scheduledAppointments > 0  && item.appointmentAttendees <=0
+                                    ? 'Add attended applicants'
+                                    : ''}}
+                            </mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div style="position: absolute;top: 0;right: 0;">
+                                <mat-checkbox #selected (click)="$event.stopPropagation()"
+                                    (change)="toggleSelection(item)" [checked]="selection.isSelected(item)">
+                                </mat-checkbox>
+                            </div>
+                            <div class="detail-wrap">
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Applicants: </div>
+
+                                    <div class="col-4  mb-1 text-right"> {{item.applicants}}</div>
+                                </div>
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Estimated Appointments:
+                                        <button matTooltip="Update Estimated Appointments" #mTrigger="matMenuTrigger" [matMenuTriggerFor]="est"
+                                            class="btn btn-info m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill btn-estimation">
+                                            <i class="flaticon-edit"></i>
+                                        </button>
+                                        <mat-menu class="mat-menu-esti-input-wrap w-75" #est>
+                                            <div class="d-table" (click)="$event.stopPropagation()">
+                                                <input #estInput
+                                                    class="d-table-cell form-control-sm form-control m-input m-input--square m-input--solid"
+                                                    placeholder="Example: 300" [value]="(item.estimated || 0)">
+                                                <span
+                                                    class="btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--square d-table-cell h-auto"
+                                                    (click)="updateEstimated(estInput?.value,item, mTrigger)">
+                                                    <i *ngIf="!estSpin" class="la la-check"></i>
+                                                    <mat-spinner *ngIf="estSpin" class="mx-auto" diameter="20"
+                                                        strokeWidth="2"></mat-spinner>
+                                                </span>
+                                            </div>
+                                        </mat-menu>
+                                    </div>
+                                    <div class="col-4  mb-1 text-right">{{(item.estimated || 0)}} </div>
+                                </div>
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Hiring Target (openings): </div>
+                                    <div class="col-4  mb-1 text-right">{{item.noOfOpenings}} </div>
+                                </div>
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8  mb-1">Scheduled Appointments: </div>
+                                    <div class="col-4  mb-1 text-right">{{item.scheduledAppointments}}</div>
+                                </div>
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8  mb-1">
+                                        Appointment Attendees:
+                                        <button matTooltip="Update Appointment Attendees." (click)="updateAttendees(item.id,item.jobTitle)"
+                                            class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill btn-estimation">
+                                            <i class="flaticon-edit"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-4  mb-1 text-right">{{item.appointmentAttendees}}</div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <div class="btn-group m-btn-group--air btn-block btn-group-sm" role="group">
+                            <button [disabled]="selected.checked" (click)="onAction(item.id, item.jobTitle)"
+                                class="btn btn-block btn-secondary btn-sm">
+                                <span>
+                                    <i class="flaticon-clock-2 m--font-brand"></i>
+                                </span> Schedule Appointments
+                            </button>
+                            <div class="btn-group btn-group-sm">
+                                <button [disabled]="selected.checked" class="btn btn-secondary btn-sm" type="button"
+                                    [matMenuTriggerFor]="ops"><i class="flaticon-more"></i></button>
+                            </div>
+                            <mat-menu #ops="matMenu" xPosition="before" yPosition="above">
+                                <button (click)="exportTo(item.id, 'excel')" disableRipple mat-menu-item><i
+                                        class="la la-file-excel-o m--font-success"></i>
+                                    Export as Excel-sheet
+                                </button>
+                                <button (click)="exportTo(item.id, 'pdf')" disableRipple mat-menu-item><i
+                                        class="la la-file-pdf-o m--font-danger"></i>
+                                    Export as PDF
+                                </button>
+                                <button (click)="cancelAppointmentTimer(item.id)" disableRipple mat-menu-item><i class="la la-hand-stop-o m--font-warning"></i>
+                                    Cancel Auto Send Timer
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+    <div class="row mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || items?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,215 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-7">
+            <h5 class="m--font-brand">
+                Update Job Preferences
+            </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="onCancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<div id="res-messages" class="alert m-alert m-alert--air" role="alert"
+    [ngClass]="{'alert-danger':isError, 'alert-success':!isError}" *ngIf="responseMessage || errors?.length>0">
+    <button type="button" class="close pt-0" aria-label="Close" (click)="clearErrors()"></button>
+    <span *ngIf="errors?.length > 0; else msgBlock">
+        <span class="row" [@fadeInOutErrors]="errors?.length">
+            <div class="col-12 mb-1 m--font-bolder">
+                {{ responseMessage}}
+            </div>
+            <div class="col-6" *ngFor="let e of  errors">
+                {{e.message}}
+            </div>
+        </span>
+    </span>
+    <ng-template #msgBlock>
+        {{ responseMessage}}
+    </ng-template>
+</div>
+
+<!--Form Start-->
+<form [formGroup]="preferenceForm" (ngSubmit)="onSubmit()" class="m-form" autocomplete="off">
+    <div matDialogContent>
+        <div class="m-portlet__body">
+            <div class="row pt-2 mb-3" style="background: rgb(251, 251, 251)">
+                <div class="col-md-12">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.jobCategories}">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label> Title</mat-label>
+                            <input matInput type="text" placeholder="e.g. Student, Designer, Software Developer"
+                            formControlName="title">
+                         </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.jobCategories}">
+                        <chip-list-auto [controlName]="preferenceForm.get('jobCategories')"
+                            [inputPlaceolder]="'Search or select from list'" [masterChips]="jobCategories"
+                            [required]="true" [masterOnly]="true" [label]="'Job Category'"></chip-list-auto>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                           <mat-label> {{ expeLevel.length > 0 ? 'Experience Level':'No Content'}}</mat-label>
+                            <mat-select [compareWith]="compareWith" [disableRipple]="true" class="m-input" formControlName="experienceLevel"
+                                placeholder="Select your level of experience" multiple required>
+                                <mat-option *ngFor="let e of expeLevel" [value]="e">
+                                    {{e.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.jobType}">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>{{ jobTypes.length > 0 ? 'Job Type':'No Content'}}</mat-label>
+                            <mat-select [compareWith]="compareWith" [disableRipple]="true" placeholder="Select which kind of job you prefer"
+                                formControlName="jobType" required multiple>
+                                <mat-option *ngFor="let j of jobTypes" [value]="j">{{j.value}}</mat-option>
+
+                            </mat-select>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.jobType">
+                                {{displayMessage?.jobType}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.prefLocation}">
+                        <chip-list-auto [masterChips]="locations" [required]="true"
+                            [controlName]="preferenceForm.get('prefLocation')"
+                            [inputPlaceolder]="'add preferred job location'" [label]="'Preferred Job Location'">
+                        </chip-list-auto>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <chip-list-auto [controlName]="preferenceForm.get('specialization')"
+                            [inputPlaceolder]="'add specialization'" [label]="'Specialization'"></chip-list-auto>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <chip-list-auto [controlName]="preferenceForm.get('skills')" [inputPlaceolder]="'add skill'"
+                            [label]="'Skills'"></chip-list-auto>
+                    </div>
+                </div>
+            </div>
+            <div class="row row mat-elevation-z1 pt-2 mb-4 mt-4" id="salary-wrap">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-6"><label>Salaries: </label></div>
+                        <div class="col-6 m--font-bold" style="display: flex; justify-content: flex-end">
+                            Info <i class="flaticon-exclamation-2 m--font-info i--font-bold ml-2"
+                                matTooltip="Salary info maybe used to match you with the right job opportunities, but we'll never directly reveal your compensation to employers."
+                                matTooltipClass="m--font-bold" matTooltipPosition="above"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12">
+                    <div class="row mx-0">
+                        <div class="col-md-4 px-0">
+                            <div class="form-group mb-0" floatLabel="never">
+                                <mat-form-field appearance="outline">
+                                    <mat-select [disableRipple]="true" class="m-input" formControlName="xCurrency">
+                                        <mat-option *ngFor="let c of paymentCurrency" [value]="c.currencyCode"> {{c.text}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <div class="form-group mb-0">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <mat-label>Expected Salary</mat-label>
+                                    <input matInput type="text" placeholder="Enter Expected Salary"
+                                        formControlName="xSalary">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <div class="form-group mb-0">
+                                <mat-form-field appearance="outline" floatLabel="never">
+                                    <mat-select [disableRipple]="true" class="m-input" formControlName="xType">
+                                        <mat-option *ngFor="let p of paymentBasis" [value]="p.key"> {{p.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row mx-0">
+                        <div class="col-md-4 px-0">
+                            <div class="form-group" floatLabel="never">
+                                <mat-form-field appearance="outline">
+                                    <mat-select [disableRipple]="true" class="m-input" formControlName="cCurrency">
+                                        <mat-option *ngFor="let c of paymentCurrency" [value]="c.currencyCode">{{c.text}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <div class="form-group">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <mat-label>Current Salary</mat-label>
+                                    <input matInput type="text" placeholder="Enter Current Salary"
+                                        formControlName="cSalary">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <div class="form-group">
+                                <mat-form-field appearance="outline" floatLabel="never">
+                                    <mat-select [disableRipple]="true" class="m-input" formControlName="cType">
+                                        <mat-option *ngFor="let p of paymentBasis" [value]="p.key"> {{p.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row mat-elevation-z1 pt-2 mb-4 mt-4">
+                <div class="col-12 mt-1">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Career Objective Summary</mat-label>
+                        <textarea matInput formControlName="careerSummary" placeholder="Summary" rows="10"></textarea>
+                        <mat-error class="m--font-danger" *ngIf="displayMessage?.careerSummary">
+                            {{displayMessage?.careerSummary}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div matDialogActions style="display: flex; justify-content: center">
+        <div class="mb-2">
+            <button matTooltip="Save Changes" type="submit" matTooltipPosition="above"
+                class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}" tabindex="9">
+                <i *ngIf="!isWorking" class="la la-check"></i>
+            </button>
+            <button type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipPosition="above"
+                class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                tabindex="10">
+                <i class="la la-close"></i>
+            </button>
+        </div>
+    </div>
+
+</form>
+<!--Form End-->

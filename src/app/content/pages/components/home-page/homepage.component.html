@@ -1,0 +1,14 @@
+<div *ngFor="let jst of jobServiceType">
+    <grouped-jobs (dataInit)="dataLoaded($event)" [jobServiceTitle]="jst"></grouped-jobs>
+</div>
+<div class="mt-5 row"></div>
+<newspaper-jobs></newspaper-jobs>
+<div *ngIf="!itHasData() && loadCount === 3" class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible fade show"
+    role="alert">
+    <div class="m-alert__icon">
+        <i class="la la-warning"></i>
+    </div>
+    <div class="m-alert__text">
+        <span> <strong>Whoops!</strong> There are no openings.</span>
+    </div>
+</div>

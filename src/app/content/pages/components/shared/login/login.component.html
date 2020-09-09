@@ -1,0 +1,82 @@
+<div #loginDrag cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".cdk-overlay-container" class="m-login m-login--6">
+    <div class="m-login__wrapper px-0 pt-0 pb-0">
+        <div class="m-login__body">
+            <div class="m-login__signin" style="width: 100%">
+                <div title="Drag me around" style="cursor:move" class="m-login__title mt-4 mb-1 text-left" cdkDragHandle>
+                    <h4>Login to your <p class="m--font-primary d-inline">Job Seeker</p> account <span class="pull-right ml-3"><i class="la la-arrows "></i></span></h4>
+                   
+                </div>
+                <div [@fadeIn] *ngIf="response" [ngClass]="{'alert-success':!isError, 'alert-danger': isError}"
+                    class="m-alert m-alert--outline m-alert--square m-alert--outline-2x alert " role="alert">
+                    {{response?.messageBody || response?.error?.messageBody}}
+                </div>
+                <form (keydown.enter)="loginForm.valid ? jLogin.click() : false" class="m-login__form m-form no-margin"
+                    [formGroup]="loginForm" autocomplete="off" >
+                    <div class="form-group m-form__group">
+                        <input formControlName="email" class="form-control m-input form-control-sm" type="text"
+                            placeholder="Username" style="border-radius: 0">
+                        <span class="text-danger btn-block"  *ngIf="displayMessage?.email">{{ displayMessage?.email }}</span>
+                    </div>
+                    <div class="form-group m-form__group">
+                        <input formControlName="password" class="form-control m-input m-login__form-input--last form-control-sm"
+                            type="password" placeholder="Password" style="border-radius: 0">
+                        <span class="text-danger btn-block" *ngIf="displayMessage?.password">{{ displayMessage?.password }}</span>
+
+                    </div>
+                </form>
+                <div [formGroup]="loginForm" class="m-login__action mt-3 mb-2">
+
+                    <label class="m-checkbox m-checkbox--check-bold m-checkbox--state-brand">
+                        <input formControlName="isPersistent" type="checkbox">Remember me
+                        <span></span>
+                    </label>
+
+                    <a href="/jobseeker/password-recover" target="_blank" class="m-link no-margin">
+                        <span style="color: #aba9b4">Forgot password?</span>
+                    </a>
+                </div>
+                <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+                    <button #jLogin [disabled]="isWorking" [ngClass]="{'m-loader m-loader--primary m-loader--right px-5':isWorking, 'btn-outline-primary':!isWorking}"
+                        (click)="onLogin()" class="btn  m-btn m-btn--outline-2x  m-btn  m-login__btn m-login__btn--primary  pt-2 pb-2 pl-4 pr-4">
+                        <span>Login</span>
+                    </button>
+                    <button (click)="cancel()" [disabled]="isWorking" type="button" [ngClass]="{'btn-outline-metal':!isWorking}" class="btn  m-btn m-btn--outline-2x  m-btn  m-login__btn ml-2 pt-2 pb-2 pl-4 pr-4">
+                        <span>Cancel</span>
+                    </button>
+                </div>
+                <div class="m-login__action mt-4 mb-2" style="justify-content: center">
+                    Don't have an account yet? <a href="/jobseeker/register" target="_blank" class="m-link no-margin">
+                        <span class="ml-1"> Register now!</span>
+                    </a>
+                </div>
+                <div class="m-login__form-divider">
+                    <div class="m-divider">
+                        <span></span>
+                        <span>OR</span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="m-login__options mb-4">
+                    <a href="javascript:;" class="btn btn-outline-info m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </span>
+                    </a>
+                    <a href="javascript:;" class="btn btn-outline-accent m-btn--outline-2x m-btn  btn-sm  m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </span>
+                    </a>
+                    <a href="javascript:;" class="btn btn-outline-danger m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

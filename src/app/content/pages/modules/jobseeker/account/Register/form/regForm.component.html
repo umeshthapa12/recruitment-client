@@ -1,0 +1,192 @@
+<div class="m-login m-login--6">
+    <div class="m-login__wrapper" style="padding: 5px">
+
+        <div id="res-messages" class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-dismissible" role="alert"
+            [ngClass]="{'alert-success':!isError,'alert-danger':isError}" *ngIf="response?.messageBody || response?.error?.messageBody">
+            <div class="m-alert__icon">
+                <i class="flaticon-exclamation-1"></i>
+                <span></span>
+            </div>
+            <div class="m-alert__text">
+                {{ response?.messageBody  || response?.error?.messageBody }}
+            </div>
+            <div class="m-alert__close">
+                <button (click)="response.messageBody = ''" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+        </div>
+        <div class="m-login__body mt-0">
+
+            <div class="m-login__signin" style="max-width: 100%;">
+                <div class="m-login__title mt-2 mb-1">
+                    <h4> Create your free <span class="m--font-primary">Job Seeker</span> account!</h4>
+                </div>
+
+                <!--begin::Form-->
+                <form class="m-login__form m-form  mb-2" [formGroup]="regForm">
+
+                    <div class="form-group m-form__group" (mouseenter)="fl.style.display = 'block'" (mouseleave)="fl.style.display = 'none'">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right">
+                            <input class="form-control pl-5" formControlName="fullName" type="text" placeholder="Full Name"
+                                style="border-radius: 0;">
+                            <span class="m-input-icon__icon m-input-icon__icon--left">
+                                <span><i class="fa flaticon-user"></i></span>
+                            </span>
+                            <span #fl class="m-input-icon__icon m-input-icon__icon--right"><span><i class="fa fa-star-of-life m--font-danger"
+                                        style="font-size: 8px;" title="Required field"></i></span></span>
+                        </div>
+
+                        <span *ngIf="displayMessage?.email" class="m--font-danger">{{displayMessage?.fullName}}</span>
+
+                    </div>
+                    <div class="form-group m-form__group">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+                            <mat-select class="form-control m-input pt-3 pl-5"  formControlName="jobCategoryId"
+                                placeholder="Preferred job category" style="border-radius: 0">
+                                <mat-option *ngFor="let e of jobCategories" [value]="e.key">
+                                    {{e.value}}
+                                </mat-option>
+                            </mat-select>
+                            <span class="m-input-icon__icon m-input-icon__icon--left  pt-3 ">
+                                <span><i class="fa flaticon-layers"></i></span>
+                            </span>
+
+                        </div>
+
+                        <span *ngIf="displayMessage?.email" class="m--font-danger">{{displayMessage?.jobCategoryId}}</span>
+
+                    </div>
+                    <div class="form-group m-form__group" (mouseenter)="jb.style.display = 'block'" (mouseleave)="jb.style.display = 'none'">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+                            <input class="form-control m-input form-control-sm pl-5" formControlName="mobileNumber"
+                                type="text" placeholder="Mobile No." style="border-radius: 0">
+                            <span class="m-input-icon__icon m-input-icon__icon--left ">
+                                <span><i class="fa fa-mobile-alt"></i></span>
+                            </span>
+                            <span #jb class="m-input-icon__icon m-input-icon__icon--right">
+                                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;" title="Required field"></i></span>
+                            </span>
+                        </div>
+
+                        <span *ngIf="displayMessage?.email" class="m--font-danger">{{displayMessage?.mobileNumber}}</span>
+
+                    </div>
+                    <div class="form-group m-form__group" (mouseenter)="em.style.display = 'block'" (mouseleave)="em.style.display = 'none'">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+                            <input class="form-control m-input form-control-sm pl-5" formControlName="email" type="text"
+                                placeholder="Email" style="border-radius: 0">
+                            <span class="m-input-icon__icon m-input-icon__icon--left ">
+                                <span><i class="fa flaticon-mail-1"></i></span>
+                            </span>
+                            <span #em class="m-input-icon__icon m-input-icon__icon--right">
+                                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;" title="Required field"></i></span>
+                            </span>
+                        </div>
+
+                        <span *ngIf="displayMessage?.email || emailExists?.contentBody?.message" class="m--font-danger">
+                            {{displayMessage?.email || emailExists?.contentBody?.message}}
+                        </span>
+
+                    </div>
+                    <div class="form-group m-form__group" (mouseenter)="p1.style.display = 'block'" (mouseleave)="p1.style.display = 'none'">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+                            <input class="form-control m-input pl-5" type="password" placeholder="Password"
+                                formControlName="password" style="border-radius: 0">
+                            <span class="m-input-icon__icon m-input-icon__icon--left ">
+                                <span><i class="la la-key"></i></span>
+                            </span>
+                            <span #p1 class="m-input-icon__icon m-input-icon__icon--right">
+                                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;" title="Required field"></i></span>
+                            </span>
+                        </div>
+
+                        <span class="m--font-danger" *ngIf="displayMessage?.password">
+                            {{displayMessage?.password}}
+                        </span>
+                    </div>
+                    <div class="form-group m-form__group" (mouseenter)="p2.style.display = 'block'" (mouseleave)="p2.style.display = 'none'">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+                            <input compare="password" class="form-control m-input m-login__form-input--last pl-5" type="password"
+                                placeholder="Confirm Password" formControlName="password2" style="border-radius: 0">
+                            <span class="m-input-icon__icon m-input-icon__icon--left ">
+                                <span><i class="la la-key"></i></span>
+                            </span>
+                            <span #p2 class="m-input-icon__icon m-input-icon__icon--right">
+                                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;" title="Required field"></i></span>
+                            </span>
+                        </div>
+
+                        <span class="m--font-danger" *ngIf="displayMessage?.password2">
+                            {{displayMessage?.password2}}
+                        </span>
+                    </div>
+                </form>
+                <!--end::Form-->
+
+                <!--begin::Action-->
+                <div class="m-login__action mt-4 mb-5 row ml-0 mr-0" style="justify-content: center">
+                    <div class="col-12 pl-0 pr-0">
+                        <label class="m-checkbox m-checkbox--check-bold m-checkbox--state-brand">
+                            <input #el (change)="isAgreeChecked = !el.checked" type="checkbox">
+                            <span></span>
+                            I agree to the &nbsp;
+                        </label>
+                        <a (click)="ShowTermsCOnditions()" class="m-link">
+                            <span style="color: #aba9b4">Terms & Conditions</span>
+                        </a>
+                    </div>
+                    <span class="m--font-danger col-12 pl-0 pr-0" *ngIf="isAgreeChecked">
+                        You must accept the terms and conditions.
+                    </span>
+                </div>
+                <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+
+                    <button [disabled]="isWorking || !el.checked" [ngClass]="isWorking ? 'm-loader m-loader--info m-loader--right':'btn-outline-primary'"
+                        (click)="onsubmit()" class="btn m-btn  m-btn  m-btn--air m-login__btn m-login__btn--primary pt-2 pb-2 ">
+                        <span>Create an Account</span></button>
+                </div>
+                <div class="m-login__action mt-4 mb-2" style="justify-content: center">
+                    Already have an account? <a routerLink="/jobseeker/login" class="m-link ml-1">
+                        <span class="ml-1"> Login now!</span>
+                    </a>
+                </div>
+                <!--end::Action-->
+
+                <!--begin::Divider-->
+                <div class="m-login__form-divider">
+                    <div class="m-divider">
+                        <span></span>
+                        <span>OR</span>
+                        <span></span>
+                    </div>
+                </div>
+                <!--end::Divider-->
+
+                <!--begin::Options-->
+                <div class="m-login__options mb-4">
+                    <a href="javascript:;" class="btn btn-outline-primary m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </span>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-outline-info m-btn--outline-2x m-btn  btn-sm  m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </span>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-outline-danger m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </span>
+                    </a>
+                </div>
+                <!--end::Options-->
+            </div>
+        </div>
+    </div>
+</div>

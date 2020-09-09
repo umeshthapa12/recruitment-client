@@ -1,0 +1,428 @@
+<div id="employer-dashboard" class="m-portlet__body pl-0 pt-0 pb-0 pr-3 y-margin">
+	<!-- <div *ngIf="isProfileIncomplete && !isProfileLoading;">
+		<profile-complete-banner></profile-complete-banner>
+	</div>
+	<div class="mt-1 mb-5" *ngIf="isProfileLoading;">
+		<content-list-placeholder [lineHeight]="8"></content-list-placeholder>
+	</div> -->
+	<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi pt-5 m--margin-bottom-60">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<span class="m-portlet__head-icon m--font-primary">
+						<i class="flaticon-list"></i>
+					</span>
+					<h3 class="m-portlet__head-text m--font-primary ">
+						Active Job List
+					</h3>
+					<h2 class="m-portlet__head-label m-portlet__head-label--success text-nowrap" style="top:-4.25rem">
+						<span>Active Jobs</span>
+					</h2>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+				<ul class="m-portlet__nav">
+					<li class="m-portlet__nav-item mr-1">
+						<button [matTooltip]="activeJobViewMode == 'list' ? 'Toggle Grid View' : 'Toggle List View' "
+							[disabled]="!activeJobPanel.expanded" (click)="toggleView('active-job')" type="button"
+							class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+							<span class="btn-block">
+								<i style="transition: transform .2s ease-in-out;"
+									[ngStyle]="{'transform':activeJobViewMode == 'list' ? 'rotate(-180deg)':'rotate(0deg)'}"
+									class="{{ activeJobViewMode == 'list' ? 'la la-reorder' : 'flaticon-squares-4' }}"></i>
+							</span>
+						</button>
+					</li>
+					<li class="m-portlet__nav-item mr-1">
+						<button [matTooltip]="activeJobPanel.expanded ?'Collapse':'Expand'"
+							(click)="activeJobPanel.toggle()" type="button"
+							class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+							<span class="btn-block">
+								<i style="transition: transform .2s ease-in-out;"
+									[ngStyle]="{'transform' : activeJobPanel?.expanded ? 'rotate(-180deg)':'rotate(0deg)'}"
+									class="la la-angle-down"></i>
+							</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="m-portlet__body pt-1 pb-3 dashboard"
+			style="display: flex;flex-direction: column; justify-content: flex-end">
+
+			<mat-expansion-panel #actPnl class="shadow-none px-0 pt-0 pb-0" >
+				<div *ngIf="activeJobs?.items?.length > 0 && !isActiveJobLoading else ps"
+					style="background: #fff; position: relative; margin-top: 10px">
+
+					<list-view *ngIf="activeJobViewMode == 'list'" [jobs]="activeJobs.items"></list-view>
+					<grid-view *ngIf="activeJobViewMode == 'grid'" [jobs]="activeJobs.items"></grid-view>
+					<div *ngIf="activeJobs?.totalItems > 4" class="col-12 mt-4 mb-2 text-center">
+						<a href="/employer/j" target="_blank"
+							class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder animator">
+							View All <span class="m-badge m-badge--info">{{activeJobs.totalItems}}</span>
+						</a>
+					</div>
+				</div>
+			</mat-expansion-panel>
+
+			<ng-template #ps>
+				<div class="row" *ngIf="activeJobs?.items?.length <= 0 && isActiveJobLoading else noActiveJobs">
+					<div class="col-md-6">
+						<content-list-placeholder [linesOnly]="true" [lineHeight]="8"></content-list-placeholder>
+					</div>
+					<div class="col-md-6">
+						<content-list-placeholder [linesOnly]="true" [lineHeight]="8"></content-list-placeholder>
+					</div>
+				</div>
+				<ng-template #noActiveJobs>
+					<div class="alert m-alert--default mt-4 mb-4" role="alert">
+						You have no <span class="m--font-boldest">Active</span> jobs yet.
+						<a href="/employer/j" class="m-link m-link--state m-link--info m--font-bolder">Post a Job
+							Now!</a>
+					</div>
+				</ng-template>
+			</ng-template>
+		</div>
+	</div>
+
+	<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi pt-5 m--margin-bottom-60">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<span class="m-portlet__head-icon m--font-primary">
+						<i class="la la-hourglass-start" style="font-size: 2.2rem;"></i>
+					</span>
+					<h3 class="m-portlet__head-text m--font-primary">
+						Scheduled jobs awaiting publish
+					</h3>
+					<h2 class="m-portlet__head-label m-portlet__head-label--warning text-nowrap" style="top:-4.25rem">
+						<span>Scheduled Jobs</span>
+					</h2>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+				<ul class="m-portlet__nav">
+					<li class="m-portlet__nav-item">
+						<button type="button"
+							class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+							<span class="btn-block">
+								<i class="flaticon-refresh"></i>
+							</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="m-portlet__body pt-1 pb-3">
+			<div *ngIf="pendingJobs?.items?.length > 0; else noPendingJobs"
+				style="background: #fff; position: relative; margin-top: 10px">
+				<list-mini [jobs]="pendingJobs?.items"></list-mini>
+
+				<div class="col-12 mt-2 text-center" *ngIf="pendingJobs?.totalItems >4">
+					<a href="/employer/j/scheduled" target="_blank"
+						class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder animator">
+						View All <span class="m-badge m-badge--info">{{pendingJobs?.totalItems}}</span>
+					</a>
+				</div>
+			</div>
+
+			<ng-template #noPendingJobs>
+				<div class="alert m-alert--default mt-4 mb-4" role="alert">
+					You have no <span class="m--font-boldest">Scheduled</span> jobs yet.
+					<a href="/employer/j" target="_blank" class="m-link m-link--state m-link--info m--font-bolder">
+						Create Now!</a>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+
+	<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi pt-5 m--margin-bottom-60">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<span class="m-portlet__head-icon m--font-primary">
+						<i class="flaticon-edit-1"></i>
+					</span>
+					<h3 class="m-portlet__head-text m--font-primary">
+						Drafted Job List
+					</h3>
+					<h2 class="m-portlet__head-label m-portlet__head-label--info text-nowrap" style="top:-4.25rem">
+						<span>Drafted Jobs</span>
+					</h2>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+				<ul class="m-portlet__nav">
+					<li class="m-portlet__nav-item">
+						<button type="button"
+							class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+							<span class="btn-block">
+								<i class="flaticon-refresh"></i>
+							</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="m-portlet__body pt-1 pb-3">
+			<div *ngIf="draftJobs?.items?.length > 0; else noDraftJobs"
+				style="background: #fff; position: relative; margin-top: 10px">
+				<list-mini [jobs]="draftJobs?.items"></list-mini>
+				<div class="col-12 mt-2 text-center" *ngIf="draftJobs?.totalItems > 4">
+					<a href="/employer/j/drafts" target="_blank"
+						class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder animator">
+						View All <span class="m-badge m-badge--info">{{draftJobs?.totalItems}}</span>
+					</a>
+				</div>
+			</div>
+
+			<ng-template #noDraftJobs>
+				<div class="alert m-alert--default mt-4 mb-4" role="alert">
+					You have no <span class="m--font-boldest">Drafted</span> jobs yet. <a href="/employer/j" target="_blank" class="m-link m-link--state m-link--info m--font-bolder">
+						Create Now!</a>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+
+	<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi pt-5 m--margin-bottom-60">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<span class="m-portlet__head-icon m--font-primary">
+						<i class="flaticon-stopwatch"></i>
+					</span>
+					<h3 class="m-portlet__head-text m--font-primary">
+						A list of the inactive jobs which was posted previously
+					</h3>
+					<h2 class="m-portlet__head-label m-portlet__head-label--danger text-nowrap" style="top:-4.25rem">
+						<span>Expired Jobs</span>
+					</h2>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+				<ul class="m-portlet__nav">
+					<li class="m-portlet__nav-item">
+						<button type="button"
+							class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+							<span class="btn-block">
+								<i class="flaticon-refresh"></i>
+							</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="m-portlet__body pt-1 pb-3">
+			<div *ngIf="expiredJobs?.items.length > 0; else noExpiredJobs"
+				style="background: #fff; position: relative; margin-top: 10px">
+				<list-mini [jobs]="expiredJobs?.items"></list-mini>
+				<div class="col-12 mt-2 text-center" *ngIf="expiredJobs?.totalItems >4">
+					<a href="/employer/j/archived" target="_blank"
+						class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder animator">
+						View All <span class="m-badge m-badge--info">{{expiredJobs?.totalItems}} </span>
+					</a>
+				</div>
+			</div>
+
+			<ng-template #noExpiredJobs>
+				<div class="alert m-alert--default mt-4 mb-4" role="alert">
+					You have no <span class="m--font-boldest">Expired</span> jobs yet.
+					<a href="/employer/j" target="_blank" class="m-link m-link--state m-link--info  m--font-bolder">
+						Post a Job Now!</a>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+
+	<div class="m-portlet m-portlet--tabs" *ngIf="allMockJobs">
+		<div class="m-portlet__head  px-3">
+
+			<div class="m-portlet__head-tools">
+				<ul class="nav nav-tabs m-tabs-line m-tabs-line--primary" role="tablist">
+					<li class="nav-item m-tabs__item">
+						<a class="nav-link m-tabs__link nohref-pointer" (click)="onGroupByClicked('company')" role="tab"
+							[ngClass]="{'active show':groupedFor == 'company' || !groupedFor}">
+							Jobs by Company
+						</a>
+					</li>
+					<li class="nav-item m-tabs__item">
+						<a class="nav-link m-tabs__link nohref-pointer" (click)="onGroupByClicked('location')"
+							[ngClass]="{'active show':groupedFor == 'location'}" role="tab">
+							Jobs by Location
+						</a>
+					</li>
+					<li class="nav-item m-tabs__item">
+						<a class="nav-link m-tabs__link nohref-pointer" (click)="onGroupByClicked('skill')"
+							[ngClass]="{'active show':groupedFor == 'skill'}" role="tab">
+							Jobs by Skill
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="m-portlet__body px-3 pt-1 pb-1">
+			<div class="tab-content">
+				<div *ngIf="groupedFor == 'company' || !groupedFor"
+					[ngClass]="{'active show':groupedFor == 'company' || !groupedFor}" class="tab-pane active show">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="m-widget4">
+								<div class="m-widget4__item pt-1 pb-1" *ngFor="let d of allMockJobs; let i = index">
+									<div class="m-widget4__img m-widget4__img--logo">
+										<img src="./assets/app/media/img/client-logos/logo1.png" alt="">
+									</div>
+									<div class="m-widget4__info" style="width: 80%">
+										<span class="m-widget4__title">
+											<a href="#" class="m-link m-link--state m-link--brand"
+												style="color:rgb(56, 56, 73)">
+												{{d.company.value}}
+											</a>
+										</span>
+									</div>
+									<span class="m-widget4__ext" style="width: 100%">
+										<button type="button"
+											class="btn m-btn--pill btn-secondary btn-sm m-btn m-btn--label-primary pull-right">{{(i+1)*
+											i+2 + i}} openings</button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="m-widget4">
+								<div class="m-widget4__item pt-1 pb-1" *ngFor="let d of allMockJobs; let i = index">
+									<div class="m-widget4__img m-widget4__img--logo">
+										<img src="./assets/app/media/img/client-logos/logo1.png" alt="">
+									</div>
+									<div class="m-widget4__info" style="width: 80%">
+										<span class="m-widget4__title">
+											<a href="#" class="m-link m-link--state m-link--brand"
+												style="color:rgb(56, 56, 73)">
+												{{d.company.value}}
+											</a>
+										</span>
+									</div>
+									<span class="m-widget4__ext" style="width: 100%">
+										<button type="button"
+											class="btn m-btn--pill btn-secondary btn-sm m-btn m-btn--label-brand pull-right">{{(i+2)*
+											i+1}} openings</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="groupedFor == 'location'" class="tab-pane"
+					[ngClass]="{'active show':groupedFor == 'location'}">
+
+					<div class="row mt-2 mb-3">
+						<div class="col-md-4 col-6">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items">
+									<div class="m-list-timeline__item mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockLocations; let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{!o?'metal':'secondary'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;" class="m-link m-link--state m-link--info text-dark">
+												Jobs in {{x}}
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-6">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items">
+									<div class="m-list-timeline__item  mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockLocations.reverse(); let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{!o?'metal':'secondary'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;" class="m-link m-link--state m-link--info text-dark">
+												Jobs in {{x}}
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-6">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items  ">
+									<div class="m-list-timeline__item mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockLocations; let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{!o?'metal':'secondary'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;" class="m-link m-link--state m-link--info text-dark">
+												Jobs in {{x}}
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="groupedFor == 'skill'" class="tab-pane " [ngClass]="{'active show':groupedFor == 'skill'}">
+					<div class="row mt-2 mb-3">
+						<div class="col-md-4 col-12">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items">
+									<div class="m-list-timeline__item mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockSkills; let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{o?'accent':'metal'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;"
+												class="m-link m-link--state m-link--primary text-dark">
+												{{x}} Jobs
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-12">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items">
+									<div class="m-list-timeline__item  mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockSkills.reverse(); let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{o?'accent':'metal'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;"
+												class="m-link m-link--state m-link--primary text-dark">
+												{{x}} Jobs
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-12">
+							<div class="m-list-timeline">
+								<div class="m-list-timeline__items  ">
+									<div class="m-list-timeline__item mt-1 mb-0 pt-0 pb-0"
+										*ngFor="let x of mockSkills; let o = odd; let i = index;">
+										<span
+											class="m-list-timeline__badge m-list-timeline__badge--{{o?'accent':'metal'}}"></span>
+										<span class="m-list-timeline__text">
+											<a href="javascript:;"
+												class="m-link m-link--state m-link--primary text-dark">
+												{{x}} Jobs
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,67 @@
+<div class="m-portlet m-portlet--tabs">
+    <div class="m-portlet__head px-0">
+        <div class="m-portlet__head-tools w-100">
+            <ul class="nav nav-tabs m-tabs-line m-tabs-line--warning m-tabs-line--1x m-tabs-line--right w-100">
+                <li class="nav-item m-tabs__item mx-0 w-50">
+                    <a [ngClass]="{'active show':selectedTab === 'job-seeker'}" (click)=" reset($event, 'job-seeker')" class="nav-link m-tabs__link w-100 pl-3">
+                        <i class="fa fa-calendar-check-o"></i> I'm a Job Seeker
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item mx-0 w-50" *ngIf="!isSameHost">
+                    <a [ngClass]="{'active show':selectedTab === 'employer'}" (click)="reset($event,'employer')" class="nav-link m-tabs__link w-100" >
+                        <i class="fa fa-bar-chart"></i> I'm an Employer
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body m-portlet__body px-0 pb-0 pt-0" [@fadeInOutDown]="selectedTab">
+        <div style="min-height: 230px" class="tab-content bg-white">
+            <div *ngIf="selectedTab === 'job-seeker'"  [ngClass]="{'active show':selectedTab === 'job-seeker'}" class="tab-pane" >
+                <div class="m-login m-login--6">
+                    <div class="m-login__wrapper px-0 pt-0 pb-0">
+                        <div class="m-login__body">
+                            <div class="m-login__signin" style="width: auto">
+                                <div class="m-login__title mt-4 mb-1">
+                                    <i class="flaticon-user m--font-brand x-icon-y"></i>
+                                </div>
+                                <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+                                    <a href="javascript:;" class="no-margin">
+                                        <a routerLink="/jobseeker/register" class="btn btn-outline-primary m-btn m-btn--outline-2x  m-btn  m-login__btn m-login__btn--primary pt-2 pb-2 pl-4 pr-4">Register
+                                            Now!</a>
+                                    </a>
+                                </div>
+                                <div class="m-login__action mt-3 mb-4" style="text-justify: auto">
+                                    <span>You create your opportunities by registering here.<br> If you wait too long, you miss
+                                        them.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedTab === 'employer' && !isSameHost" [ngClass]="{'active show':selectedTab === 'employer'}"  class="tab-pane">
+                <div class="m-login m-login--6">
+                    <div class="m-login__wrapper px-0 pt-0 pb-0">
+                        <div class="m-login__body">
+                            <div class="m-login__signin" style="width: auto">
+                                <div class="m-login__title mt-4 mb-1">
+                                    <i class="la la-industry m--font-brand" style="font-size: 85px;line-height: 0; margin-top: 30px;"></i>
+                                </div>
+                                <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+                                    <a href="javascript:;" class="no-margin">
+                                        <a routerLink="/employer/register" class="btn btn-outline-info m-btn m-btn--outline-2x  m-btn  m-login__btn m-login__btn--info pt-2 pb-2 pl-4 pr-4">Register
+                                            Now!</a>
+                                    </a>
+                                </div>
+                                <div class="m-login__action mt-3 mb-4" style="text-justify: auto">
+                                    <span> Let's create an account to start posting vacancies.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

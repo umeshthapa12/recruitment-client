@@ -1,0 +1,141 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+    <mat-expansion-panel [expanded]="expandUpdate" class="top-content__space-fix mat-elevation-z0">
+        <mat-expansion-panel-header>
+            <mat-panel-description>
+                <i class="la la-lightbulb-o m--font-warning center mt-1"></i> Toggle job post menu
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+            <selection-grid></selection-grid>
+        </ng-template>
+    </mat-expansion-panel>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+    </div>
+    <div style="height: 600px" *ngIf="!(isLoadingResults || dataSource.data?.length >0 ) else table"
+        class="alert alert-secondary" role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="table-container" #psScroll perfectScrollbar style="height: calc(100vh - 295px)">
+            <mat-table [trackBy]="trackById" [@collectionInOut]="dataSource.data?.length" matSort
+                [dataSource]="dataSource" class="table-borderless" multiTemplateDataRows>
+                <ng-container matColumnDef="details">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width"></mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="cell-max-width">
+                        <button (click)="rowDetailExpand(row)" type="button"
+                            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-info">
+                            <i style="transition: transform .2s; left: 22%;"
+                                [ngStyle]="{'transform': row === expandedElement ? 'rotate(90deg)' : 'rotate(0deg)'}"
+                                class="la la-angle-right"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width justify-content-center">
+                        <mat-checkbox [disabled]="dataSource.data?.length <=0" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="cell-max-width justify-content-center">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width"> SN. </mat-header-cell>
+                    <mat-cell cdkDragHandle *matCellDef="let el" class="cell-max-width">
+                        {{el.sn}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="jobTitle">
+                    <mat-header-cell *matHeaderCellDef>
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'jobTitle')"
+                            [headerLabel]="'Job Title'" [sortLabel]="'jobTitle'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el"> {{( el.jobTitle )}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="jobCategory">
+                    <mat-header-cell *matHeaderCellDef>
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'jobCategory')"
+                            [headerLabel]="'Job Category'" [sortLabel]="'jobCategory'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el"> {{el.jobCategory}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="publishedOn">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'publishedOn')"
+                            [headerLabel]="'Published On'" [sortLabel]="'publishedOn'"></header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width-120">
+                        {{ (el?.publishedOn | date:'MMM d, y, h:mm a') }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="expiresOn">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'expiresOn')"
+                            [headerLabel]="'Valid Until'" [sortLabel]="'expiresOn'"></header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width-120">
+                        {{ (el?.expiresOn | date:'MMM d, y, h:mm a') }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'status')" [headerLabel]="'Status'" [sortLabel]="'status'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell [id]="'status'+el.id" *matCellDef="let el" class="cell-max-width-120">
+                        <status-updater (statusChanged)="updateStatus($event, el.id)" [currentStatus]="el.status">
+                        </status-updater>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width">
+                        Actions
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width justify-content-center">
+                        <button [matMenuTriggerFor]="menu" type="button"
+                            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-primary">
+                            <i class="flaticon-more"></i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button (click)="onAction(el.id, el.regGuid)" class="dropdown-item" type="button">
+                                <i class="flaticon-edit m--font-info mr-1"></i> Edit This Post
+                            </button>
+                            <a [href]="'/jobs/api/v2.0/Job/DownloadJobAsPdf/'+el.id" target="_blank" class="dropdown-item" >
+                                <i class="la la-file-pdf-o m--font-danger mr-1"></i> Download as PDF
+                            </a>
+                            <button [disabled]="el.status === 'Archived'" (click)="toArchive(el.id)" class="dropdown-item" type="button">
+                                <i class="la la-file-archive-o m--font-warning  mr-1"></i> Move To Archive
+                            </button>
+                        </mat-menu>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="expandedDetail">
+                    <mat-cell *matCellDef="let el" [attr.colspan]="displayedColumns.length">
+                        <expanded-lazy-content *ngIf="el === expandedElement"></expanded-lazy-content>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [id]="'row'+row.id"></mat-row>
+                <mat-row class="expanded-detail" [ngStyle]="rowHeight(row)" *matRowDef="let row; columns: ['expandedDetail'];"></mat-row>
+            </mat-table>
+        </div>
+    </ng-template>
+
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || dataSource.data?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<mat-tab-group dynamicHeight headerPosition="below" disableRipple>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <i class="flaticon-interface-7 m--font-primary mx-2"></i> Basic Controls
+        </ng-template>
+        <basic-form [editType]="data?.editType"></basic-form>
+    </mat-tab>
+    <mat-tab [disabled]="!(data?.id >0)" *ngIf="!data?.isBasic">
+        <ng-template mat-tab-label>
+            <i class="flaticon-multimedia-5 m--font-primary mx-2" style="font-size: 22px;"></i> Criteria Setup
+        </ng-template>
+        <ng-template matTabContent>
+            <criteria [openingId]="data?.id"></criteria>
+        </ng-template>
+    </mat-tab>
+    <mat-tab [disabled]="!(data?.id >0)" *ngIf="!data?.isBasic">
+        <ng-template mat-tab-label>
+            <i class="flaticon-medal m--font-primary mx-2"></i> Qualification Setup
+        </ng-template>
+        <ng-template matTabContent>
+            <qualification [openingId]="data?.id"></qualification>
+        </ng-template>
+    </mat-tab>
+    <mat-tab [disabled]="!(data?.id >0)" *ngIf="!data?.isBasic">
+        <ng-template mat-tab-label>
+            <i class="flaticon-exclamation m--font-primary mx-2"></i> Mandatory Setup
+        </ng-template>
+        <ng-template matTabContent>
+            <mandatory-form [openingId]="data?.id"></mandatory-form>
+        </ng-template>
+    </mat-tab>
+    <mat-tab [disabled]="!(data?.id >0)" *ngIf="!data?.isBasic">
+        <ng-template mat-tab-label>
+            <i class="flaticon-list m--font-primary mx-2"></i> Questionnaire Form
+        </ng-template>
+        <ng-template matTabContent>
+            <questionnaire-form [openingId]="data?.id"></questionnaire-form>
+        </ng-template>
+    </mat-tab>
+
+</mat-tab-group>

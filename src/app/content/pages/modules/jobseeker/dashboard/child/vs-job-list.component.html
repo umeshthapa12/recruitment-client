@@ -1,0 +1,53 @@
+<div class="m-portlet m-portlet--creative m-portlet--bordered-semi mb-0" style="width: 800px;">
+    <div class="m-portlet__head">
+        <div class=" m-portlet__head-caption">
+            <div class="m-portlet__head-title text-nowrap">
+                <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                    <span> <i
+                            class="flaticon-{{data == 'fav'? 'star': data == 'match'?'suitcase':'list-3'}} m--font-{{data == 'fav'? 'warning': 'light'}}"></i>
+                        {{data == 'fav' ?'Favorite Jobs':data=='match'?'Jobs matching your profile':'Applied Jobs
+                    '}}
+                    </span>
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body pt-0 pr-2" style="min-height: 250px; margin-top: -50px;">
+        <div [@fadeIn]="removedResponse">
+            <div *ngIf="removedResponse" class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" (click)="removedResponse = null" aria-label="Close">
+                </button>
+                {{removedResponse?.messageBody}}
+            </div>
+        </div>
+        <div class="table m-table ">
+            <div class="xpan-header mat-header-row px-0">
+                <div class="mat-header-cell">Position</div>
+                <div class="mat-header-cell">Company</div>
+                <div class="mat-header-cell">
+                    {{data == 'fav' ?'Posted':data=='match'?'Deadline':'Applied'}}
+                </div>
+                <div class="mat-header-cell">Job Type</div>
+                <div class="mat-header-cell"></div>
+            </div>
+        </div>
+        <cdk-virtual-scroll-viewport itemSize="20" class="table m-table" style="height: 400px;"
+            [@collectionInOut]="items?.length">
+            <div *cdkVirtualFor="let item of items;trackBy:trackByFn" class="xpan-row mat-row px-0">
+                <div class="mat-cell">{{item.jobTitle}} </div>
+                <div class="mat-cell">{{item.companyName}} </div>
+                <div class="mat-cell">
+                    {{(data == 'fav'? item.publishedOn: data == 'match'? item.expiresOn:item.appliedOn) | date}} </div>
+                <div class="mat-cell">{{item.jobTypes}} </div>
+                <div class="mat-cell">
+                    <a *ngIf="data=='match' || data == 'apply' else sRemove" [href]="createJobLink(item)"
+                        target="_blank" class="m-link font-dark">Show Details</a>
+                    <ng-template #sRemove>
+                        <span style="cursor: pointer" (click)="onRemove(item.openingId, item.uid)"
+                            class=" m-link m-link--state m-link--brand">Remove</span>
+                    </ng-template>
+                </div>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+</div>

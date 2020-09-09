@@ -1,0 +1,107 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-10">
+            <h5 class="m--font-brand">
+                Qualification with Experience <span style="font-size: 12px;color: #9e9d9f;">(Validates
+                    candidate qualification and work experience)</span>
+            </h5>
+        </div>
+        <div class="col-md-2">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<form [formGroup]="qualificationForm" autocomplete="off">
+
+    <div [@fadeIn]="response || errors?.length || isLoading">
+        <div *ngIf="isLoading">
+            <h5>Loading..</h5>
+            <mat-progress-bar color="warn" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div class="alert mb-5" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+            *ngIf="response || errors?.length>0">
+            <button type="button" class="close pt-0" (click)="clearStates()">
+                <span><i class="la la-close"></i></span>
+            </button>
+            <i class="flaticon-warning"></i>
+            <span *ngIf="errors?.length > 0; else msgBlock">
+                <span class="row" [@fadeIn]="errors?.length">
+                    <div class="col-12 mb-1 m--font-bolder"> {{ response.messageBody}} </div>
+                    <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+                </span>
+            </span>
+            <ng-template #msgBlock> {{ response.messageBody}} </ng-template>
+        </div>
+    </div>
+    <div matDialogContent class="mx-0">
+        <div class="row mat-form-field__box" style="min-height: 200px">
+            <div [@collectionInOut]="qualificationControls().controls.length" class="col-12"
+                formArrayName="qualifications">
+                <div class="form-group mb-0" *ngFor="let c of qualificationControls().controls; let i=index;trackBy:trackByFn">
+                    <div [formGroupName]="i" style="display: flex; justify-content: center; flex-wrap: wrap">
+                        <div class="col-md-4 px-0">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                                <mat-label>Qualification / Academic Degree</mat-label>
+                                <mat-select disableRipple [compareWith]="qualificationPatch"
+                                    formControlName="qualification" #ql
+                                    placeholder="Select a qualification / academic degree"
+                                    [title]="(ql?.value?.value) ? ql.value.value :'Select a qualification / academic degree'"
+                                    [required]="true">
+                                    <mat-option *ngFor="let p of originalQualification" [value]="p">
+                                        {{p.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 px-0">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                                <mat-label>Work Experience {{ql?.value?.value ? ' for '+ ql?.value?.value : ''}}
+                                </mat-label>
+                                <input [title]="'Work experience'+(ql?.value?.value ? ' for '+ ql?.value?.value : '')"
+                                    formControlName="experience" matInput type="text"
+                                    [placeholder]="'Work experience'+(ql?.value?.value ? ' for '+ ql?.value?.value : '')"
+                                    required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2 px-0"
+                            style="display: flex;justify-content: space-evenly; align-items: center; height: 50px;">
+                            <button [disabled]="qualificationControls().controls.length == 1" type="button"
+                                (click)="qualificationAction(i)"
+                                class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill"
+                                matTooltip="Remove this">
+                                <i class="flaticon-delete"></i>
+                            </button>
+                            <button
+                                [disabled]="originalQualification.length === qualificationControls().controls.length"
+                                type="button" (click)="qualificationAction(-1)"
+                                class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill"
+                                matTooltip="Add another">
+                                <i class="flaticon-add"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div matDialogActions style="display: flex;justify-content: center; margin: 1rem 0">
+    <button [disabled]="isWorking" matTooltip="Save Changes" matTooltipPosition="above" (click)="saveChanges('save')"
+        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--info':isWorking && workingFor === 'save', 'm-btn--hover-accent':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'save')" class="la la-check"></i>
+    </button>
+    <button matTooltip="Cancel" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+    <button type="button" [disabled]="notExist || isWorking || isLoading" matTooltip="Remove saved qualification data" matTooltipPosition="above"
+    class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+    [ngClass]="{'m-loader m-loader--danger':isWorking && workingFor === 'remove', 'm-btn--hover-danger':!isWorking}">
+         <i *ngIf="!(isWorking && workingFor === 'remove')" class="flaticon-delete" (click)="saveChanges('remove')"></i>
+    </button>
+</div>

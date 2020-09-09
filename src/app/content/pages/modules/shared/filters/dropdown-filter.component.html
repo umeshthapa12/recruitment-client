@@ -1,0 +1,52 @@
+<div class="header-cell-wrap">
+    <div *ngIf="headerLabel && sortLabel" mat-sort-header="{{sortLabel}}">{{headerLabel}}</div>
+    <div *ngIf="headerLabel && !sortLabel">{{headerLabel}}</div>
+    <div (click)="toggleFilter()" [ngClass]="{'filter-icon_expanded': ms.menuOpen}" class="filter-icon">
+        <i class="la la-angle-down"></i>
+        <span #ms="matMenuTrigger" [matMenuTriggerFor]="name"></span>
+        <mat-menu [hasBackdrop]="hasMenuBackdrop" #name="matMenu" [xPosition]="'before'" class="mat-elevation-z2 mt-1">
+            <div [formGroup]="filterForm" (keydown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="row mx-0 filter-wrap">
+                <div class="col-12 mt-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Filter by condition</mat-label>
+                        <mat-select #c formControlName="condition" disableRipple placeholder="select">
+                            <mat-option *ngFor="let con of  conditions$ | async" [value]="con.key">{{con.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-12" *ngIf="!(c?.value === 'empty' || c?.value === 'notEmpty')">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Filter by value</mat-label>
+                        <textarea formControlName="firstValue" matInput rows="1"
+                            [placeholder]="c.value == 'bt' ? 'First search term': 'Search term'"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="col-12" *ngIf="c?.value == 'bt' && !(c?.value === 'empty' || c?.value === 'notEmpty')">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Filter by value</mat-label>
+                        <textarea formControlName="firstValue" matInput rows="1"
+                            [placeholder]="c.value == 'bt' ? 'Second search term': 'Search term'"></textarea>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="displayKeyword" class="col-12 mb-3">
+                    <mat-radio-group formControlName="keyword" aria-label="Select an option">
+                        <div class="pt-3 pb-2" style="background: #f7f8fc; justify-content: space-evenly;display: flex; flex-wrap: wrap">
+                            <mat-radio-button value="AND">AND</mat-radio-button>
+                            <mat-radio-button value="OR">OR</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+                </div>
+                <div class="col-12 action-wrap">
+                    <button matTooltip="Filter" [disabled]="!(c?.value === 'empty' || c?.value === 'notEmpty') &&filterForm.invalid" (click)="submitFilter()"
+                        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-primary mx-1">
+                        <i class="flaticon-search-1"></i>
+                    </button>
+                    <button matTooltip="Cancel" (click)="ms.closeMenu()"
+                        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-warning mx-1">
+                        <i class="la la-close"></i>
+                    </button>
+                </div>
+            </div>
+        </mat-menu>
+    </div>
+</div>

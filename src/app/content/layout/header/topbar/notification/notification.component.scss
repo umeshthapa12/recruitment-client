@@ -1,0 +1,14 @@
+:host {
+	.mat-tab-label,
+	.mat-tab-label-active {
+		min-width: 0 !important;
+		padding: 0 10px !important;
+		margin: 0 10px !important;
+	}
+}
+
+.custom-bg{
+	background: #36a3f7;
+	background: -webkit-linear-gradient(to right, #36a3f7, #00c5dc);
+	background: linear-gradient(to right, #36a3f7, #00c5dc);
+}

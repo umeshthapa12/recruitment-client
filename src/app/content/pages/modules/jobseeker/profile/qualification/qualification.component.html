@@ -1,0 +1,121 @@
+<div class="m-portlet shadow-none ">
+    <div class="m-portlet__body px-0 pt-3">
+        <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand mt-3"><i class="fa fa-graduation-cap"></i> Qualifications </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" matTooltip="Toggle List View"
+                        class="m-portlet__nav-link btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-squares-4"></i>
+                    </a>
+                    <a href="javascript:;" matTooltip="Add new" (click)="onAction(-1,null)"
+                        class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-add"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+
+        <div class="row mb-5" *ngIf="isLoading && qualiData.length <= 0">
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+        </div>
+
+        <div [@fadeInOutStagger]="qualiData?.length" class="row" *ngIf="!isLoading &&  qualiData.length > 0;">
+            <div class="col-md-6 mb-4" *ngFor="let d of qualiData; trackBy: trackById">
+                <mat-card class="mat-elevation-z1 mat-elevation-z7-custom h-100">
+                    <mat-card-content class="mb-0 card-content-text">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <h4 class="m--font-info">{{d?.qualificName}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Discipline</h6>
+                                {{d.discipline}}
+                            </div>
+                            <div class="col-md-6 mb-4" *ngIf="d.nameOfInstitution;">
+                                <h6 class="text-muted">Name of Institution</h6>
+                                {{d.nameOfInstitution}}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Specialization</h6>
+                                <div *ngIf="d.specialization; else speci">{{d.specialization}}</div>
+                                <ng-template #speci>
+                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                        (click)="onAction(d.id,'specialization')">add now</a>
+                                </ng-template>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Study Mode </h6>
+                                {{d.studyMode}}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Country </h6>
+                                {{d.country}}
+                            </div>
+                            <div class="col-md-6 mb-4" *ngIf="d.startedOn;">
+                                <h6 class="text-muted">Started On </h6>
+                                {{d.startedOn}}
+                            </div>
+                            <div class="col-md-6 mb-4" *ngIf="d.completedOn && !d.isRunning">
+                                <h6 class="text-muted">Completed On </h6>
+                                {{d.completedOn}}
+                            </div>
+                            <div class="col-md-6 mb-4" *ngIf="d.score;">
+                                <h6 class="text-muted">Score </h6>
+                                {{getSecuredIn(d.scoredIn, d.score)}}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Status </h6>
+                                <span class="m-badge m-badge--secondary m-badge--wide">
+                                    {{getStatus(d.isRunning )}}
+                                </span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div class="row align-content-end justify-content-center">
+                            <div class="col-4 pb-3">
+                                <button (click)="onAction(d.id,null)" matTooltip="Edit this"
+                                    class="btn btn-secondary m-btn--hover-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                    <i class="flaticon-edit"></i>
+                                </button>
+                                <button matTooltip="Delete this" (click)="onDelete(d.id)"
+                                    class="btn btn-default m-btn--hover-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                    <i class="flaticon-delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && qualiData.length <= 0">
+        <div class="text-center">
+            <i class="flaticon-medal fa-8x m--font-metal"></i>
+            <br>
+            <p class="text-muted">
+                There are no qualifications. <a href="Javascript:;" (click)="onAction(-1,null)"
+                    class="m-link m-link--warning">
+                    Add now </a>
+            </p>
+        </div>
+    </div>
+
+</div>

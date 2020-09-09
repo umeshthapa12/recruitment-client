@@ -1,0 +1,52 @@
+<mat-card class="mat-elevation-z0">
+    <mat-card-header matDialogTitle>
+        <div class="row">
+            <div class="col">
+                Add new Language
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content matDialogContent [formGroup]="languageForm">
+        <div class="row mb-2">
+            <div class="col">
+                <mat-form-field class="col px-0" appearance="outline">
+                    <mat-label>Language Name</mat-label>
+                    <input formControlName="languageName" matInput placeholder="Enter a language name" required>
+                    <mat-error @fadeInUpEnterOnly *ngIf="displayMessage?.languageName">
+                        {{displayMessage?.languageName}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h6 class="text-muted">Reading</h6>
+                <lang-stars (starSelected)="starClicked($event)" [stars]="stars[key.Read]"></lang-stars>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 class="text-muted">Writing</h6>
+                <lang-stars (starSelected)="starClicked($event)" [stars]="stars[key.Write]"></lang-stars>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 class="text-muted">Listening</h6>
+                <lang-stars (starSelected)="starClicked($event)" [stars]="stars[key.Listen]"></lang-stars>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h6 class="text-muted">Speaking</h6>
+                <lang-stars (starSelected)="starClicked($event)" [stars]="stars[key.Speak]"></lang-stars>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions matDialogActions>
+        <div class="row">
+            <div class="col" style="display: flex; justify-content: center; position: absolute;">
+                <button [disabled]="languageForm.invalid" matTooltip="Save changes" (click)="onSubmit()" matTooltipPosition="above" class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1" [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}">
+                    <i *ngIf="!isWorking" class="la la-check"></i>
+                </button>
+                <button (click)="onCancel()" [disabled]="isWorking" matTooltip="Cancel" matTooltipPosition="above" class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                    <i class="la la-close"></i>
+                </button>
+            </div>
+        </div>
+    </mat-card-actions>
+</mat-card>

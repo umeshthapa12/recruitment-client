@@ -1,0 +1,121 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+
+    <div class="loading-shade" *ngIf="isFileDownloading">
+        <div *ngIf="isFileDownloading" style="background: #f6f5f8;padding: 5px;border-radius: 6px; display: flex;">
+            File download in progress <mat-spinner class="ml-3" strokeWidth="2" diameter="20"></mat-spinner>
+        </div>
+    </div>
+
+    <div class="row pt-2 mb-2 mx-0">
+        <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-list"></i> Stages</h4>
+            </div>
+            <div [@fadeInX]="!isGirdView ? 1 : selectionAppointment.isEmpty() ? 2 : 3">
+                <button matRipple *ngIf="!isGirdView"
+                    class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill  ml-3"
+                    (click)="reloadData.emit({filters:[] })" matTooltip="Clear filter & Reload Table Data">
+                    <i class="flaticon-refresh"></i>
+                </button>
+                <span *ngIf="!isGirdView" class="d-inline-block">
+                    <button matRipple
+                        class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill  ml-3"
+                        matTooltip="Filter Applicants" #fTrigger="matMenuTrigger" [matMenuTriggerFor]="fl">
+                        <i class="la la-filter"></i>
+                    </button>
+                    <mat-menu #fl="matMenu" xPosition="before" hasBackdrop="false" class="mat-elevation-z15">
+                        <div [formGroup]="filterForm" class="row mx-3" (click)="$event.stopPropagation()"
+                            style="max-width: 300px">
+                            <div class="col-12 px-0 h4 m--font-brand">Filter By: </div>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Full Name</mat-label>
+                                <input formControlName="fullName" matInput placeholder="Applicant's Name">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Job Title</mat-label>
+                                <mat-select disableRipple formControlName="jobTitle">
+                                    <mat-option *ngFor="let o of jobTitles | async" [value]="o">{{o}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Applicant Status</mat-label>
+                                <mat-select disableRipple formControlName="isEligible">
+                                    <mat-option value="1">Suitable</mat-option>
+                                    <mat-option value="0">Unsuitable</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Stages</mat-label>
+                                <mat-select disableRipple formControlName="stage">
+                                    <mat-option *ngFor="let j of stage$ | async" [value]="j.value">{{j.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <div class="col-12 d-flex justify-content-center pb-3">
+                                <button (click)="filter(fTrigger)"
+                                    class="btn btn-outline-primary btn-sm 	m-btn m-btn--icon m-btn--outline-2x mx-1">
+                                    <span>
+                                        <i class="la la-search"></i>
+                                        <span>Search</span>
+                                    </span>
+                                </button>
+                                <button (click)="fTrigger.closeMenu()"
+                                    class="btn btn-outline-warning btn-sm 	m-btn m-btn--icon m-btn--outline-2x mx-1">
+                                    <span>
+                                        <i class="la la-close"></i>
+                                        <span>Dismiss</span>
+                                    </span>
+                                </button>
+                                <button matTooltip="Reset filter form" type="button" (click)="filterForm.reset()"
+                                    class="btn btn-outline-brand m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x">
+                                    <i class="flaticon-refresh"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-menu>
+                </span>
+
+                <button *ngIf="!selectionAppointment.isEmpty()" matRipple matTooltip="Download As:"
+                    class="btn btn-info m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1" [matMenuTriggerFor]="x">
+                    <i class="flaticon-download"></i>
+                </button>
+                <mat-menu #x="matMenu" xPosition="before">
+                    <button disableRipple mat-menu-item (click)="exportTo('excel')"><i
+                            class="la la-file-excel-o m--font-success"></i> Export as
+                        Excel-sheet</button>
+                    <button disableRipple mat-menu-item (click)="exportTo('pdf')"><i
+                            class="la la-file-pdf-o m--font-danger"></i>
+                        Export as PDF</button>
+                </mat-menu>
+
+                <button matRipple (click)="toggleViewMode()" type="button"
+                    class="btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                    matTooltip="Toggle View Mode">
+                    <i class="flaticon-{{isGirdView ?'list-3':'squares-2'}}"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div [@fadeIn]="isSelectionEmpty">
+        <div *ngIf="isSelectionEmpty" class="alert alert-danger row px-0 mx-0" role="alert">
+            <div class="col-md-10"> Select a few things up and try again.</div>
+            <div class="col-md-2" style="width: 20px">
+                <button type="button" class="close pt-0" (click)="clearErrors()" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <opening-view *ngIf="isGirdView else lv" [selection]="selectionAppointment"></opening-view>
+    <ng-template #lv>
+        <job-seeker-view [reload]="reloadData" [selection]="selectionApplicant"></job-seeker-view>
+    </ng-template>
+</div>

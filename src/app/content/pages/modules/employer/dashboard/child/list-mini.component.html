@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="m-widget5 col-md-6 shadow-none" [@fadeIn] *ngFor="let j of jobs; let o = odd;">
+        <div class="m-widget5__item mb-4">
+            <div class="m-widget5__content pt-3" style="width: 100%">
+                <div class="m-widget5__section">
+                    <h4 class="m-widget5__title">
+                        <a [href]="createJobLink(j)" target="_blank" class="m-link text-dark">{{j.jobTitle}}</a>
+                        <span class="job-action" title="Edit this job">
+                            <i class="flaticon-edit fa-1x m--font-bold"></i>
+                        </span>
+                    </h4>
+                    <span class="m-widget5__desc">
+                        {{j.jobDescription}}
+                    </span>
+                    <div class="m-widget5__info">
+                        <span class="m-widget5__author">
+                            {{j?.expiresOn ? 'Expired On:' : 'Created on:'}}
+                        </span>
+                        <span class="m-widget5__info-author m--font-info">
+                            {{j?.expiresOn ? (j.expiresOn |date) : j.createdOn | date}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

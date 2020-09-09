@@ -1,0 +1,67 @@
+<!-- begin::Footer -->
+<div class="m-container m-page__container m-container--full-height" [ngClass]="footerContainerClass$ | async">
+	<div class="m-footer__wrapper bottom-footer-height shadow-none">
+		<div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
+			<div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
+				<span class="m-footer__copyright">
+					Copyright &copy; 2018-2019 
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-2"></span>
+					<a href="http://www.helpincpvt.com" class="m-link" target="_blank">Help
+						Inc.</a>
+					All Rights Reserved
+				</span>
+			</div>
+			<div *ngIf="mapNavData(nav$ | async)?.length >0"
+				class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
+				<ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
+					<li class="m-nav__item" style="padding: 0px;"
+						*ngFor="let link of mapNavData(nav$ | async); let l=last">
+						<a [routerLink]="link.path" class="m-nav__link">
+							<span class="m-nav__link-text m-link m-link--brand"
+								style="font-size: .9rem; color: #a9a9aa">
+								{{link.label}} 
+								<span *ngIf="!l" class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-2"></span>
+							</span>
+						</a>
+					</li>
+					<!-- <li class="m-nav__item" style="padding: 0px">
+						<a routerLink="/faq" class="m-nav__link">
+							<span class="m-nav__link-text m-link m-link--brand" style="font-size: .9rem; color: #a9a9aa">
+								Faq &nbsp;|&nbsp;
+							</span>
+						</a>
+					</li>
+					<li class="m-nav__item" style="padding: 0px">
+						<a routerLink="/privacy-policy" class="m-nav__link ">
+							<span class="m-nav__link-text m-link m-link--brand" style="font-size: .9rem; color: #a9a9aa">
+								Privacy Policy &nbsp;|&nbsp;
+							</span>
+						</a>
+					</li>
+					<li class="m-nav__item" style="padding: 0px">
+						<a routerLink="/terms-conditions" class="m-nav__link">
+							<span class="m-nav__link-text m-link m-link--brand" style="font-size: .9rem; color: #a9a9aa">
+								Terms & Conditions &nbsp;|&nbsp;
+							</span>
+						</a>
+					</li>
+					<li class="m-nav__item" style="padding: 0px">
+						<a routerLink="/disclaimer" class="m-nav__link">
+							<span class="m-nav__link-text m-link m-link--brand" style="font-size: .9rem; color: #a9a9aa">
+								Disclaimer &nbsp;|&nbsp;
+							</span>
+						</a>
+					</li>
+					<li class="m-nav__item" style="padding: 0px">
+						<a routerLink="/contact" class="m-nav__link">
+							<span class="m-nav__link-text m-link m-link--brand" style="font-size: .9rem; color: #a9a9aa">
+								Contact Us
+							</span>
+						</a>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end::Footer -->

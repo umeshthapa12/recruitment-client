@@ -1,0 +1,91 @@
+<div class="m-portlet shadow-none">
+    <div class="m-portlet__body px-0 pt-3">
+        <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand mt-3"><i class="flaticon-users"></i> Reference </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" matTooltip="Toggle List View"
+                        class="m-portlet__nav-link btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-squares-4"></i>
+                    </a>
+                    <a href="javascript:;" matTooltip="Add new" (click)="onAction(null)"
+                        class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-add"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+
+        <div class="row mb-5" *ngIf="isLoading && refData.length <= 0">
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+        </div>
+        <div [@fadeInOutStagger]="refData?.length" class="row" *ngIf="!isLoading &&  refData?.length > 0;">
+            <div class="col-md-6 mb-4" *ngFor="let t of refData; trackBy:trackById">
+                <mat-card class="mat-elevation-z1 mat-elevation-z7-custom">
+                    <mat-card-content class="mb-0 card-content-text">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <h4 class="m--font-info">{{t?.name}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <h6 class="text-muted">Job Title</h6> {{t?.jobTitle}}
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <h6 class="text-muted">Org/Company Name</h6> {{t?.orgName}}
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <h6 class="text-muted">Contact Number</h6> {{t?.phone}}
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <h6 class="text-muted">Email</h6> {{t?.email}}
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div class="row">
+                            <div class="col" style="min-height: 40px;">
+                                <div style="display: flex; justify-content: center">
+                                    <button (click)="onAction(t.id)" matTooltip="Edit this"
+                                        class="btn btn-secondary m-btn--hover-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-edit"></i>
+                                    </button>
+                                    <button matTooltip="Delete this" (click)="onDelete(t.id)"
+                                        class="btn btn-default m-btn--hover-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-delete"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isLoading && refData?.length <= 0">
+        <div class="text-center">
+            <i class="flaticon-users fa-8x m--font-metal"></i>
+            <br>
+            There are references. <a href="javascript:;" (click)="onAction(null)" class="m-link m-link--warning">
+                Add now </a>
+        </div>
+    </div>
+
+</div>

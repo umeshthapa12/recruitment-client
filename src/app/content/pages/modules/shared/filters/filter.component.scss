@@ -1,0 +1,29 @@
+
+.filter-icon_expanded{
+    box-shadow: 0 0 5px 0  rgb(192, 196, 201);
+    border-radius: 50%;
+}
+.filter-wrap{
+    width: 200px;
+}
+.action-wrap{
+    display: flex;
+    justify-content: center;
+}
+.header-cell-wrap{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .filter-icon{
+        transition: box-shadow .1s cubic-bezier(0.165, 0.84, 0.44, 1),
+                    border-radius .5s cubic-bezier(.36,1.18,0,.47);
+        padding: 2px 3px;
+        cursor: pointer;
+    }
+    .filter-icon:hover{
+        box-shadow: 0 0 5px 0 rgb(192, 196, 201);
+        border-radius: 50%;
+    }
+}

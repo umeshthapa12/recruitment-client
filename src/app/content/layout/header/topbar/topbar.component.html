@@ -1,0 +1,61 @@
+<!-- BEGIN: Topbar -->
+<!-- <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav"> -->
+<div id="m_header_topbar" class="m-topbar m-stack m-stack--ver m-stack--general">
+	<div class="m-stack__item m-topbar__nav-wrapper">
+		<ul class="m-topbar__nav m-nav m-nav--inline">
+
+			<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img">
+				<a [routerLink]="userInfo?.domain ? '/all-jobs': '/'" class="m-nav__link">
+					<span class="m-topbar__userpic">
+						<i class="la la-home" style="color: #b1b5c1"></i>
+					</span>
+					<span class="m-topbar__welcome">&nbsp;Home</span>
+				</a>
+			</li>
+
+			<li  *ngIf="!isUserLoggedIn" class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width m-dropdown--skin-light"
+			 m-dropdown-toggle="click" m-dropdown-persistent="true">
+				<a href="javascript:;" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
+					<span class="m-topbar__userpic">
+						<i class="la la-lock" style="color: #b1b5c1"></i>
+					</span>
+					<span class="m-topbar__welcome">&nbsp;Login</span>
+				</a>
+				<div class="m-dropdown__wrapper" (click)="$event.stopPropagation()">
+					<span class="m-dropdown__arrow m-dropdown__arrow--center m--font-light"></span>
+					<div class="m-dropdown__inner">
+						<div class="m-dropdown__body px-0 pb-0 pt-0">
+							<user-login ></user-login>
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<li *ngIf="!isUserLoggedIn" class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+			 m-dropdown-toggle="click">
+
+				<a href="javascript:;" class="m-nav__link m-dropdown__toggle">
+					<span class="m-topbar__userpic">
+						<i class="la la-pencil-square-o" style="color: #b1b5c1"></i>
+					</span>
+					<span class="m-topbar__welcome">&nbsp;Register</span>
+				</a>
+				<div class="m-dropdown__wrapper" (click)="$event.stopPropagation()">
+					<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust m--font-light"></span>
+					<div class="m-dropdown__inner">
+
+						<div class="m-dropdown__body px-0 pb-0 pt-0">
+							<user-register></user-register>
+
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<m-notification [@fadeIn] *ngIf="isUserLoggedIn"></m-notification>
+			<m-user-profile [@fadeIn] *ngIf="isUserLoggedIn"></m-user-profile>
+		</ul>
+	</div>
+</div>
+<!-- </div> -->
+<!-- END: Topbar -->

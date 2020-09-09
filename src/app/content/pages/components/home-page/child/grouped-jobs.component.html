@@ -1,0 +1,120 @@
+<div *ngIf="isContent" class="m-portlet m-portlet-no-top-shadow"  style="margin: 0">
+    <div class="m-portlet__body">
+        <mat-accordion [displayMode]="'flat'" [multi]="true">
+            <div *ngIf="isLoading" class="row">
+                <div class="col-md-6">
+                    <content-list-placeholder></content-list-placeholder>
+                </div>
+                <div class="col-md-6">
+                    <content-list-placeholder></content-list-placeholder>
+                </div>
+            </div>
+            <div class="row" *ngIf="chunkL?.length >0 || chunkR?.length >0;">
+                <div class="col-12 mt-2 mb-2 px-0">
+                    <div class="mx-auto text-center h5 m--font-bolder">
+                        <div class="m-divider">
+                            <span></span>
+                            <span><i [class]="updated?.icon"
+                                    style="font-weight: bold; font-size: 20px; vertical-align: text-bottom"></i>
+                                {{updated?.displayText}}
+                            </span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 px-0" *ngIf="chunkL?.length >0" [@collectionInOut]="chunkL?.length"
+                    (@collectionInOut.done)="onAnimDone()">
+                    <div class="m-widget4">
+                        <div class="m-widget4__item col px-0" *ngFor="let item of chunkL">
+                            <div class="m-widget4__img m-widget4__img--pic pt-2" style="vertical-align: top">
+                                <img fallback-img-src [src]="(item?.companyLogoUrl)"
+                                    style="border-radius: 0">
+                            </div>
+                            <mat-expansion-panel hideToggle="true" style="box-shadow: none">
+                                <mat-expansion-panel-header style="align-items: flex-start;" class="pt-2 pb-1 px-0 ml-2"
+                                    [collapsedHeight]="'auto'" [expandedHeight]="'auto'" [title]="item?.companyName">
+                                    <mat-panel-title class="m-widget5__title">
+                                        <div class="m-widget4__info px-1">
+                                            <span class="m-widget4__title">
+                                                {{item?.companyName | slice:0:35}}{{item?.companyName?.length >35? '...':''}}
+                                            </span><br>
+                                            <span class="m-widget4__sub">
+                                                <i class="flaticon-placeholder"></i> {{item?.companyAddress}}
+                                            </span>
+                                        </div>
+                                        <div class="m-widget4__ext" (click)="$event.stopPropagation()">
+                                            <a [routerLink]="createCompanyLink(item)"
+                                                class="m-btn m-btn--pill btn-sm btn btn-sm btn-secondary">{{item?.totalOpenings}}
+                                                Openings</a>
+                                        </div>
+                                    </mat-panel-title>
+
+                                </mat-expansion-panel-header>
+                                <div class="m-list-timeline">
+                                    <div class="m-list-timeline__items">
+                                        <div class="m-list-timeline__item">
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template matExpansionPanelContent>
+                                    <grid-inner-list [openings]="item.openings"></grid-inner-list>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 px-0" *ngIf="chunkR?.length >0" [@collectionInOut]="chunkR?.length">
+                    <div class="m-widget4">
+                        <div class="m-widget4__item col px-0" *ngFor="let item of chunkR">
+                            <div class="m-widget4__img m-widget4__img--pic pt-2" style="vertical-align: top">
+                                <img fallback-img-src [src]="(item?.companyLogoUrl)"
+                                    style="border-radius: 0">
+                            </div>
+                            <mat-expansion-panel hideToggle="true" #pnl style="box-shadow: none">
+                                <mat-expansion-panel-header style="align-items: flex-start;" class="pt-2 pb-1 px-0 ml-2"
+                                    [collapsedHeight]="'auto'" [expandedHeight]="'auto'" [title]="item?.companyName">
+                                    <mat-panel-title class="m-widget5__title">
+                                        <div class="m-widget4__info px-1">
+                                            <span class="m-widget4__title">
+                                                {{item?.companyName | slice:0:35}}{{item?.companyName?.length >35? '...':''}}
+                                            </span><br>
+                                            <span class="m-widget4__sub">
+                                                <i class="flaticon-placeholder"></i> {{item?.companyAddress}}
+                                            </span>
+                                        </div>
+                                        <div class="m-widget4__ext" (click)="$event.stopPropagation()">
+                                            <a [routerLink]="createCompanyLink(item)"
+                                                class="m-btn m-btn--pill m-btn--hover-info btn-sm btn btn-sm btn-secondary">{{item?.totalOpenings}}
+                                                Openings</a>
+                                        </div>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="m-list-timeline">
+                                    <div class="m-list-timeline__items">
+                                        <div class="m-list-timeline__item">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template matExpansionPanelContent>
+                                    <grid-inner-list [openings]="item.openings"></grid-inner-list>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-3" *ngIf="hasMore">
+                    <div class="mx-auto text-center ">
+                        <a  [routerLink]="['/all-jobs',updated?.keyword]"
+                            class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder parent-btn-hover-child-transform">
+                            View All <span class="m-type m--bg-info type-fixed-size ml-1">
+                                <i class="flaticon-eye m--font-light"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </mat-accordion>
+    </div>
+</div>
+<div class="mt-5 row" *ngIf="isContent"></div>

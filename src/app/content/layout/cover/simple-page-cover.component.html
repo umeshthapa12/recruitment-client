@@ -1,0 +1,101 @@
+<div class="simple-cover-wrapper simple-cover-wrapper-desktop" [ngClass]="!isListContent?'cover-bg':''">
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body m-container m-container--responsive m-container--xxl m-page__container x-container"
+        [ngClass]="!isListContent ? 'cover-overlay container-wrapper-max-with':'' ">
+        <div class="m-grid__item m-grid__item--fluid m-wrapper pr-0" [ngStyle]="updateMinHeight()"
+            style="position: relative;">
+            <div class="m-content m--font-light pb-0 pt-0">
+                <div class="row" *ngIf="isListContent && !jobMeta">
+                    <div class="col-12">
+                        <div class="h3 mb-5">{{displayContent}}</div>
+                    </div>
+                    <div class="col-12" *ngIf="mappedNavForCoverPage(nav$ | async)?.length >0">
+                        <div style="min-height: 20px;width: 100%; position: relative;
+                                        bottom: -2px;
+                                        right: 0; font-weight: 900 !important">
+                            <ul class="nav nav-tabs mb-0 " role="tablist">
+                                <li class="nav-item" *ngFor="let link of mappedNavForCoverPage(nav$ | async)" style="margin: 0 0 0 1px">
+                                    <a class="nav-link {{ rla.isActive ?'m--font-brand':' m--font-light'}}"
+                                        [routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
+                                        [class.active]="rla.isActive" [routerLinkActiveOptions]={exact:true}>
+                                        {{link.label}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-5 mt-4 mb-5 col-md-8 px-0" *ngIf="isLoading && !isListContent;">
+                    <content-list-placeholder></content-list-placeholder>
+                </div>
+                <div class="m-widget5 mt-5 pt-5 mt-4" *ngIf="jobMeta && !isListContent && !isLoading">
+                    <div class="m-widget5__item">
+                        <div class="m-widget5__content pt-0"
+                            style="float: left; width: inherit; word-break: break-word;">
+                            <div class="m-widget5__pic">
+                                <img fallback-img-src class="m-widget7__img"
+                                    [src]="(jobMeta?.companyLogoUrl)"
+                                    alt="Logo">
+                            </div>
+                            <div class="m-widget5__section" style="width: inherit">
+                                <h4 class="m-widget5__title m--font-light fa-2x">
+                                    {{jobMeta?.jobTitle}}
+                                </h4>
+                                <span class="m-widget5__desc" style="font-size: inherit">
+                                    <span class="m--font-metal">at </span>
+                                    <span class="fa-1x m--font-bold m--font-light"> {{jobMeta?.companyName}} &nbsp; - </span> 
+                                    <a [href]="externalUrl(jobMeta?.companyWebsite)" target="_blank" class="m-link m-link--info">
+                                        <i class="la la-external-link"></i>
+                                        visit company website
+                                    </a>
+                                </span>
+                                <div class="m-widget5__info">
+                                    <div class="row">
+                                        <div class="col-md-3" style="max-width: 170px" [title]="((jobMeta?.jobVisitCounts || 0)|number)+' times viewed'">
+                                            <span class="m-widget5__author m--font-light">
+                                                <i class="flaticon-eye m--font-danger"
+                                                    style="vertical-align: middle;"></i>
+                                                Views
+                                            </span>
+                                            <span class="m-widget5__info-date m--font-metal"
+                                                style=" font-weight: normal">
+                                                <span
+                                                    class="m-badge m-badge--accent m-badge--dot m-badge--dot-small"></span>
+                                                {{(jobMeta?.jobVisitCounts || 0)|number}}
+                                            </span>
+                                        </div>
+                                        <div  class="col-md-3"
+                                            style="max-width: 170px" [title]="((jobMeta?.jobLikedCounts || 0)| number)+' times liked'">
+                                            <span class="m-widget5__author m--font-light">
+                                                <i class="la la-thumbs-up m--font-info"
+                                                    style="vertical-align: middle;"></i>
+                                                Likes
+                                            </span>
+                                            <span class="m-widget5__info-date m--font-metal"
+                                                style=" font-weight: normal">
+                                                <span
+                                                    class="m-badge m-badge--accent m-badge--dot m-badge--dot-small"></span>
+                                                {{(jobMeta?.jobLikedCounts || 0)| number}}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="m-widget5__info-label m--font-light">
+                                                <i class="flaticon-stopwatch  m--font-warning"></i>
+                                                Valid Until
+                                            </span>
+                                            <span class="m-widget5__info-date m--font-metal"
+                                                style=" font-weight: normal">
+                                                <span
+                                                    class="m-badge m-badge--accent m-badge--dot m-badge--dot-small"></span>
+                                                {{jobMeta?.validUntil | date:'MMM d, y, h:mm a'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

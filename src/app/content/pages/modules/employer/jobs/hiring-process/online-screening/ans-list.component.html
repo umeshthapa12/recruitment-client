@@ -1,0 +1,58 @@
+<h4 mat-dialog-title class="m--font-primary">Job Seeker Screening Answers
+    <a matTooltip="Download job seeker's screening answers as a PDF file." [href]="pdfGetterUrl" target="_blank"
+        class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill pull-right">
+        <i class="flaticon-download"></i>
+    </a>
+</h4>
+<div mat-dialog-content perfectScrollbar>
+    <mat-accordion [@collectionInOut]="items?.length" displayMode="flat">
+        <section matSort class="xpan-header mat-header-row">
+            <div class="mat-header-cell">
+                Job Title / Position
+            </div>
+            <div class="mat-header-cell" style="max-width: 130px">
+                Application Status
+            </div>
+        </section>
+        <mat-expansion-panel #pnl *ngFor="let d of items;" (expandedChange)="xpanChange($event, d.id, d.jobSeekerGuid)"
+            [style.background]="pnl.expanded ? '#f1f1f2':''" class="mb-2">
+            <mat-expansion-panel-header class="xpan-row mat-row">
+                <span title="Toggle questionnaire answer data" class="mat-cell">{{d.jobTitle}}</span>
+                <span title="An ineligible application for this position." class="mat-cell" style="max-width: 130px"
+                    [ngClass]="d.isEligible ?'m--font-info':'m--font-warning'">{{d.isEligible ? 'Eligible':'Ineligible'}}</span>
+            </mat-expansion-panel-header>
+            <mat-progress-bar *ngIf="isLazyListLoading" color="warn" mode="indeterminate">
+            </mat-progress-bar>
+            <ng-template matExpansionPanelContent>
+                <div [style.background]="pnl.expanded ? '#f1f1f2':''" *ngIf="!isLazyListLoading"
+                    class="child-data-container mb-3" [perfectScrollbar]="{swipeEasing:true}">
+                    <div class="row mx-0 mb-1 pt-2 pb-3 ans-row" *ngFor="let a of answerData">
+                        <div class="col-12 mb-1">
+                            <span class="m--font-brand m--font-bolder"> <i
+                                    class="flaticon-questions-circular-button"></i>
+                                Question :
+                            </span>
+                            {{a.question}}
+                        </div>
+                        <div class="col-12 mb-1">
+                            <span class="m--font-info m--font-bolder"> <i class="flaticon-chat-1"></i> Answer :</span>
+                            <span *ngFor="let a of a.answer; let l = last">
+                                {{a}}{{l?'':', '}}
+                            </span>
+                        </div>
+                        <div class="col-12" *ngIf="a.options">
+                            <span class="m--font-metal m--font-bolder"><i class="flaticon-interface-7"></i> Options
+                                :</span>
+                            <span *ngFor="let o of a.options; let l = last">
+                                {{o}}{{l?'':', '}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-center pb-3 pt-5">
+    <button type="button" class="btn btn-outline-info m-btn btn-sm m-btn--outline-2x" mat-dialog-close>Dismiss</button>
+</div>

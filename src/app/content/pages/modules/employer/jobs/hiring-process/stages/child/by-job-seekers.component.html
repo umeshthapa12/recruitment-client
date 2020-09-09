@@ -1,0 +1,120 @@
+<div class="position-relative">
+
+    <div class="loading-shade" *ngIf="isFileDownloading">
+        <div *ngIf="isFileDownloading" style="background: #f6f5f8;padding: 5px;border-radius: 6px; display: flex;">
+            File download in progress <mat-spinner class="ml-3" strokeWidth="2" diameter="20"></mat-spinner>
+        </div>
+    </div>
+
+    <div [@fadeIn]="isSelectionEmpty">
+        <div *ngIf="isSelectionEmpty" class="alert alert-danger row px-0 mx-0" role="alert">
+            <div class="col-md-10"> Select a few applicants up and try again.</div>
+            <div class="col-md-2" style="width: 20px">
+                <button type="button" class="close pt-0" (click)="clearErrors()" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoadingResults"></mat-progress-bar>
+    <div class="table-container" perfectScrollbar style="height: calc(100vh - 330px);">
+        <mat-table matSort [dataSource]="dataSource" multiTemplateDataRows>
+            <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef class="cell-max-width ">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" class="d-table mx-auto">
+                    </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="cell-max-width justify-content-center">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" class="d-table mx-auto">
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+                <mat-header-cell *matHeaderCellDef>Full Name </mat-header-cell>
+                <mat-cell *matCellDef="let el"> {{el.fullName}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="stage">
+                <mat-header-cell *matHeaderCellDef>Applicant Stage </mat-header-cell>
+                <mat-cell *matCellDef="let el">
+                    <span
+                        class="{{el.stage ? 'm-badge m-badge--primary m-badge--wide':'m--font-metal'}} ">{{el.stage ? el.stage :'n/a'}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="jobTitle">
+                <mat-header-cell *matHeaderCellDef>Job Title / Position</mat-header-cell>
+                <mat-cell *matCellDef="let el">
+                    {{el.jobTitle}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="isEligible">
+                <mat-header-cell *matHeaderCellDef> Applicant Status </mat-header-cell>
+                <mat-cell *matCellDef="let el">
+                    <span class="m-badge m-badge--wide"
+                        [ngClass]="el.isEligible ? 'm-badge--info':'m-badge--warning'">{{el.isEligible ? 'Suitable':'Unsuitable'}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef style="max-width: 60px;">
+                    Actions
+                </mat-header-cell>
+                <mat-cell *matCellDef="let el" style="max-width: 60px;">
+                    <button [disabled]="selection.isSelected(el)" mat-icon-button [matMenuTriggerFor]="z">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #z="matMenu" xPosition="before">
+                        <button [disabled]="selection.isSelected(el)" mat-menu-item
+                            (click)="onAction('stage-message', el)">
+                            <i class="flaticon-mail m--font-info mr-1"></i> Change Stage & Send Message</button>
+                        <button [disabled]="selection.isSelected(el)" mat-menu-item (click)="onAction('stage-only',el)">
+                            <i class="flaticon-edit m--font-warning mr-1"></i> Stage Change Only</button>
+                        <button [disabled]="selection.isSelected(el)" mat-menu-item (click)="onAction('history',el)">
+                            <i class="la la-history m--font-brand mr-1"></i> Stage History</button>
+                    </mat-menu>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row [class.selected]="selection.isSelected(row) || selectedId === row.jobSeekerGuid" *matRowDef="let row; columns: displayedColumns;">
+            </mat-row>
+
+        </mat-table>
+    </div>
+    <div class="d-flex justify-content-center pb-4 pt-3">
+        <div class="col-md-4" [@fadeInX]="selection.isEmpty()">
+            <button matRipple matTooltip="Download As:"
+                class="btn btn-info m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-3" [matMenuTriggerFor]="x">
+                <i class="flaticon-download"></i>
+            </button>
+            <mat-menu #x="matMenu" xPosition="after" yPosition="above">
+                <button disableRipple mat-menu-item (click)="onAction('excel', null)"><i
+                        class="la la-file-excel-o m--font-success"></i> Export as
+                    Excel-sheet</button>
+                <button disableRipple mat-menu-item (click)="onAction('pdf', null)"><i
+                        class="la la-file-pdf-o m--font-danger"></i>
+                    Export as PDF</button>
+            </mat-menu>
+            <button matRipple matTooltip="Save Changes As"
+                class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill" [matMenuTriggerFor]="y">
+                <i class="la la-angle-up"></i>
+            </button>
+            <mat-menu #y xPosition="after" yPosition="above">
+                <button mat-menu-item (click)="onAction('stage-message', null)">
+                    <i class="flaticon-mail m--font-info mr-1"></i> Change Stage & Send Message</button>
+                <button mat-menu-item (click)="onAction('stage-only', null)">
+                    <i class="flaticon-edit m--font-warning mr-1"></i> Stage Change Only</button>
+            </mat-menu>
+        </div>
+        <div class="col-md-8">
+            <mat-paginator [disabled]="!(isLoadingResults || dataSource.data?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]"></mat-paginator>
+        </div>
+    </div>
+</div>

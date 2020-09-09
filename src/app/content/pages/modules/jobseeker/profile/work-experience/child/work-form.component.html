@@ -1,0 +1,210 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-7">
+            <h5 class="m--font-brand"> {{data?.id >0 ?'Update Work Experience':'Add Work Experience'}} </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="onCancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<div id="res-messages" class="alert m-alert m-alert--air" role="alert"
+    [ngClass]="{'alert-danger':isError, 'alert-success':!isError}" *ngIf="responseMessage || errors?.length>0">
+    <button type="button" class="close pt-0" aria-label="Close" (click)="clearErrors()"></button>
+    <span *ngIf="errors?.length > 0; else msgBlock">
+        <span class="row" [@fadeIn]="errors?.length">
+            <div class="col-12 mb-1 m--font-bolder">
+                {{ responseMessage}}
+            </div>
+            <div class="col-6" *ngFor="let e of  errors">
+                {{e.message}}
+            </div>
+        </span>
+    </span>
+    <ng-template #msgBlock>
+        {{ responseMessage}}
+    </ng-template>
+</div>
+<form [formGroup]="workForm" (ngSubmit)="onSubmit()" class="m-form" autocomplete="off">
+    <div matDialogContent>
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Organization Name</mat-label>
+                            <input matInput type="text" formControlName="organization" placeholder="Organization Name"
+                                required>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.organization">
+                                {{displayMessage?.organization}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input matInput type="text" placeholder="Organization Location/Address"
+                                formControlName="address" required>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.address">
+                                {{displayMessage?.address}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Job Title</mat-label>
+                            <input matInput type="text" placeholder="Job Title/Designation" formControlName="jobTitle"
+                                required>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.jobTitle">
+                                {{displayMessage?.jobTitle}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Job Category</mat-label>
+                            <mat-select class="m-input" formControlName="jobCategory"
+                                [placeholder]="category?.length>0? 'Select a Job Category':'Error occurred'" required>
+                                <mat-option *ngFor="let e of category" [value]="e.value">
+                                    {{e.value}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.jobCategory">
+                                {{displayMessage?.jobCategory}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Experience Level</mat-label>
+                            <mat-select class="m-input" formControlName="experienceLevel"
+                                [placeholder]="level?.length>0?'Select an Experience level':'Error occurred'" required>
+                                <mat-option *ngFor="let e of level" [value]="e.value">
+                                    {{e.value}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.experienceLevel">
+                                {{displayMessage?.experienceLevel}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-checkbox #isWorkin formControlName="isWorking">Currently working here</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div class="row" [@fadeIn]="isWorkin.checked">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Started On</mat-label>
+                            <input matInput [matDatepicker]="start" (focus)="start.open()" (click)="start.open()"
+                                placeholder="Joining date" formControlName="from" [max]="maxDate" required>
+
+                            <mat-datepicker #start startView="multi-year"></mat-datepicker>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.from">
+                                {{displayMessage?.from}}
+                            </mat-error>
+                            <mat-icon matSuffix class="m--font-primary">date_range</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12" *ngIf="!isWorkin.checked">
+                            <div class="form-group">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Ended On</mat-label>
+                                    <input matInput [matDatepicker]="end" (focus)="end.open()" (click)="end.open()"
+                                        placeholder="Employment end date" formControlName="to" [max]="maxDate" required>
+
+                                    <mat-datepicker #end startView="multi-year"></mat-datepicker>
+                                    <mat-error class="m--font-danger" *ngIf="displayMessage?.to">
+                                        {{displayMessage?.to}}
+                                    </mat-error>
+                                    <mat-icon matSuffix class="m--font-primary">date_range</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-12" *ngIf="isWorkin.checked">
+                            <div class="form-group">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <mat-label>Notice Period</mat-label>
+                                    <mat-select class="m-input" formControlName="noticePeriod"
+                                        placeholder="Select a notice period" required>
+                                        <mat-option *ngFor="let n of noticePeriod" [value]="n">
+                                            {{n}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error class="m--font-danger" *ngIf="displayMessage?.noticePeriod">
+                                        {{displayMessage?.noticePeriod}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Roles and Responsibilities</mat-label>
+                            <textarea matInput formControlName="summary" rows="4"
+                                placeholder="Your roles and responsibilities" required></textarea>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.summary">
+                                {{displayMessage?.summary}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Refereence Person Name</mat-label>
+                            <input matInput placeholder="Name of the reference person" formControlName="refPersonName">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Reference Person Contact</mat-label>
+                            <input matInput placeholder="Contact number of the reference person"
+                                formControlName="refPersonPhone">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div matDialogActions style="display: flex; justify-content: center">
+        <div class="mb-2">
+            <button matTooltip="Save Changes" type="submit" matTooltipPosition="above"
+                class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}">
+                <i *ngIf="!isWorking" class="la la-check"></i>
+            </button>
+            <button type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipPosition="above"
+                class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                <i class="la la-close"></i>
+            </button>
+        </div>
+    </div>
+</form>

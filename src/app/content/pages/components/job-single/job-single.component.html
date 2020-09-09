@@ -1,0 +1,303 @@
+<div class="m-portlet m-portlet--responsive-mobile m-portlet-no-top-shadow" style="margin: 0; position: relative;">
+	<div class="m-portlet__body">
+		<div *ngIf="content; else loading">
+
+			<div class="row" list-sticky-header [showHideOnScroll]="true">
+				<div class="col-md-3 icon-animator">
+					<button [disabled]="appliedDisabled() || isSpinning && activatedBtn == 'apply'"
+						(click)="onActionButtonsClick('apply')" class="btn  btn-block btn-sm" [ngClass]="appliedDisabled() ?'btn-metal':'btn-accent'">
+						<span class="icon-box m-type type-fixed-size">
+							<i class="flaticon-user-add "></i>
+						</span>
+						{{ appliedDisabled() ? 'Applied':'Apply Now!'}}
+					</button>
+					<mat-progress-bar *ngIf="isSpinning && activatedBtn == 'apply'" color="warn" style="height: 3px;"
+						mode="indeterminate"></mat-progress-bar>
+				</div>
+				<div class="col-md-3">
+					<div class="btn-group btn-block icon-animator" role="group">
+						<button (click)="onActionButtonsClick('save')" class="btn btn-block btn-secondary btn-sm">
+							<span class="icon-box m-type type-fixed-size">
+								<i [ngClass]="hasValue((jsFavJobId$ | async),currentId) ? 'la-star':'la-star-o'"
+									class="la m--font-warning"></i>
+							</span>
+							{{hasValue((jsFavJobId$ | async), currentId) ? 'Unsave' : 'Save'}}
+						</button>
+						<div class="btn-group">
+							<button type="button" class="btn btn-secondary btn-sm" [matMenuTriggerFor]="menu">
+								<i class="flaticon-more"></i>
+							</button>
+							<mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+								<a href="mailTo:" [disableRipple]="true" mat-menu-item>
+									<i class="flaticon-mail m--font-brand mr-2"></i>
+									Share via Email
+								</a>
+								<button [disableRipple]="true" (click)="onActionButtonsClick('share-via-facebook')"
+									mat-menu-item><i class="flaticon-facebook-letter-logo m--font-info mr-2"></i>
+									Share via Facebook
+								</button>
+								<button [disableRipple]="true" (click)="onActionButtonsClick('share-via-twitter')"
+									mat-menu-item><i class="flaticon-twitter-logo m--font-accent mr-2"></i>
+									Share via Twitter
+								</button>
+								<button (click)="onActionButtonsClick('download-pdf')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="fa fa-file-pdf m--font-danger mr-2"></i>
+									Download this job
+								</button>
+								<button (click)="onActionButtonsClick('report-problem')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="flaticon-exclamation m--font-metal mr-2"></i>
+									Report a Problem
+								</button>
+							</mat-menu>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 m--visible-desktop" style="display: flex; flex-direction: column">
+					<div>Are you interested in this position?</div>
+					<div>Make sure you have read the <span (click)="scrollIntoToApplySection()" style="cursor: pointer;"
+							class="m-link m-link--primary m--font-bold">How
+							to Apply</span> section.
+					</div>
+				</div>
+			</div>
+
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Job Category</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.jobCategory}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Experience Level(s)</div>
+				<div class="col-md-9 col-12 mb-1 d-inline-flex">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+					<span class="m--font-bolder">
+						<span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+							*ngFor="let x of content?.experienceLevel; ">
+							{{x}}
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Job Type(s)</div>
+				<div class="col-md-9 col-12 mb-1 d-inline-flex">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+					<span class="m--font-bolder">
+						<span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+							*ngFor="let e of content?.jobTypes; ">
+							{{e}}
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Job Location(s)</div>
+				<div class="col-md-9 col-12 mb-1 d-inline-flex">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+					<span class="m--font-bolder">
+						<span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+							*ngFor="let j of content?.jobLocation; ">
+							{{j}}
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Openings</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.noOfOpenings}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2" *ngIf="content?.salary">
+				<div class="col-md-3 col-12 mb-1">Salary</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.salary}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2" *ngIf="content?.defaultExperience">
+				<div class="col-md-3 col-12 mb-1">Required Work Experience</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.defaultExperience}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2" *ngIf="(content?.minAge || content?.maxAge)">
+				<div class="col-md-3 col-12 mb-1">Age Range</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.minAge}}
+						{{content?.maxAge ? ' - ' + content?.maxAge : ''}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2" *ngIf="content?.maritalStatus">
+				<div class="col-md-3 col-12 mb-1">Marital Status</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.maritalStatus}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2" *ngIf="content?.gender">
+				<div class="col-md-3 col-12 mb-1">Gender</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.gender}}</span>
+				</div>
+			</div>
+			<div class="row row-hover mt-2">
+				<div class="col-md-3 col-12 mb-1">Apply Before</div>
+				<div class="col-md-9 col-12 mb-1">
+					<span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+					<span class="m--font-bolder">{{content?.expiresOn | date}}</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-5 ">
+					<div class="h4 btn-block">Skills</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<span *ngFor="let s of content?.skillKeywords; let o = odd"
+						class="m-badge skills-badge m--font-bold mb-1 mr-1">
+						{{s}}
+					</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="(content?.qualification|| []).length>0">
+				<div class="col-12 mt-5 ">
+					<div class="h4 btn-block">Required Qualification & Experience</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<table class="table table-striped  table-bordered">
+						<thead>
+							<tr>
+								<th>Qualification</th>
+								<th>Work Experience</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let s of content?.qualification;">
+								<td>{{s.key}} </td>
+								<td>{{s.value}} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div *ngIf="content?.jobDescription" class="row mt-5">
+				<div class="col">
+					<div class="h4 btn-block">Job description</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div #jobDesc [class]="renderQuillValue(jobDesc,content?.jobDescription, 'j-desc')"></div>
+				</div>
+			</div>
+			<div *ngIf="content?.jobSpecification" class="row mt-5">
+				<div class="col">
+					<div class="h4 btn-block">Job Specification / Requirements</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div #specf [class]="renderQuillValue(specf,content?.jobSpecification,'j-spec')"></div>
+				</div>
+			</div>
+			<div *ngIf="content?.preferred" class="row mt-5">
+				<div class="col">
+					<div class="h4 btn-block">Preferred</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div #pref [class]="renderQuillValue(pref,content?.preferred,'j-pref')"></div>
+				</div>
+			</div>
+			<div *ngIf="content?.aboutCompany" class="row mt-5">
+				<div class="col">
+					<div class="h4 btn-block">About {{content?.companyName}}</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div #abc [class]="renderQuillValue(abc,content?.aboutCompany,'j-ab')"></div>
+				</div>
+			</div>
+			<div *ngIf="content?.benefits" class="row mt-5">
+				<div class="col">
+					<div class="h4 btn-block">Benefits</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div #ben [class]="renderQuillValue(ben,content?.benefits,'j-ben')"></div>
+				</div>
+			</div>
+			<div class="row mt-5" #applySection>
+				<div class="col how-to-apply-wrapper apply-wrapper-shadow-both">
+					<div class="h4 btn-block mb-2">How to apply</div>
+					<span *ngIf="content?.applyProcedure" class="m--font-bold" #apply
+						[class]="renderQuillValue(apply,content?.applyProcedure, 'j-ap')"></span>
+					<span *ngIf="content?.applyProcedure">OR</span> <br>
+					Apply via online
+					<div class="row">
+						<div class="col-md-2 mt-4 mb-3">
+							<button (click)="onActionButtonsClick('apply')"
+								[disabled]="appliedDisabled()|| isSpinning && activatedBtn == 'apply'"
+								[ngClass]="!(isSpinning && activatedBtn == 'apply') && !appliedDisabled()? 'btn-outline-accent btn-outline-accent m-btn m-btn--outline-2x':'btn-metal'"
+								type="button" class="btn  btn-block ">
+								{{appliedDisabled()? 'Applied':'Apply Now!'}}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-5 mb-5">
+				<div class="col">
+					<div class="h4 btn-block">Do you think this job matches someone? Share via!</div>
+					<mat-divider class="mb-2"></mat-divider>
+
+					<div class="row">
+						<div class="col mt-2 icon-animator">
+							<a href="mailTo" class="btn btn-outline-brand btn-sm mr-2 m-btn  m-btn--outline-2x ">
+								<span>
+									<span class="icon-box px-1"><i class="flaticon-mail "></i></span> Email
+								</span>
+							</a>
+							<a href="javascript:;" (click)="onActionButtonsClick('share-via-facebook')"
+								class="btn btn-outline-info btn-sm mr-2 m-btn  m-btn--outline-2x ">
+								<span>
+									<span class="icon-box px-1"><i class="flaticon-facebook-letter-logo"></i></span>
+									Facebook
+								</span>
+							</a>
+							<a href="javascript:;" (click)="onActionButtonsClick('share-via-twitter')"
+								class="btn btn-outline-accent btn-sm mr-2 m-btn  m-btn--outline-2x">
+								<span>
+									<span class="icon-box px-1"><i class="flaticon-twitter-logo"></i></span>
+									Twitter
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- TODO: we'll implement it later -->
+			<!-- <div class="row mt-5 mb-5">
+				<div class="col">
+					<div class="h4 btn-block">More jobs <span class="text-muted">at</span> {{content?.companyName}}
+					</div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div class="row">
+						<div class="col mt-2">
+							<job-list [jobLists]="moreJobsAtCurrentCompany.slice(0,2)"></job-list>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-5 mb-5">
+				<div class="col">
+					<div class="h4 btn-block">Similar jobs </div>
+					<mat-divider class="mb-2"></mat-divider>
+					<div class="row">
+						<div class="col mt-2">
+							<job-list [jobLists]="moreJobsAtCurrentCompany"></job-list>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</div>
+		<ng-template #loading>
+			<content-list-placeholder [linesOnly]="true" [lineHeight]="6" [lineCount]="4"></content-list-placeholder>
+		</ng-template>
+	</div>
+</div>

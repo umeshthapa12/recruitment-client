@@ -1,0 +1,51 @@
+<div class="m-portlet shadow-none">
+        <div class="m-portlet__body px-0 pt-3">
+            <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+                <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                    <div>
+                        <h4 class="m--font-brand mt-3"><i class="flaticon-info"></i> Other Information </h4>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row mb-4">
+                <div class="col-12">
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+    
+            <div class="row  row-hover">
+                <div class="col-md-10" style="justify-content: space-between">
+                    <h5>Are you willing to work on any location company place you?</h5>
+                </div>
+                <div class="col-md-2">
+                    <span class="switch-yesno pull-right">
+                        <input #el type="checkbox" value="1" id="loc" (change)="onLocationChange(el)">
+                        <label for="loc" class="l"></label>
+                    </span>
+                </div>
+            </div>
+            <div class="row  row-hover">
+                <div class="col-md-10">
+                    <h5>Do you have a two-wheeler driving license?</h5>
+                </div>
+                <div class="col-md-2">
+                    <span class="switch-yesno pull-right">
+                        <input #el type="checkbox" value="1" id="two-w" (change)="onLocationChange(el)">
+                        <label for="two-w" class="l"></label>
+                    </span>
+                </div>
+            </div>
+            <div class="row  row-hover">
+                <div class="col-md-10">
+                    <h5>Do you have a four-wheeler driving license?</h5>
+                </div>
+                <div class="col-md-2">
+                    <span class="switch-yesno pull-right">
+                        <input #el type="checkbox" value="1" id="four-w" (change)="onLocationChange(el)">
+                        <label for="four-w" class="l"></label>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>

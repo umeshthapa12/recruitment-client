@@ -1,0 +1,558 @@
+<div *ngIf="isRenderApplyCard">
+	<mat-card class="mat-elevation-z1 box-border mb-3" style="background: #f9f9f9;">
+		<mat-card-content>
+			<div class="row" *ngIf="!isLoadingApplyCard">
+				<div class="col-12 icon-animator">
+					<button [disabled]="appliedDisabled() || isSpining" (click)="onActionButtonsClick('apply')"
+						class="btn  btn-block m-btn--air btn-sm" [ngClass]="appliedDisabled()?'btn-metal':'btn-accent'">
+						<span class="icon-box m-type type-fixed-size">
+							<i class="flaticon-user-add "></i>
+						</span>
+						{{appliedDisabled()?'Applied':'Apply Now!'}}
+					</button>
+					<mat-progress-bar *ngIf="isSpining && activatedBtn == 'apply'" color="warn" style="height: 3px;"
+						mode="indeterminate"></mat-progress-bar>
+				</div>
+				<div class="col-12 mt-2">
+					<div class="btn-group m-btn-group--air btn-block icon-animator" role="group">
+						<button (click)="onActionButtonsClick('save')" class="btn btn-block btn-secondary btn-sm">
+							<span class="icon-box m-type type-fixed-size">
+								<i [ngClass]="hasValue((jsFavJobId$ | async),currentId) ? 'la-star':'la-star-o'"
+									class="la m--font-warning"></i>
+							</span>
+							{{hasValue((jsFavJobId$ | async),currentId) ? 'Unsave':'Save'}}
+						</button>
+
+						<div class="btn-group">
+							<button type="button" class="btn btn-secondary btn-sm" [matMenuTriggerFor]="menu">
+								<i class="flaticon-more"></i>
+							</button>
+							<mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+								<a href="mailTo:" [disableRipple]="true" mat-menu-item>
+									<i class="flaticon-mail m--font-brand mr-2"></i>
+									Share via Email
+								</a>
+								<button (click)="onActionButtonsClick('share-via-facebook')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="flaticon-facebook-letter-logo m--font-info mr-2"></i>
+									Share via Facebook</button>
+								<button (click)="onActionButtonsClick('share-via-twitter')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="flaticon-twitter-logo m--font-accent mr-2"></i>
+									Share via Twitter</button>
+								<button (click)="onActionButtonsClick('download-pdf')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="fa fa-file-pdf m--font-danger mr-2"></i>
+									Download this job
+								</button>
+								<button (click)="onActionButtonsClick('report-problem')" [disableRipple]="true"
+									mat-menu-item>
+									<i class="flaticon-exclamation m--font-metal mr-2"></i>
+									Report a Problem
+								</button>
+							</mat-menu>
+						</div>
+					</div>
+					<mat-progress-bar *ngIf="isSpining && activatedBtn == 'save'" style="height: 3px;"
+						mode="indeterminate"></mat-progress-bar>
+				</div>
+				<div class="col-12 mt-4 text-center">
+					<h5>Are you interested in this position? </h5>
+					<p><i class="la la-lightbulb-o m--font-warning"></i> Make sure you have read the <span
+							(click)="scrollIntoToApplySection()" style="cursor: pointer;"
+							class="m-link m-link--primary m--font-bold">How
+							to Apply</span>
+						section.</p>
+				</div>
+			</div>
+
+			<div class="row" *ngIf="isLoadingApplyCard">
+				<div class="col-12 mt-2" style="display: flex; flex-direction: column;">
+					<div class="mt-2 btn-placeholder"></div>
+					<div class="mt-2 btn-placeholder"></div>
+				</div>
+				<div class="col-12 mt-4" style="display: flex; justify-content: space-between">
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+				</div>
+				<div class="col-12 mt-4" style="display: flex; justify-content: space-between">
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+					<div class="text-placeholder"></div>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<div *ngIf="containsPath('employer/my')">
+
+	<mat-card class="mat-elevation-z1 box-border mb-4">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Profile</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					A profile refers therefore to the explicit digital representation of a person's identity. A user
+					profile can also be considered as the computer
+					representation of a user model.
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mat-elevation-z1 box-border mb-4">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Edit Your Profile</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					A user’s profile includes contact information, relationships, locations, skills and certifications,
+					education,
+					and
+					more. You can change your profile information.
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mat-elevation-z1 box-border mb-4">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Connect to Your Social Account</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					You can connect your recruitment site to social networks, like Facebook and Twitter, and other
+					online services.
+					After connecting social accounts, you can:
+					Add icons that link to your social profiles,
+					Add content to your site from some social profiles, like Twitter or Facebook,
+					Share content from your site with certain social profiles,
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<div *ngIf="containsPath('jobseeker/dashboard')">
+
+	<mat-card class="mt-3 mat-elevation-z1 box-border mb-2  pt-0">
+		<img mat-card-image src="./assets/app/media/img//bg/bg-5.jpg" style="height: 95px;">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<span class="mat-elevation-z1 user-avatar-circle">
+						<img src="{{avatar}}" height="80" alt="Profile Picture" class="m--img-rounded mx-0 mt-0 mb-0">
+					</span>
+				</div>
+				<div class="col-12 text-center mt-4 pt-3">
+					<div class="fa-1x m--font-bold"> {{userInfo?.displayName}}
+						<i class="la la-check-circle m--font-info" title="verified"></i>
+					</div>
+					<div class="user-job-title">{{userInfo?.jobTitle}}</div>
+				</div>
+			</div>
+			<div class="row  mb-3 mt-3">
+				<mat-divider class=""></mat-divider>
+			</div>
+			<div class="row">
+				<!-- <div class="col-12 mt-1">
+				<a href="#" class="m-link m-link--state m-link--info btn-block">
+					Following <span class="pull-right m--font-brand"> 98</span>
+				</a>
+			</div>
+			<div class="col-12  mt-1">
+				<a href="#" class="m-link m-link--state m-link--info btn-block">
+					Profile Views <span class="pull-right m--font-brand"> 78</span>
+				</a>
+			</div> -->
+				<div class="col-12  mt-2" style="font-size: 12px">
+					<span class="pull-right m--font-brand">{{profileStrength?.percentage || 0}}%</span>
+					<span class=" pull-left">Profile Strength : <strong
+							class="m--font-warning">{{profileStrength?.status}} </strong></span>
+					<mat-progress-bar mode="determinate" [value]="profileStrength
+				?.percentage"></mat-progress-bar>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mt-3 mat-elevation-z1 box-border mb-4  pt-0">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12 mt-4">
+					<a routerLink="/jobseeker/my/profile"
+						class="btn m-btn--square m--padding-5 btn-primary m-btn btn-block m-btn--bolder parent-btn-hover-child-transform">Update
+						Your Profile
+						<span class="m-badge m-badge--accent m-badge--rounded ml-1 custom-badge">
+							<i class="flaticon-edit-1 m--font-light" style="vertical-align: middle"></i>
+						</span>
+					</a>
+				</div>
+				<div class="col-md-12 mt-2">
+					<div class="m-list-search">
+						<div class="m-list-search__results ">
+							<a routerLink="/jobseeker/my/job-preference"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-suitcase m--font-primary"></i></span>
+								<span class="m-list-search__result-item-text">Job Preference</span>
+							</a>
+							<a routerLink="/jobseeker/my/profile"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-information m--font-info"></i></span>
+								<span class="m-list-search__result-item-text">Personal Information</span>
+							</a>
+							<a routerLink="/jobseeker/my/work"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-paper-plane m--font-primary"></i></span>
+								<span class="m-list-search__result-item-text">Work Experience</span>
+							</a>
+							<a routerLink="/jobseeker/my/qualification"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="la la-graduation-cap m--font-info"></i></span>
+								<span class="m-list-search__result-item-text">Education & Diplomas</span>
+							</a>
+							<a routerLink="/jobseeker/my/training"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-presentation-1 m--font-primary"></i></span>
+								<span class="m-list-search__result-item-text">Training & Development</span>
+							</a>
+							<a routerLink="/jobseeker/my/language"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-globe m--font-info"></i></span>
+								<span class="m-list-search__result-item-text">Language</span>
+							</a>
+							<a routerLink="/jobseeker/my/reference"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-users m--font-primary"></i></span>
+								<span class="m-list-search__result-item-text">Reference</span>
+							</a>
+							<a routerLink="/jobseeker/my/social-account"
+								class="m-list-search__result-item pt-0 pb-0 parent-btn-hover-icon-transform">
+								<span class="m-list-search__result-item-icon"><i
+										class="flaticon-network m--font-info"></i></span>
+								<span class="m-list-search__result-item-text">Social Accounts</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<div *ngIf="containsPath('employer/dashboard')">
+
+	<mat-card [@collectionInOut] *ngIf="isAvatarContentLoaded; else avatarLoading"
+		class="mat-elevation-z1 box-border mb-4">
+		<img mat-card-image src="./assets/app/media/img/bg/bg-5.jpg" style="height: 95px;">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="mat-elevation-z1 company-avatar-circle">
+						<img fallback-img-src [src]="avatar"
+							class="m--img-rounded m--marginless company-avatar-circle-img">
+					</div>
+				</div>
+				<div class="col-12 text-center mt-4 pt-3">
+					<div class="fa-1x m--font-bold">{{userInfo.displayName}}
+						<i class="la la-check-circle m--font-info" title="verified"></i>
+					</div>
+					<div class="company-job-title">{{userInfo?.category}}</div>
+				</div>
+			</div>
+			<div class="row  mb-3 mt-3">
+				<mat-divider class=""></mat-divider>
+			</div>
+			<div class="row">
+				<!-- <div class="col-12 mt-1">
+					<a href="#" class="m-link m-link--state m-link--info btn-block">
+						Followers <span class="pull-right m--font-brand"> 467</span>
+					</a>
+				</div>
+				<div class="col-12  mt-1">
+					<a href="#" class="m-link m-link--state m-link--info btn-block">
+						Profile Views <span class="pull-right m--font-brand"> 899</span>
+					</a>
+				</div> -->
+				<!-- <div class="col-12  mt-2" style="font-size: 12px">
+					<span class="pull-right m--font-brand">63%</span>
+					<span class=" pull-left">Profile Strength : <strong class="m--font-warning">Low</strong></span>
+					<mat-progress-bar mode="determinate" value="63"></mat-progress-bar>
+				</div> -->
+				<div class="col-12  mt-3" style="font-size: 12px">
+					<a href="/employer/my/profile" target="_blank"
+						class="btn m-btn--square m--padding-5 btn-primary m-btn btn-block m-btn--bolder animator">
+						Update Profile!
+						<span class="m-badge m-badge--accent m-badge--rounded ml-1 custom-badge">
+							<i class="flaticon-diagram m--font-light" style="vertical-align: middle"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<ng-template #avatarLoading>
+		<avatar-card-placeholder></avatar-card-placeholder>
+	</ng-template>
+
+	<mat-card [@collectionInOut] *ngIf="isClientContentLoaded; else clientInfo"
+		class="mat-elevation-z1 box-border mb-4">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-md-12 mt-4">
+					<a href="/employer/j" target="_blank"
+						class="btn m-btn--square m--padding-5 btn-accent m-btn btn-block m-btn--bolder  animator">
+						Post a Job
+						<span class="m-badge m-badge--primary m-badge--rounded ml-1 custom-badge">
+							<i class="flaticon-add m--font-light" style="vertical-align: middle"></i>
+						</span>
+					</a>
+				</div>
+				<div class="col-md-12 mt-3 mb-3">
+					<div class="m-divider ">
+						<span></span>
+						<span>or</span>
+						<span></span>
+					</div>
+				</div>
+				<div class="col-md-12 mb-2 text-center">
+					<div class="h6 col-12 px-0">For Support & Client Executive</div>
+					<div class="row mt-4" style="justify-content: left; font-size: 82%; background: #fbfbfb;">
+						<div class="pl-3" style="width: 100px;">
+							<div [style.backgroundImage]="'url('+avatarUrl+')'" style="height: 100%;
+							width: 100%; background-size: contain; display: inline-block;"></div>
+							<!-- <img [src]="avatarUrl" width="75" style="transition: all .2s ease-in"> -->
+						</div>
+						<div class="text-left pl-3 pt-1 pb-1">
+							<span style="display: flex; flex-direction: column;">
+								<span class="m--font-bold "><i class="la la-user m--font-primary"></i> Indra b.
+									Rayamajhi</span>
+								<span class="m--font-bold"><i class="la la-suitcase m--font-info"></i> Client
+									Executive</span>
+								<span class="m--font-bold">
+									<a href="mailto:hrd@helpincpvt.com" class="m-link text-dark "><i
+											class="la la-envelope-o m--font-brand"></i> support@jobharu.com</a>
+								</span>
+								<span class="m--font-bold"><i class="la la-phone m--font-primary"></i> +977 985 118
+									1542</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<ng-template #clientInfo>
+		<client-support-placeholder></client-support-placeholder>
+	</ng-template>
+</div>
+
+
+<div *ngIf="containsPath('jobseeker/my')">
+	<mat-card class="mb-3 mat-elevation-z1 box-border">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12 mt-2">
+					<div class="btn-group btn-block" role="group">
+						<button class="btn btn-block m-btn--square btn-accent btn-sm">
+							<i class="flaticon-eye mr-1"></i> View Complete Profile
+						</button>
+						<div class="btn-group">
+							<button type="button" class="btn btn-accent btn-sm" [matMenuTriggerFor]="pm">
+								<i class="flaticon-more"></i>
+							</button>
+							<mat-menu #pm="matMenu" overlapTrigger="false" xPosition="before">
+								<button type="button" [disableRipple]="true" mat-menu-item>
+									<i class="fa fa-file-pdf m--font-danger mr-2"></i>
+									Download Profile
+								</button>
+								<button type="button" [disableRipple]="true" mat-menu-item>
+									<i class="flaticon-exclamation m--font-metal mr-2"></i>
+									Report a Problem
+								</button>
+							</mat-menu>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mb-3 mat-elevation-z1 box-border">
+		<mat-card-content>
+
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Profile</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					A profile refers therefore to the explicit digital representation of a person's identity. A user
+					profile can also
+					be
+					considered as the computer representation of a user model.
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mb-3 mat-elevation-z1 box-border">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Edit Your Profile</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					A user’s profile includes contact information, relationships, locations, skills and certifications,
+					education,
+					and
+					more. You can change your profile information.
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="mb-3 mat-elevation-z1 box-border">
+		<mat-card-content>
+			<div class="row">
+				<div class="col-12">
+					<div class="h5 mb-0">Connect to Your Social Account</div>
+					<mat-divider class="mt-3"></mat-divider>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col mt-4">
+					You can connect your Squarespace site to social networks, like Facebook and Twitter, and other
+					online services.
+					After connecting social accounts, you can:
+					Add icons that link to your social profiles,
+					Add content to your site from some social profiles, like Twitter or Facebook,
+					Share content from your site with certain social profiles,
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<mat-card class="mat-elevation-z1 box-border mb-4" *ngIf="jobMightLiked.length >0">
+	<mat-card-content>
+		<div class="row">
+			<div class="col-12">
+				<div class="h5 mb-0">Jobs you might like</div>
+				<mat-divider class="mt-3"></mat-divider>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 mt-3">
+				<div class="m-widget4" [@collectionInOut]="jobMightLiked.length">
+					<div class="m-widget4__item" *ngFor="let job of jobMightLiked; let i= index">
+						<div class="m-widget4__img m-widget4__img--icon">
+							<img fallback-img-src [src]="(job?.companyLogoUrl)" alt="Logo">
+						</div>
+						<div class="m-widget4__info pr-0">
+							<span class="m-widget4__text">
+								<div class="row">
+									<div class="col-12 ">
+										<a [routerLink]="createJobLink(job)"
+											class="m-link m-link--primary m--font-bold font-dark">
+											{{job?.jobTitle}}
+										</a>
+									</div>
+									<div class="col-12 mt-1">
+										<span class="m--font-metal">at </span>
+										<a href="javascript:;" class="m-link m-link--state m-link--info ml-1">
+											{{job?.companyName}}
+										</a>
+									</div>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>
+
+<mat-card class="mat-elevation-z1 box-border mb-3">
+
+
+	<mat-card-content>
+		<div class="row">
+			<div class="col-12">
+				<div class="h5 mb-0">Job Categories</div>
+				<mat-divider class="mt-3"></mat-divider>
+			</div>
+		</div>
+		<content-list-placeholder [linesOnly]="true" [lineCount]="3" *ngIf="isCatLoading else catContent">
+		</content-list-placeholder>
+		<ng-template #catContent>
+			<div class="row" *ngIf="minimalCategories.length <=0; else category">
+				<div class="col-12 mt-4">
+					<span class="m--font-metal">There are no job categories</span>
+				</div>
+			</div>
+			<ng-template #category>
+				<div class="row">
+					<div class="col mt-4">
+						<div class="m-list-timeline mt-3">
+							<div class="m-list-timeline__items" [@collectionInOut]="minimalCategories.length">
+								<div class="m-list-timeline__item no-padding mb-1"
+									*ngFor="let k of minimalCategories; let o = odd;">
+									<span
+										class="m-list-timeline__badge m-list-timeline__badge--{{!o ? 'secondary' : 'primary'}}"></span>
+									<span class="m-list-timeline__text">
+										<a #rla="routerLinkActive" routerLinkActive
+											[routerLinkActiveOptions]="{exact:true}"
+											[routerLink]="createCategoryLink(k.category?.key, k.category?.value)"
+											[ngClass]="{'font-dark m-link':!rla.isActive,'m--font-info':rla.isActive}">{{k.category?.value}}&nbsp;
+											<span class="m-badge m-badge--secondary link-badge">{{k.counts}}</span>
+										</a>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 mb-1 mt-4">
+						<a href="javascript:;" *ngIf="jobCategories?.length > 6" (click)="seeMoreJobs()"
+							class="m-btn m-btn--pill m-btn--hover-accent btn btn-sm btn-secondary pull-right">See
+							{{state == 'more' ? 'More':'Less'}}</a>
+					</div>
+				</div>
+			</ng-template>
+		</ng-template>
+
+
+	</mat-card-content>
+</mat-card>

@@ -1,0 +1,107 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+    <div class="row pt-2 mb-2 mx-0">
+        <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-businesswoman"></i>
+                    Interview Questions
+                </h4>
+            </div>
+            <div [@fadeInX]="query?.filters?.length >0 || !selection.isEmpty()">
+                <button *ngIf="!selection.isEmpty()" class="btn btn-primary btn-sm" type="button"
+                    [matMenuTriggerFor]="xops"><i class="flaticon-more"></i></button>
+                <mat-menu #xops="matMenu" xPosition="before">
+                    <button disableRipple mat-menu-item>
+                        <i class="flaticon-questions-circular-button m--font-warning"></i> Manage Questions
+                    </button>
+                    <button disableRipple mat-menu-item><i class="la la-file-pdf-o m--font-danger"></i>
+                        Export as PDF
+                    </button>
+                    <button disableRipple mat-menu-item><i class="la la-file-excel-o m--font-success"></i>
+                        Export as Excel-sheet
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+    </div>
+    <div style="height: calc(100vh - 295px);" *ngIf="!(isLoadingResults || items?.length >0 ) else table"
+        class="alert alert-secondary" role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="table-container" perfectScrollbar style="height: calc(100vh - 295px);">
+            <div class="row mx-0 mt-3" [@fadeIn]="items?.length">
+                <div class="col-md-4 pb-4 appointment-col" *ngFor="let item of items; let o = odd">
+                    <mat-card [style.background]="selected.checked ? '#f3f4ff':''">
+                        <mat-card-header (click)="toggleSelection(item)" style="margin:0 -16px; cursor: pointer;">
+                            <mat-card-title [title]="item.jobTitle" style="font-size: 16px; margin-bottom: 10px">
+                                {{(item.jobTitle || '').trim() | slice:0:35}}
+                                {{(item.jobTitle || '').trim().length >35 ? '..':''}}
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div style="position: absolute;top: 0;right: 0;">
+                                <mat-checkbox #selected (click)="$event.stopPropagation()"
+                                    (change)="toggleSelection(item)" [checked]="selection.isSelected(item)">
+                                </mat-checkbox>
+                            </div>
+                            <div class="detail-wrap">
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Total Questions: </div>
+
+                                    <div class="col-4  mb-1 text-right"> {{item.questionsCount}}</div>
+                                </div>
+
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Applicants: </div>
+
+                                    <div class="col-4  mb-1 text-right"> {{item.applicantsCount}}</div>
+                                </div>
+
+                                <div class="row pt-1 pb-1">
+                                    <div class="col-8 mb-1">Interview Attendees: </div>
+                                    <div class="col-4  mb-1 text-right">{{item.interviewAttendees}} </div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <div class="btn-group m-btn-group--air btn-block btn-group-sm" role="group">
+                            <button [disabled]="selected.checked" (click)="onAction(item.id, item.title)"
+                                class="btn btn-block btn-secondary btn-sm">
+                                <span>
+                                    <i class="flaticon-eye m--font-brand"></i>
+                                </span> View Questions
+                            </button>
+                            <div class="btn-group btn-group-sm">
+                                <button [disabled]="selected.checked" class="btn btn-secondary btn-sm" type="button"
+                                    [matMenuTriggerFor]="ops"><i class="flaticon-more"></i></button>
+                            </div>
+                            <mat-menu #ops="matMenu" xPosition="before" yPosition="above">
+                                <button disableRipple mat-menu-item>
+                                    <i class="flaticon-questions-circular-button m--font-warning"></i> Manage Questions
+                                </button>
+                                <button disableRipple mat-menu-item>
+                                    <i class="la la-file-pdf-o m--font-danger"></i> Export as PDF
+                                </button>
+                                <button disableRipple mat-menu-item>
+                                    <i class="la la-file-excel-o m--font-success"></i> Export as Excel-sheet
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <div class="row mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || items?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

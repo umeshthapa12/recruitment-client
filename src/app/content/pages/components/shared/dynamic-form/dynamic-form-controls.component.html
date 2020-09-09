@@ -1,0 +1,46 @@
+<div *ngIf="viewItem" class="position-relative">
+        <div [ngSwitch]="viewItem.type" class="position-relative">
+                <div class="row mx-0 pb-3" *ngIf="(viewItem.type === type.checkbox || viewItem.type === type.radio)">
+                        <div class="col-md-12 px-0">
+                                <mat-radio-group [(ngModel)]="question.value" class="row w-100 mx-0" *ngSwitchCase="type.radio" >
+                                        <mat-radio-button *ngFor="let x of viewItem.options;" class="col-md-4 px-0"
+                                                [required]="viewItem.required" [value]="x.label">
+                                                {{x.label}}</mat-radio-button>
+                                </mat-radio-group>
+                                <div class="row mx-0" *ngSwitchCase="type.checkbox" >
+                                        <mat-checkbox [(ngModel)]="x.value" *ngFor="let x of viewItem.options;"
+                                                class="col-md-4 px-0" [required]="viewItem.required">
+                                                {{x.label}}
+                                        </mat-checkbox>
+                                </div>
+                        </div>
+                        <div class="col-12 px-0">
+                                <mat-hint title="Hint" *ngIf="viewItem.description" style="font-size: 11px;">{{viewItem.description}}</mat-hint>
+                        </div>
+                </div>
+                <mat-form-field *ngIf="!(viewItem.type === type.checkbox || viewItem.type === type.radio)"
+                        appearance="outline" class="w-100">
+                        <input [(ngModel)]="question.value"  *ngSwitchCase="type.textbox"  matInput type="text"
+                                [placeholder]="viewItem.placeholder" [required]="viewItem.required">
+
+                        <input [(ngModel)]="question.value" *ngSwitchCase="type.date"  matInput type="text"
+                                [placeholder]="viewItem.placeholder" (click)="dp.open()" (focus)="dp.open()" [matDatepicker]="dp"
+                                [required]="viewItem.required">
+                        <mat-datepicker #dp></mat-datepicker>
+
+                        <input (keydown)="timeUpdate($event?.target?.value)"  *ngSwitchCase="type.time"  matInput type="time"
+                                [placeholder]="viewItem.placeholder" [required]="viewItem.required">
+
+                        <textarea [(ngModel)]="question.value"  *ngSwitchCase="type.textarea" rows="2" matInput
+                                [placeholder]="viewItem.placeholder" [required]="viewItem.required"></textarea>
+
+                        <mat-select [(ngModel)]="question.value" *ngSwitchCase="type.dropdown" disableRipple
+                                [placeholder]="viewItem.placeholder" [required]="viewItem.required">
+                                <mat-option *ngFor="let opt of viewItem.options;" [value]="opt.label">
+                                        {{opt.label}}
+                                </mat-option>
+                        </mat-select>
+                        <mat-hint title="Hint" style="font-size: 11px;" *ngIf="viewItem.description">{{viewItem.description}}</mat-hint>
+                </mat-form-field>
+        </div>
+</div>

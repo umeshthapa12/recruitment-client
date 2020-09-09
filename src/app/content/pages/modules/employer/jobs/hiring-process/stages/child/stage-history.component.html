@@ -1,0 +1,272 @@
+<div class="position-relative" cdkDrag [cdkDragRootElement]="'.cdk-overlay-pane'"
+    [cdkDragBoundary]="'.cdk-overlay-container'">
+    <div matDialogTitle cdkDragHandle style="display: flex; justify-content: space-between;cursor: move">
+        <div>
+            <h4 class=" m--font-brand"><i class="la la-history"></i> Stage History
+                <span *ngIf="data?.isGroupBy" style="font-size: 12px; margin-left: 10px;" class="m--font-metal"> <i
+                        class="la la-lightbulb-o m--font-warning" style="font-size: 14px;"></i> Click on the row to
+                    expand /
+                    collapse</span>
+            </h4>
+        </div>
+        <div>
+            <button *ngIf="query?.filters?.length >0 || hasFilter" type="button" (click)="resetFilters()"
+                class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                matTooltip="Clear filters">
+                <i class="flaticon-refresh"></i>
+            </button>
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right ml-3"
+                (click)="dialogRef.close()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div matDialogContent>
+        <div class="loading-shade" *ngIf="isLoadingResults">
+            <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+        </div>
+        <div style="height: 300px"
+            *ngIf="!(isLoadingResults || items?.length >0 || dataSource?.data?.length >0 ) else table"
+            class="alert alert-secondary" role="alert">
+            <div class="alert-text text-center 	m-label-font-color-1">
+                <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+            </div>
+        </div>
+        <ng-template #table>
+            <div mat-dialog-content class="table-container" perfectScrollbar>
+
+                <mat-accordion *ngIf="data.isGroupBy else flHistory" [@collectionInOut]="items?.length"
+                    displayMode="flat" class="xpan-table mat-table" hideToggle perfectScrollbar>
+                    <section matSort class="xpan-header mat-header-row px-0">
+                        <div class="mat-header-cell">
+                            <header-dropdown-filter (filterSubmitted)="filter($event, 'fullName')"
+                                [sortLabel]="'fullName'" [headerLabel]="'Full Name'">
+                            </header-dropdown-filter>
+                        </div>
+                        <div class="mat-header-cell">
+                            <header-dropdown-filter (filterSubmitted)="filter($event, 'email')" [sortLabel]="'email'"
+                                [headerLabel]="'Email'">
+                            </header-dropdown-filter>
+                        </div>
+                        <div class="mat-header-cell" mat-sort-header="totalStages">
+                            Total Stages
+                        </div>
+                        <div class="mat-header-cell">
+                            <header-dropdown-filter (filterSubmitted)="filter($event, 'stage')" [sortLabel]="'stage'"
+                                [headerLabel]="'Current Stage'">
+                            </header-dropdown-filter>
+                        </div>
+                        <div class="mat-header-cell">
+                            <header-dropdown-filter (filterSubmitted)="filter($event, 'createdOn')"
+                                [sortLabel]="'createdOn'" [headerLabel]="'Last Change Date'">
+                            </header-dropdown-filter>
+                        </div>
+                    </section>
+                    <mat-expansion-panel #pnl *ngFor="let d of items;"
+                        (expandedChange)="xpanChange($event, d.id, d.jobSeekerGuid)"
+                        [style.background]="pnl.expanded ? '#f1f1f2':''">
+                        <mat-expansion-panel-header class="xpan-row mat-row px-0" title="Toggle List">
+                            <span class="mat-cell">{{d.fullName}}</span>
+                            <span class="mat-cell">{{d.email}}</span>
+                            <span class="mat-cell">
+                                <span class="m-badge m-badge--primary"> {{d.totalStages}}</span>
+                            </span>
+                            <span class="mat-cell">
+                                <span class="m-badge m-badge--info m-badge--wide">{{d.stage}}</span>
+                            </span>
+                            <span class="mat-cell">{{d.createdOn | date:'MMM dd, yyyy h:m a'}}</span>
+                        </mat-expansion-panel-header>
+                        <mat-progress-bar *ngIf="isLazyListLoading" color="warn" mode="indeterminate">
+                        </mat-progress-bar>
+                        <ng-template matExpansionPanelContent>
+                            <div *ngIf="!isLazyListLoading" class="child-data-container mb-5"
+                                [perfectScrollbar]="{swipeEasing:true}">
+                                <mat-table [trackBy]="trackById" [@collectionInOut]="dataSource?.data?.length"
+                                    [dataSource]="dataSource" class="d-block border-0">
+                                    <ng-container matColumnDef="select">
+                                        <mat-header-cell *matHeaderCellDef style="max-width: 43px">
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue() && isAllSelected()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                class="d-table mx-auto">
+                                            </mat-checkbox>
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row" class="justify-content-center"
+                                            style="max-width: 43px">
+                                            <mat-checkbox [disabled]="row.isOngoing" (click)="$event.stopPropagation()"
+                                                (change)="$event ? selection.toggle(row) : null"
+                                                [checked]="selection.isSelected(row)" class="d-table mx-auto">
+                                            </mat-checkbox>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="subject">
+                                        <mat-header-cell *matHeaderCellDef> Subject </mat-header-cell>
+                                        <mat-cell *matCellDef="let el">{{el.subject}} </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="stage">
+                                        <mat-header-cell *matHeaderCellDef> Stage </mat-header-cell>
+                                        <mat-cell *matCellDef="let el" [ngClass]="el.isOngoing ?'m--font-info':''">
+                                            {{el.stage}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="createdOn">
+                                        <mat-header-cell *matHeaderCellDef style="max-width: 140px"> Change Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let el" style="max-width: 140px">
+                                            {{el.createdOn | date:'MMM dd, yyyy h:m a'}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="remarks">
+                                        <mat-header-cell *matHeaderCellDef> Remarks </mat-header-cell>
+                                        <mat-cell *matCellDef="let el" [ngClass]="!el.remarks ? 'm--font-metal':''">
+                                            <span *ngIf="(el.remarks || '').length >25 else txt">
+                                                {{el.isRemarksExpanded ? el.remarks : (el.remarks | slice:0:25) + '..'}}
+                                                <span class="m-link m-link--primary" style="cursor: pointer"
+                                                    (click)="el.isRemarksExpanded = !el.isRemarksExpanded">
+                                                    {{el.isRemarksExpanded ? 'see less':'see more'}}
+                                                </span>
+                                            </span>
+                                            <ng-template #txt>{{(el.remarks || 'n/a')}}</ng-template>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="messageBody">
+                                        <mat-header-cell *matHeaderCellDef style="max-width: 100px"> Message Body
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let el" style="max-width: 100px">
+                                            <button *ngIf="el.hasMessage else none" type="button"
+                                                (click)="onAction(el.id,d?.jobSeekerGuid)"
+                                                class="btn m-btn--pill btn-sm btn-secondary m-btn m-btn--label-info">
+                                                <span *ngIf="activatedId !== el.id">View</span>
+                                                <mat-spinner *ngIf="activatedId === el.id" [diameter]="20"
+                                                    [strokeWidth]="2"></mat-spinner>
+                                            </button>
+                                            <ng-template #none>
+                                                <span class="m--font-metal">n/a</span>
+                                            </ng-template>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="action">
+                                        <mat-header-cell *matHeaderCellDef style="max-width: 50px"> </mat-header-cell>
+                                        <mat-cell *matCellDef="let el" style="max-width: 50px">
+                                            <button *ngIf="!el.isOngoing else act" [disabled]="selection.isSelected(el)"
+                                                matTooltip="Delete this"
+                                                class="btn m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+                                                style="height: 24px;width: 24px;" [ngClass]="selection.isSelected(el) ? 'btn-metal':'btn-danger'" (click)="deleteHistory(el.id,d.jobSeekerGuid)">
+                                                <i class="la la-trash"></i>
+                                            </button>
+                                            <ng-template #act>
+                                                <span class="m--font-accent">active</span>
+                                            </ng-template>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="px-0">
+                                    </mat-header-row>
+                                    <mat-row
+                                        [style.background]="selectedId === row.id || selection.isSelected(row)?'#e7ebf9':''"
+                                        *matRowDef="let row; columns: displayedColumns;" class="px-0"></mat-row>
+                                </mat-table>
+                            </div>
+                        </ng-template>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <ng-template #flHistory>
+                        <mat-table [trackBy]="trackById" [dataSource]="dataSource" class="d-block border-0">
+                                <ng-container matColumnDef="select">
+                                    <mat-header-cell *matHeaderCellDef style="max-width: 43px">
+                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                            [checked]="selection.hasValue() && isAllSelected()"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                            class="d-table mx-auto">
+                                        </mat-checkbox>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row" class="justify-content-center" style="max-width: 43px">
+                                        <mat-checkbox [disabled]="row.isOngoing" (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(row) : null"
+                                            [checked]="selection.isSelected(row)" class="d-table mx-auto">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="subject">
+                                    <mat-header-cell *matHeaderCellDef> Subject </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">{{el.subject}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="stage">
+                                    <mat-header-cell *matHeaderCellDef> Stage </mat-header-cell>
+                                    <mat-cell *matCellDef="let el" [ngClass]="el.isOngoing ?'m--font-info':''">
+                                        {{el.stage}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createdOn">
+                                    <mat-header-cell *matHeaderCellDef style="max-width: 140px"> Change Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let el" style="max-width: 140px">
+                                        {{el.createdOn | date:'MMM dd, yyyy h:m a'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="remarks">
+                                    <mat-header-cell *matHeaderCellDef> Remarks </mat-header-cell>
+                                    <mat-cell *matCellDef="let el" [ngClass]="!el.remarks ? 'm--font-metal':''">
+                                        <span *ngIf="(el.remarks || '').length >25 else txt">
+                                            {{el.isRemarksExpanded ? el.remarks : (el.remarks | slice:0:25) + '..'}}
+                                            <span class="m-link m-link--primary" style="cursor: pointer"
+                                                (click)="el.isRemarksExpanded = !el.isRemarksExpanded">
+                                                {{el.isRemarksExpanded ? 'see less':'see more'}}
+                                            </span>
+                                        </span>
+                                        <ng-template #txt>{{(el.remarks || 'n/a')}}</ng-template>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="messageBody">
+                                    <mat-header-cell *matHeaderCellDef style="max-width: 100px"> Message Body
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let el" style="max-width: 100px">
+                                        <button *ngIf="el.hasMessage else none" type="button"
+                                            (click)="onAction(el.id,data.js.jobSeekerGuid)"
+                                            class="btn m-btn--pill btn-sm btn-secondary m-btn m-btn--label-info">
+                                            <span *ngIf="activatedId !== el.id">View</span>
+                                            <mat-spinner *ngIf="activatedId === el.id" [diameter]="20" [strokeWidth]="2">
+                                            </mat-spinner>
+                                        </button>
+                                        <ng-template #none>
+                                            <span class="m--font-metal">n/a</span>
+                                        </ng-template>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef style="max-width: 50px"> </mat-header-cell>
+                                    <mat-cell *matCellDef="let el" style="max-width: 50px">
+                                        <button *ngIf="!el.isOngoing else act" [disabled]="selection.isSelected(el)"
+                                            matTooltip="Delete this"
+                                            class="btn  m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+                                            style="height: 24px;width: 24px;" [ngClass]="selection.isSelected(el) ? 'btn-metal':'btn-danger'" (click)="deleteHistory(el.id,data.js.jobSeekerGuid)">
+                                            <i class="la la-trash"></i>
+                                        </button>
+                                        <ng-template #act>
+                                           <span class="m--font-accent">active</span>
+                                        </ng-template>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="px-0">
+                                </mat-header-row>
+                                <mat-row
+                                    [style.background]="selectedId === row.id || selection.isSelected(row)?'#e7ebf9':''"
+                                    *matRowDef="let row; columns: displayedColumns;" class="px-0"></mat-row>
+                            </mat-table>
+                </ng-template>
+            </div>
+        </ng-template>
+
+    </div>
+    <div matDialogActions class="d-flex justify-content-between" [@fadeInX]="!selection.isEmpty()">
+        <div class="mb-2" >
+            <button (click)="deleteHistory(0,'')" matRipple matTooltip="Delete Selected Items"
+                class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill" *ngIf="!selection.isEmpty()">
+                <i class="flaticon-delete"></i>
+            </button>
+        </div>
+        <mat-paginator [hidden]="!(isLoadingResults || items?.length >0 )" [pageSize]="50"
+            [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]"></mat-paginator>
+    </div>
+</div>

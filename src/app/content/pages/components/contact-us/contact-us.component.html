@@ -1,0 +1,47 @@
+<div class="m-portlet m-portlet--responsive-mobile m-portlet-no-top-shadow">
+    <div class="m-portlet__body pt-0" style="min-height: 75vh;">
+        <div class="m-widget28 mt-5 mb-5">
+            <div class="m-widget28__container">
+                <div class="m-widget28__tab">
+                    <div class="m-widget28__tab-container">
+                        <div class="m-widget28__tab-items">
+                            <div class="row mx-0">
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Contact Us
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div class="col-md-12" style="color: #7b7e8a">
+                                                <i class="fa flaticon-placeholder-1 m--font-primary"></i>
+                                                <span *ngIf="userInfo?.domain else s2"> {{userInfo?.address}} </span>
+                                                <ng-template #s2> H.N 02, Baisnodevi Marg, Ekantakuna-13 <br>Lalitpur,
+                                                    Nepal 44600
+                                                </ng-template>
+                                            </div>
+                                            <div class="col-md-12 mt-1" style="color: #7b7e8a">
+                                                <span *ngIf="userInfo?.domain else s3">
+                                                    {{userInfo?.contacts | mJoin:', '}}
+                                                </span>
+                                                <ng-template #s3>
+                                                    <i class="fa fa-phone m--font-primary"></i> +977 984 719 1542
+                                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                                    <i class="la la-mobile-phone m--font-primary"></i>
+                                                    +977 985 118 1542
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-3 mb-3"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

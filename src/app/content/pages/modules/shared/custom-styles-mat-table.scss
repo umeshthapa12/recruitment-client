@@ -1,0 +1,76 @@
+.mat-expansion-panel-header.mat-row {
+    border-bottom: none;
+}
+
+//copied from https://github.com/angular/material2/blob/master/src/lib/table/table.scss
+$mat-header-row-height: 50px;
+$mat-row-height: 40px;
+$mat-row-horizontal-padding: 24px;
+
+.xpan-table.mat-table {
+    height: calc(100vh - 330px);
+    overflow-y: auto;
+    display: block;
+    position: relative;
+}
+.xpan-header.mat-header-row {
+    padding-left: 1.5rem;
+    padding-right: 2rem;
+    border-bottom: none;
+    box-shadow: 1px 1px 6px 0 #f6f5f8;
+    border-top: 1px solid #f6f5f8;
+}
+.xpan-row.mat-row {
+    min-height: $mat-row-height;
+}
+
+.xpan-row.mat-row,
+.xpan-header.mat-header-row {
+    display: flex;
+    align-items: center;
+    padding: 0 $mat-row-horizontal-padding;
+    box-sizing: border-box;
+
+    // Workaround for https://goo.gl/pFmjJD in IE 11. Adds a pseudo
+    // element that will stretch the row the correct height. See:
+    // https://connect.microsoft.com/IE/feedback/details/802625
+    &::after {
+        display: inline-block;
+        min-height: inherit;
+        content: '';
+}
+}
+.xpan-header.mat-header-row {
+    min-height: $mat-header-row-height;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0; /* required */
+    background: #ffffff;
+}
+
+.xpan-row .mat-cell,
+.xpan-header .mat-header-cell {
+    flex: 1;
+    overflow: hidden;
+    border: none !important
+}
+.xpan-row .mat-cell{
+    word-wrap: break-word;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.child-data-container {
+    display: block;
+    position: relative;
+    max-height: 350px;
+    overflow: auto;
+    z-index: 1;
+}
+
+.ans-row{
+    background: #FFF;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}

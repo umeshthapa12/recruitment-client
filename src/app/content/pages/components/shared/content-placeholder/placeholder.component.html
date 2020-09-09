@@ -1,0 +1,16 @@
+<div class="m-widget4 w-100">
+    <div [ngStyle]="{'height.px':wrapperHeight}" class="text-input__loading m-widget4 mb-2 ">
+        <div class="m-widget4__item" [ngStyle]="{'width': !linesOnly ? 'auto':'100%'}">
+            <div id="box" class="m-widget4__img m-widget4__img--pic" *ngIf="!linesOnly">
+                <div [ngStyle]="{'width.px':thumbnailWidth,'height.px':thumbnailHeight}"></div>
+            </div>
+            <div class="m-widget4__info" >
+                <div class="row" style="position: relative;">
+                    <div id="lines" class="col-md-12 pl-1">
+                        <div *ngFor="let l of lineNumbers" [ngStyle]="{'height.px':lineHeight}" class="text-input__loading--line"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

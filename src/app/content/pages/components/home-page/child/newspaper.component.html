@@ -1,0 +1,77 @@
+<div class="m-portlet m-portlet-no-top-shadow pt-1 mb-0" *ngIf="hasItems">
+    <div class="m-portlet__body pt-0">
+        <div class="row" *ngIf="chunkL?.length >0 || chunkR?.length >0; else notFound">
+            <div class="col-12 mt-2 mb-2 px-0">
+                <div class="mx-auto text-center h5 m--font-bolder">
+                    <div class="m-divider">
+                        <span></span>
+                        <span><i class="la la-newspaper-o m--font-info" style="font-weight: bold; font-size: 20px; vertical-align: text-bottom"></i>
+                            Newspaper Jobs</span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 px-0" *ngIf="chunkL?.length >0">
+                <div class="m-widget4">
+                    <div class="m-widget4__item col px-0" *ngFor="let item of chunkL">
+                        <div class="m-widget5__title">
+                            <div class="m-widget4__info px-1">
+                                <span class="m-widget4__title">
+                                    <i class="flaticon-file-2 m--font-metal"></i> {{item.companyName |
+                                    slice:0:35}}{{item?.companyName?.length >35? '...':''}}
+                                </span><br>
+                                <span class="m-widget4__sub">
+                                    <grid-inner-list [openings]="item.openings"></grid-inner-list>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 px-0" *ngIf="chunkR?.length >0">
+                <div class="m-widget4">
+                    <div class="m-widget4__item col px-0" *ngFor="let item of chunkR">
+                        <div class="m-widget5__title">
+                            <div class="m-widget4__info px-1">
+                                <span class="m-widget4__title">
+                                    <i class="flaticon-file-2 m--font-metal"></i> {{item.companyName |
+                                    slice:0:35}}{{item?.companyName?.length >35? '...':''}}
+                                </span><br>
+                                <span class="m-widget4__sub">
+                                    <grid-inner-list [openings]="item.openings"></grid-inner-list>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #notFound>
+            <div class="row">
+                <div class="col px-0">
+                    <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible fade show"
+                        role="alert">
+                        <div class="m-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="m-alert__text">
+                            <strong>Whoops!</strong> There are no jobs matching your search terms.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <div class="row" *ngIf="hasMore">
+            <div class="col mt-3">
+                <div class="mx-auto text-center ">
+                    <a  [routerLink]="['/all-jobs','newspaper-jobs']"
+                    class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder parent-btn-hover-child-transform">
+                    View All <span class="m-type m--bg-info type-fixed-size ml-1">
+                        <i class="flaticon-eye m--font-light"></i>
+                    </span>
+                </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

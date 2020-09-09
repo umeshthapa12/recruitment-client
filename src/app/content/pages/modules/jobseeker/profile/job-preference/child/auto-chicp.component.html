@@ -1,0 +1,22 @@
+<!-- Autocomplete chips from the master data. Data from API so user must select from the populated list -->
+<mat-form-field appearance="outline" >
+    <mat-label>{{label}}</mat-label>
+    <mat-chip-list [@fadeInRight]="selectedChip.length" #list multiple="false" [formControl]="controlName" [required]="required">
+        <mat-chip  disableRipple="true" *ngFor="let d of selectedChip; trackBy:trackbyFn" [selectable]="true" [removable]="true" (removed)="remove(d)"
+            class="custom-mat-chip">
+            {{d.value}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input [placeholder]="inputPlaceolder" #input [formControl]="chipInputCtrl" [matAutocomplete]="auto"
+            [matChipInputFor]="list" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="add($event )">
+    </mat-chip-list>
+    <mat-autocomplete [disableRipple]="true" #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let d of filteredChips" [value]="d">
+            {{d}}
+        </mat-option>
+    </mat-autocomplete>
+    <mat-error class="m--font-danger">
+        {{errorState ? 'This field is required': ''}}
+    </mat-error>
+</mat-form-field>

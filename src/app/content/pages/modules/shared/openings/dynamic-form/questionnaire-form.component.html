@@ -1,0 +1,228 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-10">
+            <h5 class="m--font-brand">
+                Dynamic Questionnaire Form <span style="font-size: 12px;color: #9e9d9f;">(Online question form for the
+                    applicants)</span>
+            </h5>
+        </div>
+        <div class="col-md-2">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div [@fadeIn]="response || errors?.length || isLoading" class="mt-2">
+    <div *ngIf="isLoading">
+        <h5>Loading..</h5>
+        <mat-progress-bar color="warn" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="alert mb-5" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+        *ngIf="response || errors?.length>0">
+        <button type="button" class="close pt-0" (click)="clearStates()">
+            <span><i class="la la-close"></i></span>
+        </button>
+        <i class="flaticon-warning"></i>
+        <span *ngIf="errors?.length > 0; else msgBlock">
+            <span class="row" [@fadeIn]="errors?.length">
+                <div class="col-12 mb-1 m--font-bolder"> {{ response.messageBody}} </div>
+                <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+            </span>
+        </span>
+        <ng-template #msgBlock> {{ response.messageBody}} </ng-template>
+    </div>
+</div>
+<div matDialogContent class="mx-0 px-0 pt-0" #matContentEl>
+    <div class="row mx-0 mt-3">
+        <div class="col-md-6" style="background: #fdfdfd;">
+            <mat-tab-group #toolTabs dynamicHeight [formGroup]="form">
+                <mat-tab>
+                    <ng-template mat-tab-label><i class="flaticon-app m--font-info mx-2"></i> Toolbox</ng-template>
+                    <mat-form-field appearance="outline" floatLabel="always" class="mt-3">
+                        <mat-label>Select a Template</mat-label>
+                        <mat-select formControlName="existingTemplateId" disableRipple
+                            [placeholder]="questionTitles?.length >0 ?'Select a template from existing':'No Templates'">
+                            <mat-option *ngFor="let q of questionTitles" [value]="q.key">
+                                {{q.value}}
+                            </mat-option>
+                           
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Template Title / Header</mat-label>
+                        <input matInput formControlName="templateTitle" type="text"
+                            placeholder="Question template title / header" required>
+                    </mat-form-field>
+                    <div class="row">
+                        <h5 class="col-12 mb-3">Controls / Fields:</h5>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.textbox)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-font"></i><span>Textbox</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.textarea)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-font"></i><span>Textarea</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.checkbox)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-check-square"></i><span>Checkboxes</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.radio)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-circle"></i><span>Multiple Choice</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.dropdown)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-angle-down"></i><span>Dropdown</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.date)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-calendar"></i><span>Date</span></span>
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button (click)="addControl(type.time)" type="button"
+                                class="btn btn-outline-primary btn-sm m-btn m-btn--icon btn-block">
+                                <span><i class="la la-clock-o"></i><span>Time</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label><i class="flaticon-interface-6 m--font-info mx-2"></i> Field Properties
+                    </ng-template>
+                    <div [perfectScrollbar]={useBothWheelAxes:true}
+                        [ngClass]="{'alert m-alert--default':!selectedControl}" class="properties-wrap" role="alert">
+                        <span *ngIf="questions.length === 0 else selectControl">
+                            Add a control from the toolbox tab to show the properties.
+                        </span>
+                        <ng-template #selectControl>
+                            <div *ngIf="selectedControl else msgBlock">
+
+                                <div class="row mx-0">
+                                    <mat-form-field appearance="outline" [ngClass]="(selectedControl.type === type.checkbox || selectedControl.type === type.radio || selectedControl.type === type.time) ? 'col-md-9':'col-md-12'">
+                                        <mat-label>Question / Field Label</mat-label>
+                                        <textarea matInput [(ngModel)]="selectedControl.label"
+                                            [ngModelOptions]="{standalone: true}" placeholder="Enter label value"
+                                            required></textarea>
+                                            <mat-error>Required</mat-error>
+                                    </mat-form-field>
+                                    <div class="col-md-9"
+                                        *ngIf="!(selectedControl.type === type.checkbox || selectedControl.type === type.radio || selectedControl.type === type.time)">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Field placeholder</mat-label>
+                                            <input [(ngModel)]="selectedControl.placeholder" matInput
+                                                [ngModelOptions]="{standalone: true}"
+                                                placeholder="Enter placeholder value" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-3 mt-2 d-flex flex-row justify-content-end">
+                                        <mat-checkbox [(ngModel)]="selectedControl.required"
+                                            [ngModelOptions]="{standalone: true}">Required Field?
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div [@collectionInOut]="selectedControl?.options?.length" class="row mx-0">
+                                    <mat-form-field
+                                        *ngFor="let o of selectedControl.options;trackBy:trackByFn; let i=index; let last = last"
+                                        appearance="fill" floatLabel="never" [ngClass]="{'mb-2':last}" class="col-md-6">
+                                        <input #ctrl="ngModel" [(ngModel)]="selectedControl.options[i].label"
+                                            [ngModelOptions]="{standalone: true}" (keyup)="updateOptionLabel(i,ctrl)"
+                                            matInput placeholder="Option label" required>
+                                        <div matSuffix>
+                                            <button (click)="controlOptionAction('add',i)"
+                                                matTooltip="Add another option"
+                                                class="btn  m-btn--hover-info m-badge m-badge--accent m-badge-custom"><i
+                                                    class="flaticon-add"></i></button>
+                                            <button [disabled]="selectedControl?.options?.length === 1"
+                                                (click)="controlOptionAction('remove',i)"
+                                                matTooltip="Remove this option"
+                                                class="btn  m-btn--hover-danger m-badge m-badge--danger m-badge-custom"><i
+                                                    class="flaticon-delete "></i></button>
+                                        </div>
+                                        <mat-error>{{ctrl.control.errors && ctrl.control.errors['duplicate']? 'Duplicate option value':'Required'}}</mat-error>
+                                       
+                                    </mat-form-field>
+                                   
+                                </div>
+                                <mat-form-field appearance="outline" class="col-md-12">
+                                    <mat-label>Field Hint</mat-label>
+                                    <textarea matInput [(ngModel)]="selectedControl.description"
+                                        [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter a hint value"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <ng-template #msgBlock>
+                                Click on a control from the preview list to show the properties.
+                            </ng-template>
+                        </ng-template>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="col-md-6" style="background: #fdfeff">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="questions.length>0 else noPreview">
+                        <span class="h5">Form Preview </span>
+                        <span class="m--font-metal ml-2">
+                            <i class="la la-lightbulb-o m--font-warning"></i> Drag to the title section to reorder
+                            controls
+                        </span>
+                    </div>
+                    <ng-template #noPreview>
+                        <span class="h5">No Form Preview </span>
+                    </ng-template>
+                </div>
+            </div>
+            <div perfectScrollbar class="control-list px-2 mb-1">
+                <form cdkDropList [cdkDropListData]="questions" (cdkDropListDropped)="dropControl($event)" [formGroup]="form"
+                    [@collectionInOut]="questions?.length">
+                    <div *ngFor="let question of questions; trackBy:trackByFn; let last = last"
+                        class="item-control mt-3 mb-2" cdkDrag>
+                        <div class="item-control-custom-placeholder" *cdkDragPlaceholder></div>
+                        <div [class.item-control-selected]="selectedControl?.key === question.key">
+                            <mat-label matTooltip="Drag me to reorder the list" matTooltipPosition="above"
+                                [attr.for]="question.key" cdkDragHandle>
+                                {{question.label}} <span *ngIf="question.required" class="m--font-danger">*</span>
+                            </mat-label>
+                            <d-form (controlAction)="controlActionInvoked($event)" [question]="question" [form]="form">
+                            </d-form>
+                        </div>
+                        <div *ngIf="!last" class="mt-2" style="border-top: 1px dotted rgb(222, 232, 236);"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div matDialogActions style="display: flex;justify-content: center; margin:0">
+    <button type="button" [disabled]="isWorking" matTooltip="Save Changes" matTooltipPosition="above"
+        (click)="saveChanges('save')" class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--info':isWorking && workingFor === 'save', 'm-btn--hover-accent':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'save')" class="la la-check"></i>
+    </button>
+    <button matTooltip="Cancel" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+    <button type="button" [disabled]="notExist || isWorking || isLoading"
+        matTooltip="Remove saved dynamic questionnaire form data" matTooltipPosition="above"
+        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--danger':isWorking && workingFor === 'remove', 'm-btn--hover-danger':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'remove')" class="flaticon-delete" (click)="saveChanges('remove')"></i>
+    </button>
+</div>

@@ -1,0 +1,161 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+    <div class="row pt-2 mb-2">
+        <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-list"></i> Candidate Applications </h4>
+            </div>
+            <div [@fadeIn]="!selection.isEmpty()? 1:query?.filters?.length >0? 2:0">
+                <!-- Dynamically trigger to download PDF files-->
+                <a id="pdf-downloader" style="display: none" href="#"></a>
+
+                <a *ngIf="!selection.isEmpty()" href="javascript:;" (click)="downloadPdf()"
+                    class="btn m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn"
+                    [ngClass]="{'m-loader m-loader--danger btn-metal':isDownloading, 'btn-primary':!isDownloading}"
+                    [matTooltip]="isDownloading?'Please wait download in progress':'Download selected applications as PDF'">
+                    <i *ngIf="!isDownloading" class="flaticon-download"></i>
+                </a>
+                <a *ngIf="!selection.isEmpty()" href="javascript:;" (click)="onAction(0,'','message')"
+                    class="btn m-btn btn-info m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3" matTooltip="Send message to the selected candidates">
+                    <i *ngIf="!isDownloading" class="flaticon-mail"></i>
+                </a>
+                <button *ngIf="query?.filters?.length >0 || hasFilter" type="button" (click)="resetFilters()"
+                    class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                    matTooltip="Clear filters">
+                    <i class="flaticon-refresh"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+    </div>
+    <div style="height: 600px" *ngIf="!(isLoadingResults || dataSource.data?.length >0 ) else table"
+        class="alert alert-secondary" role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="table-container" perfectScrollbar style="height: calc(100vh - 295px);">
+            <mat-table [trackBy]="trackById" [@collectionInOut]="dataSource.data?.length" matSort
+                [dataSource]="dataSource" class="border-0" multiTemplateDataRows>
+                <ng-container matColumnDef="details">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width"></mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="cell-max-width">
+                        <button (click)="rowDetailExpand(row)" type="button"
+                            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-info">
+                            <i style="transition: transform .2s; left: 22%;"
+                                [ngStyle]="{'transform': row === expandedElement ? 'rotate(90deg)' : 'rotate(0deg)'}"
+                                class="la la-angle-right"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width justify-content-center">
+                        <mat-checkbox [disabled]="dataSource.data?.length <=0" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="cell-max-width justify-content-center">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width"> SN. </mat-header-cell>
+                    <mat-cell cdkDragHandle *matCellDef="let el" class="cell-max-width">
+                        {{el.sn}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="jobTitle">
+                    <mat-header-cell *matHeaderCellDef>
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'jobTitle')"
+                            [headerLabel]="'Job Title'" [sortLabel]="'jobTitle'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el"> {{( el.jobTitle )}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="fullName">
+                    <mat-header-cell *matHeaderCellDef>
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'fullName')"
+                            [headerLabel]="'Full Name'" [sortLabel]="'fullname'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el"> {{el.fullName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="appliedOn">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'appliedOn')"
+                            [headerLabel]="'Applied On'" [sortLabel]="'appliedOn'"></header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width-120">
+                        {{ (el?.appliedOn | date:'MMM d, y, h:mm a') }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="isEligible">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'isEligible')"
+                            [headerLabel]="'Candidate Status'" [sortLabel]="'isEligible'"></header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width-120">
+                        <span class="m-badge m-badge--inline m-badge--wide"
+                            [ngClass]="{'m-badge--info':el?.isEligible, 'm-badge--warning':!(el?.isEligible)}">
+                            {{ el?.isEligible ? 'Suitable': 'Unsuitable' }}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width-120">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'status')" [headerLabel]="'Status'" [sortLabel]="'status'">
+                        </header-dropdown-filter>
+                    </mat-header-cell>
+                    <mat-cell [id]="'status'+el.id" *matCellDef="let el" class="cell-max-width-120">
+                        <status-updater [isReadonly]="true" [currentStatus]="el.status">
+                        </status-updater>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef class="cell-max-width">
+                        Actions
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let el" class="cell-max-width justify-content-center">
+                        <button [matMenuTriggerFor]="menu" type="button"
+                            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--hover-primary">
+                            <i class="flaticon-more"></i>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button (click)="onAction(el.id, el.jobSeekerGuid,'message')" class="dropdown-item"
+                                type="button">
+                                <i class="flaticon-mail m--font-primary mr-2"></i> Send Message
+                            </button>
+                            <a [href]="getPdfLink(el.id, el.jobSeekerGuid)" target="_blank" class="dropdown-item">
+                                    <i class="fa fa-file-pdf m--font-danger mr-2"></i> Download PDF
+                                </a>
+                            <button (click)="onDelete(el.id,el.jobSeekerGuid)" class="dropdown-item" type="button">
+                                <i class="la la-trash-o m--font-danger mr-1"></i> Delete
+                            </button>
+                        </mat-menu>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="expandedDetail">
+                    <mat-cell *matCellDef="let el" [attr.colspan]="displayedColumns.length">
+                        <!-- <expanded-lazy-content *ngIf="el === expandedElement"></expanded-lazy-content> -->
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [id]="'row'+row.id"></mat-row>
+                <mat-row class="expanded-detail" [@fadeInOutStagger]="row === expandedElement ? 1 : 0"
+                    [ngStyle]="rowHeight(row)" *matRowDef="let row; columns: ['expandedDetail'];"></mat-row>
+            </mat-table>
+        </div>
+    </ng-template>
+    <div class="row mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || dataSource.data?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

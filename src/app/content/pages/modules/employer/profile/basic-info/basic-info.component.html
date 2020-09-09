@@ -1,0 +1,514 @@
+<div class="m-portlet mat-elevation-z0 mb-0">
+    <div class="m-portlet__body position-relative px-0 pb-0 pt-0">
+        <div class="row  mx-0 pt-2 mb-2" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand"><i class="flaticon-profile-1"></i> Company Profile </h4>
+                </div>
+                <div>
+                    <button style="height: 24px; width: 24px;" (click)="onEdit(null)" matTooltip="Edit this"
+                        class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill">
+                        <i class="flaticon-edit"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+        <div class="row mb-5" *ngIf="isLoading && !profile">
+            <div class="col-md-12">
+                <w-grid-placeholder></w-grid-placeholder>
+            </div>
+        </div>
+        <div class="m-widget28" *ngIf="!isLoading && profile">
+            <div class="m-widget28__container">
+                <div class="m-widget28__tab">
+                    <div class="m-widget28__tab-container">
+                        <div class="m-widget28__tab-items">
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Name
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.name}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Category
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.category}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Company Type
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.companyType}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Employee Size
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.employeeSize}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Address
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.address}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Email
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.email; else n">
+                                                {{profile?.email}}
+                                            </div>
+                                            <ng-template #n>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('email')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Website
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.url; else m">
+                                                <a class="m-link m-link--primary" [href]="prepHttpUrl(profile?.url)"
+                                                    target="_blank">{{profile?.url}}</a>
+                                            </div>
+                                            <ng-template #m>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('url')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Domain Name
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.domain; else d">
+                                                <a class="m-link m-link--primary" [href]="prepHttpUrl(profile?.domain)"
+                                                    target="_blank">{{profile?.domain}} </a>
+                                            </div>
+                                            <ng-template #d>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('domain')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+                            <div class="row mx-0">
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Cell/Phone Number(s)
+                                        </span>
+                                        <div class="pl-2 ml-1">
+                                            <div *ngIf="profile?.phoneNumbers?.length >0; else ph">
+                                                <div class="row mt-1 mb-2">
+                                                    <div class="col-md-3 mb-1" *ngFor="let p of profile?.phoneNumbers">
+                                                        <span class="text-muted">{{p.phoneType}} </span>
+                                                        <span
+                                                            class="m-badge m-badge--danger m-badge--dot m-badge--dot-small"></span>
+                                                        <span class="m--font-bolder"> {{p.number}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ng-template #ph>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('phone')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            About Company
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #aboutCompany></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-widget28 mt-5 mb-5" style="background: rgb(251, 250, 252)" *ngIf="!isLoading && profile">
+            <div class="col-md-12 h4 pt-4  m--font-brand">Contact Person Details
+                <button style="height: 24px; width: 24px;" (click)="onEditContactPerson(null)" matTooltip="Edit this"
+                    class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill pull-right">
+                    <i class="flaticon-edit"></i>
+                </button>
+            </div>
+            <div class="m-widget28__container">
+                <div class="m-widget28__tab">
+                    <div class="m-widget28__tab-container">
+                        <div class="m-widget28__tab-items">
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Person Name
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.contactPersonName}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Designation
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.contactPersonDesignation; else de">
+                                                {{profile?.contactPersonDesignation}}
+                                            </div>
+                                            <ng-template #de>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEditContactPerson('contactPersonDesignation')">add
+                                                        now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Person Address
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.contactPersonAddress}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Cell / Phone
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.contactPersonPhone}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+                            <div class="row mx-0 ">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Person Email Address
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.contactPersonEmail}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Description
+                                        </span>
+                                        <span class="pl-2 ml-1">{{profile?.contactPersonDescription}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mx-0 ">
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Favicon
+                                        </span>
+                                        <span class="pl-2 ml-1 d-flex align-content-between align-items-end">
+                                            <img *ngIf="profile?.favicon else upl" [src]="profile?.favicon | safe:'url'"
+                                                alt="" style="height: 20px;width: 20px; margin: 10px 20px 0 0">
+                                            <ng-template #upl>
+                                                <span class="m--font-info mr-2" style="font-size: 11px">Upload a
+                                                    favicon</span>
+                                            </ng-template>
+                                            <div>
+                                                <input #inp (change)="faviconChange($event)" id="f-image" type="file"
+                                                    style="display: none">
+                                                <button (click)="inp.click()"
+                                                    [matTooltip]="favicon ? 'Change favicon' : 'Select a favicon'"
+                                                    style="height: 24px; width: 24px;" type="button"
+                                                    class="btn  m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill mr-1"
+                                                    [ngClass]="favicon ? 'btn-info' : 'btn-danger'">
+                                                    <i *ngIf="!favicon" class="fa flaticon-attachment"></i>
+                                                    <i *ngIf="favicon" class="fa flaticon-refresh"></i>
+                                                </button>
+                                                <button (click)="uploadFavicon(inp)" *ngIf="favicon" matTooltip="Upload"
+                                                    style="height: 24px; width: 24px;" type="button"
+                                                    class="btn  m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill btn-accent mr-1">
+                                                    <i class="la la-check"></i>
+                                                </button>
+                                                <span *ngIf="faviconFormat" class="m--font-danger ml-2"
+                                                    style="font-size: 11px">{{faviconFormat}} </span>
+                                            </div>
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && profile" class="row mt-4 mx-0" style="background: #f7f7f7;padding: 10px;">
+            <div class="col-12 mb-3 h5">Company Brand Logo / Profile Picture </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="m-alert m-alert--outline m-alert--outline-2x alert alert-info alert-dismissible fade show"
+                        role="alert">
+                        <strong>Note:</strong> After you upload an image, You must explicitly set by clicking on button(s) over thumbnail to make either brand picture or profile picture. 
+                        
+                        <div class="mt-3">
+                                To display action buttons, move your mouse over image thumbnail (tap and hold on touch devices)
+                        </div>
+                    </div>
+                </div>
+                <div class="row" [@fadeInOutStagger]="pictures?.length">
+                    <div *ngFor="let p of pictures;" class="col-md-3 px-0 ">
+                        <div class="m--padding-10 ">
+                            <div class="img-wrap" [style.background]=" 'url('+p.getUrl+')'">
+                                <div class="middle">
+                                    <label (click)="onSetProfilePicture(p.fileName, 'profile')"
+                                        matTooltip="Make profile picture" matTooltipPosition="above"
+                                        matTooltipClass="m--font-light bg-primary"
+                                        class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill custom-air mx-1">
+                                        <i class="flaticon-user"></i>
+                                    </label>
+                                    <label (click)="onSetProfilePicture(p.fileName,'brand')"
+                                        matTooltip="Make page brand picture" matTooltipPosition="above"
+                                        matTooltipClass="m--font-light bg-primary"
+                                        class="btn btn-warning m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill custom-air mx-1">
+                                        <i class="flaticon-customer"></i>
+                                    </label>
+                                    <label (click)="onDeleted(p.fileName)" matTooltip="Delete this"
+                                        matTooltipPosition="above" matTooltipClass="m--font-light bg-primary"
+                                        class="btn m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill custom-air mx-1"
+                                        [ngClass]="{'m-loader m-loader--danger  btn-secondary':isDeleting, ' btn-danger':!isDeleting}">
+                                        <i *ngIf="!isDeleting" class="flaticon-delete"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5" [@fadeInOutStagger]="selectedFile || cropped || fileErrorMessage">
+                <div class="row">
+                    <div class="col-12" *ngIf="selectedFile">
+                        <div class="alert alert-metal m-alert m-alert--air m-alert--outline m-alert--outline-2x"
+                            role="alert">
+                            <strong>Hint:</strong> Adjust your company logo thumbnail. Drag to reposition. Zoom
+                            in/out to crop from selected section.
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div *ngIf="selectedFile && !dragTip" class="img-drag-tip"> Drag to reposition <i id="info-tip"
+                                class="flaticon-info ml-2 m--font-info"
+                                matTooltip="Drag to reposition. Use mouse wheel to zoom in/out. (for touch device, pinch to zoom in/out)"
+                                matTooltipPosition="above" matTooltipClass="m--font-primary bg-light"></i></div>
+                        <div #container [ngClass]="{'container':selectedFile}"> </div>
+                    </div>
+                    <div id="crop-preview-wrap" class="col-4" *ngIf="cropped">
+                        <img [src]="cropped" width="200" class="btn-block" alt="Preview">
+                        <span class="crop-preview-text">Preview</span>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <input type="file" (change)="imageSelected($event)" class="m--hide" id="profile-picture">
+                        <label for="profile-picture"
+                            class="btn btn-sm btn-secondary m-btn m-btn--icon m-btn--hover-primary custom-air mr-1 mb-0">
+                            <span>
+                                <i class="la la-image"></i>
+                                <span>{{selectedFile ? 'Change' :'Upload an Image'}}</span>
+                            </span>
+                        </label>
+                        <button *ngIf="selectedFile" (click)="imageRemoved()"
+                            class="m-btn m-btn--hover-danger btn btn-sm btn-secondary custom-air m-btn--icon mr-1">
+                            <span>
+                                <i class="la la-close"></i>
+                                <span>Remove</span>
+                            </span>
+                        </button>
+                        <button *ngIf="selectedFile" [disabled]="isWorking" (click)="croppedSave()"
+                            class="m-btn btn btn-sm btn-secondary m-btn--icon custom-air mr-1"
+                            [ngClass]="{'m-loader m-loader--accent m-loader--right':isWorking, 'm-btn--hover-accent':!isWorking}">
+                            <span>
+                                <i class="la la-crop"></i>
+                                <span>Crop & Save</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div *ngIf="fileErrorMessage" class="col-12 m--font-danger">
+                        {{fileErrorMessage}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-widget28 mt-5 mb-5" *ngIf="!isLoading && profile">
+            <div class="m-widget28__container">
+                <div class="m-widget28__tab">
+                    <div class="m-widget28__tab-container">
+                        <div class="m-widget28__tab-items">
+                            <div class="row mx-0">
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Frequently Asked Questions (FAQs)
+                                            <button (click)="onExtraSetup('faq', profile?.faq)"
+                                                style="height: 24px; width: 24px;" type="button"
+                                                class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill pull-right">
+                                                <i class="flaticon-edit"></i>
+                                            </button>
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #faq></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-3 mb-3"></div>
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Privacy Policy
+                                            <button (click)="onExtraSetup('privacy',  profile?.privacy)"
+                                                style="height: 24px; width: 24px;" type="button"
+                                                class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill pull-right">
+                                                <i class="flaticon-edit"></i>
+                                            </button>
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #privacy></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-3 mb-3"></div>
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Terms & Conditions
+                                            <button (click)="onExtraSetup('tnc', profile?.terms)"
+                                                style="height: 24px; width: 24px;" type="button"
+                                                class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill pull-right">
+                                                <i class="flaticon-edit"></i>
+                                            </button>
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #tnc></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-3 mb-3"></div>
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span
+                                                class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Disclaimer
+                                            <button (click)="onExtraSetup('disclaimer',  profile?.disclaimer)"
+                                                style="height: 24px; width: 24px;" type="button"
+                                                class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill pull-right">
+                                                <i class="flaticon-edit"></i>
+                                            </button>
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #disclaimer></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m--margin-bottom-50"></div>
+    </div>
+</div>

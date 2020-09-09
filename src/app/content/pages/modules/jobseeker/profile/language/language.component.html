@@ -1,0 +1,113 @@
+<div class="m-portlet shadow-none">
+    <div class="m-portlet__body px-0 pt-3">
+        <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand"><i class="flaticon-list"></i> Language </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" matTooltip="Toggle List View" class="m-portlet__nav-link btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-squares-4"></i>
+                    </a>
+                    <a href="javascript:;" matTooltip="Add new" (click)="onAdd()" class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-add"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+        <div class="row mb-5" *ngIf="isLoading && languages.length <= 0">
+
+            <div class="col-md-6">
+                <l-grid-placeholder></l-grid-placeholder>
+            </div>
+            <div class="col-md-6">
+                <l-grid-placeholder></l-grid-placeholder>
+            </div>
+        </div>
+        <div [@fadeInOutStagger]="languages?.length" class="row" *ngIf="!isLoading && languages.length >0" [formGroup]="editForm">
+            <div class="col-md-6 mb-4" *ngFor="let l of languages">
+                <mat-card class="mat-elevation-z1 mat-elevation-z7-custom">
+                    <mat-card-content>
+                        <div class="row mb-2">
+                            <div class="col">
+                                <h4 *ngIf="selectedLangId !== l.id; else editField" class="m--font-info">{{l.languageName}}</h4>
+                                <ng-template #editField>
+                                    <mat-form-field class="col px-0" appearance="outline">
+                                        <mat-label>Language Name</mat-label>
+                                        <input formControlName="languageName" matInput placeholder="Enter a language name"
+                                            required>
+                                    </mat-form-field>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-6 mb-4">
+                                <h6 class="text-muted">Reading</h6>
+                                <lang-stars [stars]="l.read ? l.read : l.unselectedStars" (starSelected)="starClicked($event)"
+                                    [selectedLang]="selectedLangId"></lang-stars>
+                            </div>
+                            <div class="col-md-6 col-6 mb-4">
+                                <h6 class="text-muted">Writing</h6>
+                                <lang-stars [stars]="l.write ? l.write : l.unselectedStars" (starSelected)="starClicked($event)"
+                                    [selectedLang]="selectedLangId"></lang-stars>
+                            </div>
+                            <div class="col-md-6 col-6 mb-4">
+                                <h6 class="text-muted">Listening</h6>
+                                <lang-stars [stars]="l.listen ? l.listen : l.unselectedStars" (starSelected)="starClicked($event)"
+                                    [selectedLang]="selectedLangId"></lang-stars>
+                            </div>
+                            <div class="col-md-6 col-6 mb-4">
+                                <h6 class="text-muted">Speaking</h6>
+                                <lang-stars [stars]="l.speak ? l.speak : l.unselectedStars" (starSelected)="starClicked($event)"
+                                    [selectedLang]="selectedLangId"></lang-stars>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div [@fadeInUpEnterOnly]="selectedLangId ? 1  : 2" class="col" style="min-height: 40px;">
+                                <div *ngIf="!(selectedLangId == l?.id); else editMode" style="display: flex; justify-content: center">
+                                    <button (click)="onEditClicked(l.id)" matTooltip="Edit this" class="btn btn-secondary m-btn--hover-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-edit"></i>
+                                    </button>
+                                    <button matTooltip="Delete this" (click)="onDelete(l.id)" class="btn btn-default m-btn--hover-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-delete"></i>
+                                    </button>
+                                    <!-- <button matTooltip="Add new" (click)="onAdd()" class="btn btn-default m-btn--hover-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-add"></i>
+                                    </button> -->
+                                </div>
+
+                                <ng-template #editMode>
+                                    <div style="display: flex; justify-content: center">
+                                        <button (click)="updateLanguage()" matTooltip="Save changes" matTooltipPosition="above"
+                                            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+                                            [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}">
+                                            <i *ngIf="!isWorking" class="la la-check"></i>
+                                        </button>
+                                        <button [disabled]="isWorking" (click)="selectedLangId = 0" matTooltip="Cancel"
+                                            matTooltipPosition="above" class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                            <i class="la la-close"></i>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-center" *ngIf="!isLoading && languages.length <= 0">
+        <i class="flaticon-globe fa-8x m--font-metal"></i>
+        <br>
+        <p class="text-muted">
+            There are no Language. <a href="Javascript:;" class="m-link m-link--warning" (click)="onAdd()">Add now</a>
+        </p>
+    </div>
+   
+</div>

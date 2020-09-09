@@ -1,0 +1,36 @@
+<div *ngIf="isWorking else content" class="m-alert alert alert-info mt-3 w-100" role="alert">
+    <div class="m-alert__text pt-2 pb-2 px-0">
+        <p>Please wait we are verifying your account</p>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+</div>
+
+<ng-template #content>
+    <div *ngIf="response" [ngClass]="isError ? 'alert-danger':'alert-success'"
+        class="m-alert m-alert--icon m-alert--air alert  mt-3" role="alert">
+        <div class="m-alert__icon pt-2 pb-2 pl-2">
+            <i class="la la-warning"></i>
+        </div>
+        <div class="m-alert__text pt-2 pb-2 px-1">
+            {{response?.messageBody}}
+        </div>
+    </div>
+    <div *ngIf="isWorking === undefined else success" class="alert m-alert--default" role="alert">
+        Initializing..
+    </div>
+    <ng-template #success>
+        <div class="alert m-alert m-alert--outline m-alert--air mt-4" role="alert">
+            <p>It is recommended that you update your <span style="cursor: pointer"
+                    (click)="navigateConfirm('account profile','/jobseeker/my/profile')" class="m-link m-link--warning"
+                    title="takes you to the profile">profile</span> before applying for a job.</p>
+            <p>Improving your chances of being shortlisted for your dream job by completing your profile. Just make sure
+                that your profile is complete and updated at all times.</p>
+
+            <p>Also, your profile link is one of the things that is shared with recruiters It is imperative that you
+                keep it updated because it helps your chances of getting shortlisted</p>
+
+            <p>Lets apply for a job by following this <a href="/all-jobs" class="m-link m-link--warning"
+                    title="takes you to the list of jobs">jobs link</a>
+        </div>
+    </ng-template>
+</ng-template>

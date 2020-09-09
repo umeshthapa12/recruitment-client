@@ -1,0 +1,334 @@
+<div class="m-portlet shadow-none mb-0">
+    <div class="m-portlet__body position-relative px-0 pb-0 pt-3">
+        <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand"><i class="flaticon-profile-1"></i> Basic Information </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" (click)="onEdit(null)" matTooltip="Edit this" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn">
+                        <i class="flaticon-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+        <div class="row mb-5" *ngIf="isLoading && !profile">
+            <div class="col-md-12">
+                <w-grid-placeholder></w-grid-placeholder>
+            </div>
+        </div>
+        <div  class="m-widget28" *ngIf="!isLoading && profile">
+            <div class="m-widget28__container">
+                <div class="m-widget28__tab">
+                    <div class="m-widget28__tab-container">
+                        <div class="m-widget28__tab-items">
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Full Name
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.fullName; else b">
+                                                {{profile?.fullName}}
+                                            </div>
+                                            <ng-template #b>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('fullName')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Date of Birth
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.dateOfBirth; else d">
+                                                {{profile?.dateOfBirth | date}}
+                                            </div>
+                                            <ng-template #d>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('dateOfBirth')">
+                                                        add now
+                                                    </a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Present Address
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.presentAddress; else c">
+                                                {{profile?.presentAddress}}
+                                            </div>
+                                            <ng-template #c>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('presentAddress')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Permanent Address
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.permanentAddress; else pr">
+                                                {{profile?.permanentAddress}}
+                                            </div>
+                                            <ng-template #pr>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('permanentAddress')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Gender
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.gender; else g">
+                                                {{profile?.gender}}
+                                            </div>
+                                            <ng-template #g>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('gender')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Nationality
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.nationality; else n">
+                                                {{profile?.nationality}}
+                                            </div>
+                                            <ng-template #n>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('nationalityId')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+
+                                            Marital Status
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.maritalStatus; else m">
+                                                {{profile?.maritalStatus}}
+                                            </div>
+                                            <ng-template #m>
+                                                <div>
+
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('maritalStatus')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Religion
+                                        </span>
+                                        <span class="pl-2 ml-1">
+                                            <div *ngIf="profile?.religion; else r">
+                                                {{profile?.religion}}
+                                            </div>
+                                            <ng-template #r>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('religion')">
+                                                        add now
+                                                    </a>
+                                                </div>
+                                            </ng-template>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-md-12 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            Contact Number(s)
+                                        </span>
+                                        <div class="pl-2 ml-1">
+                                            <div *ngIf="profile?.phoneNumbers?.length >0; else ph">
+                                                <div class="row mt-1 mb-2">
+                                                    <div class="col-md-3 mb-1" *ngFor="let p of profile?.phoneNumbers">
+                                                        <span class="text-muted">{{p.phoneType}} </span>
+                                                        <span class="m-badge m-badge--danger m-badge--dot m-badge--dot-small"></span>
+                                                        <span class="m--font-bolder"> {{p.number}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ng-template #ph>
+                                                <div>
+                                                    <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                        (click)="onEdit('phone')">add now</a>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5 m--align-left widget-background">
+                                    <div class="m-widget28__tab-item">
+                                        <span>
+                                            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                            About me
+                                        </span>
+                                        <div style="margin: 0 -8px">
+                                            <div #renderAboutMe></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 m-separator m-separator--dashed mt-2 mb-2"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!isLoading && profile" class="row mt-4 mx-0" style="background: #f7f7f7;padding: 10px;">
+            <div class="col-12 mb-3 h5">Profile Picture(s) </div>
+            <div class="col-12">
+                <div class="row" [@fadeInOutStagger]="pictures?.length">
+                    <div *ngFor="let p of pictures;" class="col-md-3 px-0 ">
+                        <div class="m--padding-10 ">
+                            <div class="img-wrap" [style.background]=" 'url('+p.getUrl+')'">
+                                <div class="middle">
+                                    <label (click)="onSetProfilePicture(p.fileName)" matTooltip="Make profile picture"
+                                        matTooltipPosition="above" matTooltipClass="m--font-light bg-primary" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill custom-air mx-1">
+                                        <i class="la la-check"></i>
+                                    </label>
+                                    <label (click)="onDeleted(p.fileName)" matTooltip="Delete this" matTooltipPosition="above"
+                                        matTooltipClass="m--font-light bg-primary" class="btn m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill custom-air mx-1"
+                                        [ngClass]="{'m-loader m-loader--danger  btn-secondary':isDeleting, ' btn-danger':!isDeleting}">
+                                        <i *ngIf="!isDeleting" class="flaticon-delete"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5" [@fadeInOutStagger]="selectedFile || cropped || fileErrorMessage">
+                <div class="row">
+                    <div class="col-12" *ngIf="selectedFile">
+                        <div class="alert alert-metal m-alert m-alert--air m-alert--outline m-alert--outline-2x" role="alert">
+                            <strong>Hint:</strong> Adjust your profile picture thumbnail. Drag to reposition. Zoom
+                            in/out to crop from selected section.
+                        </div>
+
+                    </div>
+                    <div class="col-8">
+                        <div *ngIf="selectedFile && !dragTip" class="img-drag-tip"> Drag to reposition <i id="info-tip"
+                                class="flaticon-info ml-2 m--font-info" matTooltip="Drag to reposition. Use mouse wheel to zoom in/out. (for touch device, pinch to zoom in/out)"
+                                matTooltipPosition="above" matTooltipClass="m--font-primary bg-light"></i></div>
+                        <div #container [ngClass]="{'container':selectedFile}"> </div>
+                    </div>
+                    <div id="crop-preview-wrap" class="col-4" *ngIf="cropped">
+                        <img [src]="cropped" width="200" class="btn-block" alt="Preview">
+                        <span class="crop-preview-text">Preview</span>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <input type="file" (change)="imageSelected($event)" class="m--hide" id="profile-picture">
+                        <label for="profile-picture" class="btn btn-sm btn-secondary m-btn m-btn--icon m-btn--hover-primary custom-air mr-1 mb-0">
+                            <span>
+                                <i class="la la-image"></i>
+                                <span>{{selectedFile ? 'Change' :'Upload an Image'}}</span>
+                            </span>
+                        </label>
+                        <button *ngIf="selectedFile" (click)="imageRemoved()" class="m-btn m-btn--hover-danger btn btn-sm btn-secondary custom-air m-btn--icon mr-1">
+                            <span>
+                                <i class="la la-close"></i>
+                                <span>Remove</span>
+                            </span>
+                        </button>
+                        <button *ngIf="selectedFile" [disabled]="isWorking" (click)="croppedSave()" class="m-btn btn btn-sm btn-secondary m-btn--icon custom-air mr-1"
+                            [ngClass]="{'m-loader m-loader--accent m-loader--right':isWorking, 'm-btn--hover-accent':!isWorking}">
+                            <span>
+                                <i class="la la-crop"></i>
+                                <span>Crop & Save</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div *ngIf="fileErrorMessage" class="col-12 m--font-danger">
+                        {{fileErrorMessage}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m--margin-bottom-100"></div>
+    </div>
+
+</div>

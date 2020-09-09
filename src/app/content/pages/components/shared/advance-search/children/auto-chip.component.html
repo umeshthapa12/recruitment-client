@@ -1,0 +1,18 @@
+<div [formGroup]="filterFormGroup">
+    <mat-form-field class="btn-block" appearance="fill">
+        <mat-label>{{inputPlaceholder}}</mat-label>
+        <mat-chip-list #list multiple="false" >
+            <mat-chip [disableRipple]="true" *ngFor="let d of selectedChip" [selectable]="true" [removable]="true"
+                (removed)="remove(d)" class="custom-mat-chip">
+                {{d}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input [placeholder]="selectedChip.length >0 ? 'add '+ inputPlaceholder:'add new '+ inputPlaceholder" #input [formControl]="chipInputCtrl" [matAutocomplete]="auto"
+                [matChipInputFor]="list" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="add($event )">
+        </mat-chip-list>
+        <mat-autocomplete disableRipple #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option  *ngFor="let d of filteredChips" [value]="d">{{d}}</mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</div>

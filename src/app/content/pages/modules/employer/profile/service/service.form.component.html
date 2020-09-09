@@ -1,0 +1,75 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-7">
+            <h5 class="m--font-brand"> {{data?.content?.id >0 ?'Update Service':'Add Service'}} </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="onCancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<div id="res-messages" class="alert m-alert m-alert--air" role="alert"
+    [ngClass]="{'alert-danger':isError, 'alert-success':!isError}" *ngIf="responseMessage || errors?.length>0">
+    <button type="button" class="close pt-0" aria-label="Close" (click)="clearErrors()"></button>
+    <span *ngIf="errors?.length > 0; else msgBlock">
+        <span class="row" [@fadeInOutStagger]="errors?.length">
+            <div class="col-12 mb-1 m--font-bolder">
+                {{ responseMessage}}
+            </div>
+            <div class="col-6" *ngFor="let e of  errors">
+                {{e.message}}
+            </div>
+        </span>
+    </span>
+    <ng-template #msgBlock>
+        {{ responseMessage}}
+    </ng-template>
+</div>
+<form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="m-form" autocomplete="off">
+    <div matDialogContent>
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.name}">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Name </mat-label>
+                            <input matInput type="text" formControlName="name" placeholder="Name for a service"
+                                required>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.name">
+                                {{displayMessage?.name}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" rows="4" placeholder="Description for this service"></textarea>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.description">
+                                {{displayMessage?.description}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div matDialogActions style="display: flex; justify-content: center">
+        <div class="mb-2">
+            <button matTooltip="Save Changes" type="submit" matTooltipPosition="above"
+                class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}">
+                <i *ngIf="!isWorking" class="la la-check"></i>
+            </button>
+            <button type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipPosition="above"
+                class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                <i class="la la-close"></i>
+            </button>
+        </div>
+    </div>
+</form>

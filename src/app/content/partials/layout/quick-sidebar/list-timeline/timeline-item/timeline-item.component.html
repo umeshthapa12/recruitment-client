@@ -1,0 +1,13 @@
+<!-- <div class="m-list-timeline__item"> -->
+<span class="m-list-timeline__badge m-list-timeline__badge--state-warning"></span>
+<span class="m-list-timeline__text {{item.isRead ? '':'m--font-bold'}}" [ngClass]="textClass()">
+	{{item.text}}
+	<!--	<span *ngIf="item.type" class="m-badge m-badge&#45;&#45;wide" [ngClass]="badgeClass()">-->
+	<!--		{{item.type}}-->
+	<!--	</span>-->
+
+</span>
+<span *ngIf="item.createdOn" class="m-list-timeline__time">
+<i class="fa fa-genderless pull-left" [ngClass]="item.isRead ?' m--font-metal notify-marker-read':' m--font-danger notify-marker-unread'" (click)="marAsRead()" [title]="item.isRead ? '':'Mark as read'"></i>	{{item.createdOn | mTimeElapsed}}
+</span>
+<!-- </div> -->

@@ -1,0 +1,107 @@
+
+$mat-header-row-height: 50px;
+$mat-row-height: 40px;
+$mat-row-horizontal-padding: 24px;
+
+.m-widget5__title {
+    font-size: 1.04rem !important;
+    font-weight:400 !important;
+}
+.m-widget5 .m-widget5__item .m-widget5__content:last-child{
+    float:left !important;
+}
+.custom-bg-color{
+    box-shadow: none;background: #36a3f7;
+    background: -webkit-linear-gradient(to right, #36a3f7, #00c5dc);
+    background: linear-gradient(to right, #36a3f7, #00c5dc);
+}
+.profile-complete-text{
+    transition: all .2s;
+     position: absolute;
+     font-size: 14px;
+     cursor: pointer;
+}
+.profile-complete-text:hover{
+    transform:translate(3px,0px) rotate(10deg) scale(1.10)
+}
+.custom-badge-inside-btn{
+    position: absolute;
+    top: -10px;
+    right: 2px;
+}
+.parent-btn-hover-child-transform span{
+    transition: all .2s ease-in-out;
+}
+.parent-btn-hover-child-transform:hover span{
+    transform:  translate(4px,0px) scale(1.1) rotate(-5deg);
+    box-shadow: 0px 0px 2px 0px rgba(81, 77, 92, 0.7);
+}
+
+.font-dark{
+    color:#575962;
+}
+
+@media only screen and (max-width: 1024px){
+    .y-margin{
+        margin-top:90px !important;
+    }
+}
+
+.xpan-table.mat-table {
+	
+	overflow-y: auto;
+	display: block;
+	position: relative;
+}
+.xpan-header.mat-header-row {
+	padding-left: 1.5rem;
+	padding-right: 2rem;
+	border-bottom: none;
+	box-shadow: 1px 1px 6px 0 #f6f5f8;
+	border-top: 1px solid #f6f5f8;
+}
+.xpan-row.mat-row {
+	min-height: $mat-row-height;
+}
+
+.xpan-row.mat-row,
+.xpan-header.mat-header-row {
+	display: flex;
+	align-items: center;
+	padding: 0 $mat-row-horizontal-padding;
+	box-sizing: border-box;
+
+	// Workaround for https://goo.gl/pFmjJD in IE 11. Adds a pseudo
+	// element that will stretch the row the correct height. See:
+	// https://connect.microsoft.com/IE/feedback/details/802625
+	&::after {
+		display: inline-block;
+		min-height: inherit;
+		content: '';
+}
+}
+.xpan-header.mat-header-row {
+	min-height: $mat-header-row-height;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0; /* required */
+	background: #ffffff;
+}
+
+.xpan-row .mat-cell,
+.xpan-header .mat-header-cell {
+	flex: 1;
+	overflow: hidden;
+	border: none !important
+}
+.xpan-row .mat-cell{
+	word-wrap: break-word;
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+
+.mat-menu-esti-input-wrap{
+	min-height: 0 !important;
+	height: auto !important;
+	padding: 0 10px !important;
+}

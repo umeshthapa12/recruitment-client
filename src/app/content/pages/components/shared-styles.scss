@@ -1,0 +1,89 @@
+.parent-btn-hover-child-transform .icon-box{
+    transition: all .2s ease-in-out;
+}
+.parent-btn-hover-child-transform:hover .icon-box{
+    transform:  translate(2px,-1px) scale(1.05) rotate(4deg);
+    box-shadow: 0.5px 0.5px 4px 0px rgba(100, 100, 100, 0.7);
+}
+.border-roundless{
+    border-radius:0;
+}
+
+.parent-btn-hover-child-animate-smooth > .m-btn{
+    transition: all .2s ease-in-out;
+}
+.parent-btn-hover-child-animate-smooth >.m-btn:hover{
+    transform:  translate(0px,-4px) scale(1.07);
+}
+#pager a.pager{
+    letter-spacing: 5px;
+    padding: 3px 5px 0px 10px;
+    text-align: center;
+    background: #dedede;
+    color: #465355;
+    font-weight: bold;
+    cursor: auto;
+    border:none;
+}
+
+.text-input__loading {
+    height: 100px;
+    width: 100%;
+  }
+  .text-input__loading--line {
+    height: 10px;
+    margin: 10px;
+    -webkit-animation: pulse 1s infinite ease-in-out;
+            animation: pulse 1s infinite ease-in-out;
+  }
+  #box{
+      display:block;
+      height:70px;
+      margin-top:10px;
+    -webkit-animation: pulse 1s infinite ease-in-out;
+    animation: pulse 1s infinite ease-in-out;
+  }
+
+   #lines div:nth-child(1) {
+    width: 50%;
+  }
+
+   #lines div:nth-child(2) {
+    width: 70%;
+  }
+   #lines div:nth-child(3) {
+    width: 95%;
+  }
+   #lines div:nth-child(4) {
+    width: 85%;
+}
+
+@-webkit-keyframes pulse {
+0% {
+background-color: rgba(165, 165, 165, 0.1);
+}
+50% {
+background-color: rgba(165, 165, 165, 0.3);
+}
+100% {
+background-color: rgba(165, 165, 165, 0.1);
+}
+}
+
+@keyframes pulse {
+0% {
+background-color: rgba(165, 165, 165, 0.1);
+}
+50% {
+background-color: rgba(165, 165, 165, 0.3);
+}
+100% {
+background-color: rgba(165, 165, 165, 0.1);
+}
+}
+
+@media (max-width: 360px){
+    .mobile-hide{
+        display:none;
+    }
+}

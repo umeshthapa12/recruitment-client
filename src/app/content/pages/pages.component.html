@@ -1,0 +1,56 @@
+<!-- begin:: Page -->
+<ng-container *ngIf="selfLayout !== 'blank' ; else selfLayoutBlank">
+	<m-header></m-header>
+	<div *ngIf="showCover">
+		<div *ngIf="showCover?.main; else mini">
+			<page-cover-mobile *ngIf="(isSmallScreen | async); else bigScreen"></page-cover-mobile>
+			<ng-template #bigScreen>
+				<page-cover-desktop></page-cover-desktop>
+			</ng-template>
+		</div>
+		<ng-template #mini>
+			<simple-page-cover></simple-page-cover>
+		</ng-template>
+	</div>
+	<!-- begin::Body -->
+	<div id="page-content-wrapper" class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop"
+		[ngClass]="pageBodyClass$ | async">
+
+		<!-- BEGIN:: Aside Left -->
+		<button class="m-aside-left-close" id="m_aside_left_close_btn" [ngClass]="asideLeftCloseClass | mJoin">
+			<i class="la la-close"></i>
+		</button>
+		<ng-container *ngIf="asideLeftDisplay">
+			<m-aside-left></m-aside-left>
+		</ng-container>
+		<!-- END:: Aside Left -->
+
+		<div [style.minHeight]="o.isActivated ? '70vh' : '20vh'" style="position: relative;" #mContentWrapper
+			class="m-grid__item m-grid__item--fluid">
+			<!-- <m-subheader></m-subheader> -->
+
+			<div [@fadeInOutDown]="o.isActivated ? o.activatedRoute : ''" class="m-content" #mContent>
+
+				<router-outlet #o="outlet"></router-outlet>
+			</div>
+		</div>
+		<ng-container *ngIf="asideRightDisplay">
+			<m-aside-right></m-aside-right>
+		</ng-container>
+	</div>
+	<!-- end:: Body -->
+	<!-- <pre-mobile-footer></pre-mobile-footer> -->
+	<pre-footer></pre-footer>
+	<m-footer></m-footer>
+	<!-- <m-quick-sidebar></m-quick-sidebar> -->
+	<!-- <m-tooltips></m-tooltips> -->
+	<m-scroll-top></m-scroll-top>
+</ng-container>
+
+<ng-template #selfLayoutBlank>
+	<router-outlet></router-outlet>
+</ng-template>
+<!-- end:: Page -->
+
+<!--  entire page blocker  -->
+<j-page-overlay></j-page-overlay>

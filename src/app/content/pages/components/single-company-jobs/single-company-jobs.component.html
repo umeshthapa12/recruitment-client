@@ -1,0 +1,78 @@
+<div class="col  px-0 banner-wrap banner-wrap-shadow">
+    <div class="row mx-0  mb-3 cover-bg" [style.backgroundImage]="bgImage">
+        <div class="col-12 px-0">
+            <ng-template #loading>
+                <div class="row mx-0 m--margin-top-55 always-top">
+                    <div class="col">
+                        <content-list-placeholder></content-list-placeholder>
+                    </div>
+                </div>
+            </ng-template>
+            <div *ngIf="!isLoading && jobLists?.length>0 else loading" class="row mx-0 m--margin-top-55 always-top">
+                <div class="col-md-2">
+                    <img fallback-img-src [src]="content?.brandLogoUrl" width="100" alt="logo">
+                </div>
+                <div class=" col-md-7">
+                    <h2>{{content?.companyName}} </h2>
+
+                    <div><i class="la la-map-marker"></i> {{content?.companyAddress}}</div>
+                    <div> <a [href]="content?.companyUrl | httpParse" target="_blank" class="m-link m-link--warning m--font-bold">
+                            <i class="la la-external-link"></i>
+                            visit company website
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex justify-content-end">
+                    <a *ngIf="content?.companyEmail" matTooltipClass="bg-light m--font-brand" [matTooltip]="content?.companyEmail"
+                        href="mailTo:{{content?.companyEmail}}"
+                        class="mr-2 btn btn-outline-primary  m-btn--outline-2x m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill m-btn--air">
+                        <i class="la la-envelope"></i>
+                    </a>
+                    <a matTooltipClass="bg-light m--font-brand" [matTooltip]="s.name" *ngFor="let s of socialAccounts"
+                        [href]="s.url | httpParse"
+                        class="mr-2 btn btn-outline-{{getColor(s.name)}}  m-btn--outline-2x m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill m-btn--air">
+                        <i class="fab la" [ngClass]="getIcon(s.name)"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mx-0 ">
+        <div class="col-md-12 about-company">
+            <span #aboutC>
+                <content-list-placeholder [linesOnly]="true" [lineCount]="2"></content-list-placeholder>
+            </span>
+            <div *ngIf="floatingBox" class="position-absolute w-100">
+                <ul class="bg-floating-box">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <span class="centered-title"><span>Jobs</span></span>
+    </div>
+</div>
+<div class="m-portlet m-portlet--mobile ">
+    <div *ngIf="isLoading && !(jobLists?.length >0)" class="px-3 pb-3">
+        <content-list-placeholder></content-list-placeholder>
+    </div>
+    <div *ngIf="isError && !isLoading" class="w-100 text-center pt-5 pb-5 m--font-metal">
+        <i class="la la-warning"></i> There are no jobs at the moment.
+    </div>
+    <div *ngIf="!isLoading && jobLists?.length>0" class="m-portlet__body px-3">
+        <job-list [jobLists]="jobLists">
+        </job-list>
+    </div>
+</div>

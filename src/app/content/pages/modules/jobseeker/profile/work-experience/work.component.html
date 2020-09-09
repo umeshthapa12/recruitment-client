@@ -1,0 +1,141 @@
+<div class="m-portlet shadow-none">
+    <div class="m-portlet__body px-0 pt-3">
+        <div class="row pt-2 mb-2 mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand mt-3"><i class="flaticon-computer"></i> Work Experiences </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" matTooltip="Toggle List View" class="m-portlet__nav-link btn btn-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-squares-4"></i>
+                    </a>
+                    <a href="javascript:;" matTooltip="Add new" (click)="onAction(0,null)" class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill ml-2">
+                        <i class="flaticon-add"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+
+        <div class="row mb-5" *ngIf="isLoading && workData.length <= 0">
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+            <div class="col-md-6">
+                <m-grid-placeholder></m-grid-placeholder>
+            </div>
+        </div>
+
+        <div class="m-portlet__body position-relative px-0">
+            <div [@fadeInOutStagger]="workData?.length" class="row" *ngIf="!isLoading && workData.length > 0;">
+                <div class="col-md-6 mb-4" *ngFor="let w of workData; trackBy:trackByIndex">
+                    <mat-card class="mat-elevation-z1 mat-elevation-z7-custom h-100">
+                        <mat-card-content class="mb-0 card-content-text">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <h5 class="m--font-info">
+                                        <h4 class="m--font-info">{{w?.jobTitle}}</h4>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <h6 class="text-muted">Organization Name</h6>
+                                        {{w.organization}}
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">Job Category</h6>
+                                    {{w.jobCategory}}
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">Address</h6>
+                                    {{w.address}}
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">Experience Level</h6>
+                                    {{w.experienceLevel}}
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">Duration</h6>
+                                    <span *ngIf="w.isWorking else totalDur">
+                                        {{w.from | date }} - <span class="m-badge m-badge--secondary m-badge--wide"> Present </span>
+                                    </span>
+                                    <ng-template #totalDur>
+                                        <span>
+                                            {{calculateDuration(w.from,w.to)}}
+                                        </span>
+                                    </ng-template>
+                                </div>
+                                <div class="col-md-6 mb-4" *ngIf="w.noticePeriod">
+                                    <h6 class="text-muted">Notice Period</h6>
+                                    {{w.noticePeriod}}
+                                </div>
+                                <div class="col-md-12 mb-4" *ngIf="w.summary">
+                                    <h6 class="text-muted">Roles and Responsibilities</h6>
+                                    {{w.summary | slice:0:100}}
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">
+                                        Ref. Person Name
+                                    </h6>
+                                    <div *ngIf="w.refPersonName;else rpn">
+                                        {{w.refPersonName}}
+                                    </div>
+                                    <ng-template #rpn>
+                                        <div>
+                                            <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                (click)="onAction(w.id,'refPersonName')">add
+                                                now</a>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">
+                                        Ref. Person Phone
+                                    </h6>
+                                    <div *ngIf="w.refPersonPhone;else rpp">
+                                        {{w.refPersonPhone}}
+                                    </div>
+                                    <ng-template #rpp>
+                                        <div>
+                                            <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                (click)="onAction(w.id,'refPersonPhone')">add
+                                                now</a>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <div class="row align-content-end justify-content-center">
+                                <div class="col-4 pb-3">
+                                    <button (click)="onAction(w.id,null)" matTooltip="Edit this"
+                                        class="btn btn-secondary m-btn--hover-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-edit"></i>
+                                    </button>
+                                    <button matTooltip="Delete this" (click)="onDelete(w.id)"
+                                        class="btn btn-default m-btn--hover-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-delete"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && workData.length <= 0">
+            <div class="text-center">
+                <i class="flaticon-computer fa-8x m--font-metal"></i>
+                <br>
+                There are no Work Eperiences. <a href="javascript:;" (click)="onAction(0,null)" class="m-link m-link--warning">
+                    Add now </a>
+            </div>
+        </div>
+
+    </div>

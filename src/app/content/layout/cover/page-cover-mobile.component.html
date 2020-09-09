@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="cover-wrapper col-md-12">
+        <div class="cover-bg">
+            <div class="cover-overlay">
+                <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body m-container m-container--responsive m-container--xxl m-page__container"
+                    style="height: 100%">
+                    <div class="m-grid__item m-grid__item--fluid m-wrapper" style="position: relative;">
+                        <div class="m-content m--font-light">
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <h1 style="font-size:45px ">Best Place To Grow Your Career!</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mt-2">
+                                    <h4>Jobs, Employments, Career Opportunities & much more..</h4>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <p>
+                                        Finding your next job or career more than 1000+ availabilities
+                                    </p>
+                                </div>
+                                
+                                <!-- <div class="col-md-12 mt-2 mb-5">
+                                    <a href="#" class="btn btn-sm btn-outline-accent m-btn m-btn--icon  m-btn--air mr-3">
+                                        <span>
+                                            <i class="fa flaticon-add"></i>
+                                            <span>Get Started</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-warning m-btn m-btn--icon  m-btn--air">
+                                        <span>
+                                            <i class="fa flaticon-alert"></i>
+                                            <span>Create a job alert</span>
+                                        </span>
+                                    </a>
+                                </div> -->
+                            </div>
+                            <div class="row" *ngIf="mappedNavForCoverPage(nav$ | async)?.length >0">
+                                <div style="min-height: 20px;width: 100%; position: relative;
+                                    bottom: -20px;
+                                    right: 0; font-weight: 900 !important">
+                                    <ul class="nav nav-tabs mb-0" role="tablist">
+                                        <li class="nav-item" *ngFor="let link of mappedNavForCoverPage(nav$ | async)" style="margin: 0 0 0 1px">
+                                            <a class="nav-link {{ rla.isActive ?'m--font-brand':' m--font-light'}}"
+                                                [routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
+                                                [class.active]="rla.isActive" [routerLinkActiveOptions]="{exact: true}">
+                                                {{link.label}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

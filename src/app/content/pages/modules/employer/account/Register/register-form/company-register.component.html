@@ -1,0 +1,204 @@
+<div class="m-login m-login--6">
+  <div class="m-login__wrapper" style="padding: 5px">
+    <div id="res-messages" class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-dismissible"
+      role="alert" [ngClass]="!isError?'alert-success':'alert-danger'"
+      *ngIf="response?.messageBody || response?.error?.messageBody">
+      <div class="m-alert__icon">
+        <i class="flaticon-exclamation-1"></i>
+        <span></span>
+      </div>
+      <div class="m-alert__text">
+        {{ response?.messageBody || response?.error?.messageBody }}
+      </div>
+      <div class="m-alert__close">
+        <button (click)="response.messageBody = ''" type="button" class="close" data-dismiss="alert" aria-label="Close">
+        </button>
+      </div>
+    </div>
+    <div class="m-login__body mt-0">
+      <div class="m-login__signin" style="max-width: 100%;">
+        <div class="m-login__title mt-2 mb-4 h4">
+          <h4> Create your free <span class="m--font-primary">Employer</span> account!</h4>
+        </div>
+        <hr>
+        <!-- <form [formGroup]="registerForm">
+          <div class="form-group m-form__group" (mouseenter)="fl.style.display = 'block'"
+            (mouseleave)="fl.style.display = 'none'">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right">
+              <input class="form-control pl-5" formControlName="orgName" type="text" placeholder="Organization Name"
+                style="border-radius: 0;">
+              <span class="m-input-icon__icon m-input-icon__icon--left">
+                <span><i class="fa flaticon-buildings"></i></span>
+              </span>
+              <span #fl class="m-input-icon__icon m-input-icon__icon--right"><span><i
+                    class="fa fa-star-of-life m--font-danger" style="font-size: 8px;"
+                    title="Required field"></i></span></span>
+            </div>
+            <span *ngIf="displayMessage?.orgName" class="m--font-danger">{{displayMessage?.orgName}}</span>
+          </div>
+
+          <div class="form-group m-form__group">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right">
+              <mat-select class="form-control m-input pt-3 pl-5" formControlName="companyTypeId"
+                placeholder="Organization/Industry Type" style="border-radius: 0">
+                <mat-option *ngFor="let c of compTypes" [value]="c.key">
+                  {{c.value}}
+                </mat-option>
+              </mat-select>
+              <span class="m-input-icon__icon m-input-icon__icon--left  pt-3 ">
+                <span><i class="la la-industry"></i></span>
+              </span>
+            </div>
+          </div>
+          <div class="form-group m-form__group">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right">
+              <input formControlName="phone" type="text" class="form-control pl-5"
+                placeholder="Organization Contact Number" style="border-radius: 0;">
+              <span class="m-input-icon__icon m-input-icon__icon--left">
+                <span><i class="fa fa-phone"></i></span>
+              </span>
+            </div>
+          </div>
+          <div class="form-group m-form__group" (mouseenter)="m.style.display = 'block'"
+            (mouseleave)="m.style.display = 'none'">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+              <input class="form-control m-input pl-5" type="email" placeholder="Email" formControlName="email"
+                style="border-radius: 0">
+              <span class="m-input-icon__icon m-input-icon__icon--left ">
+                <span><i class="flaticon-email"></i></span>
+              </span>
+              <span #m class="m-input-icon__icon m-input-icon__icon--right">
+                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;"
+                    title="Required field"></i></span>
+              </span>
+            </div>
+            <span class="m--font-danger" *ngIf="displayMessage?.email || emailExists?.contentBody?.message">
+              {{displayMessage?.email || emailExists?.contentBody?.message}}
+            </span>
+          </div>
+          <div class="form-group m-form__group" (mouseenter)="p1.style.display = 'block'"
+            (mouseleave)="p1.style.display = 'none'">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+              <input class="form-control m-input pl-5" type="password" placeholder="Password" formControlName="password"
+                style="border-radius: 0">
+              <span class="m-input-icon__icon m-input-icon__icon--left ">
+                <span><i class="la la-key"></i></span>
+              </span>
+              <span #p1 class="m-input-icon__icon m-input-icon__icon--right">
+                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;"
+                    title="Required field"></i></span>
+              </span>
+            </div>
+            <span class="m--font-danger" *ngIf="displayMessage?.password">
+              {{displayMessage.password}}
+            </span>
+          </div>
+          <div class="form-group m-form__group" (mouseenter)="p2.style.display = 'block'"
+            (mouseleave)="p2.style.display = 'none'">
+            <div class="m-input-icon m-input-icon--left m-input-icon--right ">
+              <input compare="password" class="form-control m-input pl-5" type="password" placeholder="Confirm Password"
+                formControlName="cPassword" style="border-radius: 0">
+              <span class="m-input-icon__icon m-input-icon__icon--left ">
+                <span><i class="la la-key"></i></span>
+              </span>
+              <span #p2 class="m-input-icon__icon m-input-icon__icon--right">
+                <span><i class="fa fa-star-of-life m--font-danger" style="font-size: 8px;"
+                    title="Required field"></i></span>
+              </span>
+            </div>
+            <span class="m--font-danger" *ngIf="displayMessage?.cPassword">
+              {{displayMessage.cPassword}}
+            </span>
+          </div>
+        </form> -->
+        <form [formGroup]="registerForm" autocomplete="off">
+          <div class="row">
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Organization Name</mat-label>
+                <input formControlName="orgName" matInput placeholder="Organization Name" required>
+                <span matPrefix><i style="font-size: 20px;" class="fa flaticon-buildings">&nbsp;</i></span>
+                <mat-error class="m--font-danger" *ngIf="displayMessage?.orgName">{{displayMessage?.orgName}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Organization/Industry Type</mat-label>
+                <mat-select formControlName="companyTypeId">
+                  <mat-option *ngFor="let c of compTypes" [value]="c.key">
+                    {{c.value}}
+                  </mat-option>
+                </mat-select>
+                <span matPrefix><i style="font-size: 20px;" class="la la-industry">&nbsp;</i></span>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Organization contact number</mat-label>
+                <input formControlName="phone" matInput placeholder="Organization Contact Number">
+                <span matPrefix><i style="font-size: 16px;" class="fa fa-phone">&nbsp;</i></span>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Email</mat-label>
+                <input formControlName="email" matInput placeholder="Email" required>
+                <span matPrefix><i style="font-size: 21px;" class="flaticon-email">&nbsp;</i></span>
+                <mat-error class="m--font-danger" *ngIf="displayMessage?.email || emailExists?.contentBody?.message">
+                  {{displayMessage?.email || emailExists?.contentBody?.message}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Password</mat-label>
+                <input type="password" formControlName="password" matInput placeholder="Password" required>
+                <span matPrefix><i style="font-size: 20px;" class="la la-key">&nbsp;</i></span>
+                <mat-error class="m--font-danger" *ngIf="displayMessage?.password">{{displayMessage?.password}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Confirm password</mat-label>
+                <span matPrefix><i style="font-size: 20px;" class="la la-key">&nbsp;</i></span>
+                <input type="password" compare="password" formControlName="cPassword" matInput
+                  placeholder="Confirm password" required>
+                <mat-error class="m--font-danger" *ngIf="displayMessage?.cPassword">{{displayMessage?.cPassword}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+
+        <div class="m-login__action mt-4 mb-5 row ml-0 mr-0" style="justify-content: center">
+          <div class="col-12 pl-0 pr-0">
+            <label class="m-checkbox m-checkbox--check-bold m-checkbox--state-brand">
+              <input #el (change)="isAgreeChecked = !el.checked" type="checkbox">
+              <span></span>
+              I agree to the &nbsp;
+            </label>
+            <a class="m-link" (click)="ShowTermsCOnditions()">
+              <span style="color: #aba9b4">Terms & Conditions</span>
+            </a>
+          </div>
+          <span class="m--font-danger col-12 pl-0 pr-0" *ngIf="isAgreeChecked">
+            You must accept the terms and conditions.
+          </span>
+        </div>
+        <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+          <button [disabled]="(isWorking || !el.checked || registerForm.invalid)"
+            [ngClass]="isWorking ? 'm-loader m-loader--info m-loader--right':''" (click)="register()"
+            class="btn btn-outline-primary  m-btn  m-btn  m-btn--air m-login__btn m-login__btn--primary pt-2 pb-2 ">
+            <span>Create an Account</span></button>
+        </div>
+        <div class="m-login__action mt-4 mb-2" style="justify-content: center">
+          Already have an account? <a routerLink="/employer/login" class="m-link ml-1">
+            <span class="ml-1"> Login now!</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

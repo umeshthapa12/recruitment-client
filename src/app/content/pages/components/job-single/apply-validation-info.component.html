@@ -1,0 +1,109 @@
+<div class="m-portlet m-portlet--creative m-portlet--bordered-semi mb-0" #loginDrag cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".cdk-overlay-container" style="max-width: 1000px">
+    <div class="m-portlet__head" style="cursor: move;" cdkDragHandle>
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title text-nowrap">
+                <h2
+                    class="m-portlet__head-label m-portlet__head-label--{{(avModel.validationType === vTypes.criteria || avModel.validationType === vTypes.mandatory) ? 'warning' :'info'}}">
+                    <span>
+                        {{avModel.validationType === vTypes.criteria ? 'Criteria Evaluation': avModel.validationType === vTypes.mandatory? 'Mandatory Fields' : avModel.validationType === vTypes.dynamicForm ? 'Questionnaire Form':'Info'}}
+                    </span>
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body" style="min-height: 250px; margin-top: -50px;">
+        <div class="row">
+            <div class="col-md-12  mb-4">
+                <div class="m-alert m-alert--icon alert alert-info w-100" role="alert"
+                    style="display: flex; flex-wrap: wrap; justify-content: space-between">
+                    <div class="m-alert__text">{{data?.response?.error?.messageBody}}
+                        <div *ngIf="avModel.validationType === vTypes.dynamicForm"
+                            style="font-size: 11px;color: #255275; margin-top: 10px">
+                            All fields marked with an asterisk (<span class="m--font-danger">*</span>) are required.
+                            Please check the form before you submit.
+                        </div>
+                    </div>
+                    <div class="m-alert__actions" *ngIf="avModel.validationType === vTypes.mandatory">
+                        <a href="/jobseeker/my" target="_blank"
+                            class="btn btn-outline-light btn-sm m-btn m-btn--hover-danger">Update Profile Now!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="avModel.validationType === vTypes.mandatory else ctr">
+                <div class="row" style="max-height: 40vh; overflow-x: auto">
+                    <div class="col-md-4 mb-4 " *ngFor="let kv of mandatory; let o = odd">
+                        <div class="h-100" [style.background]="!o?'#f9f9f9':''">
+                            <div class="row pt-2 mx-0">
+                                <div class="col-md-12 m--font-bolder m--font-primary">{{kv.key}}</div>
+                                <div class="col-md-12">
+                                    <div class="m-list-timeline">
+                                        <div class="m-list-timeline__items mt-2" *ngFor="let v of kv.value">
+                                            <div class="m-list-timeline__item">
+                                                <span
+                                                    class="m-list-timeline__badge m-list-timeline__badge--danger"></span>
+                                                <span class="m-list-timeline__text">{{v}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #ctr>
+                <div class="col-md-4 mb-4" *ngFor="let kv of criteria; let o = odd">
+                    <div class="h-100" [style.background]="!o?'#f9f9f9':''">
+                        <div class="row pt-2 mx-0">
+                            <div class="col-md-12  m--font-bolder m--font-primary">{{kv.value?.message}}
+                                <div style="font-size: 10px;font-style: italic;color: #6f7273;"
+                                    [innerHTML]="getTextWithSectionLink(kv.key)">
+                                </div>
+                            </div>
+                            <div class="col-md-12 ">
+                                <div class="m-list-timeline">
+                                    <div class="m-list-timeline__items mt-2" *ngFor="let d of kv.value?.data">
+                                        <div class="m-list-timeline__item">
+                                            <span class="m-list-timeline__badge m-list-timeline__badge--danger"></span>
+                                            <span class="m-list-timeline__text">{{d}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="col-md-12" *ngIf="questions?.length > 0" style="max-height: 40vh; overflow-x: auto">
+                <div class="q-rows" *ngFor="let question of questions;let o = odd"
+                    [style.background]="!o ? '#fbfcff':''">
+                    <label tabindex="-1" class="mb-2" [id]="question.key">{{question.label}} <span *ngIf="question.required" class="m--font-danger">*</span>
+                    </label>
+                    <d-form [question]="question"></d-form>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row mt-5 text-center" *ngIf="avModel.validationType === vTypes.criteria">
+            <div class="col-12 m--font-info h4 mb-0"> Do you still want to apply for this position?</div>
+        </div>
+    </div>
+    <div class="m-portlet__foot d-flex justify-content-center pb-5">
+        <button [disabled]="isWorking" (click)="notEligibleApply()" *ngIf="avModel.validationType === vTypes.criteria"
+            type="button" class="btn  mx-1" [ngClass]="{'btn-primary':!isWorking, 'btn-metal':isWorking}">
+            <mat-spinner color="warn" [diameter]="24" [strokeWidth]="2" *ngIf="isWorking else txt"></mat-spinner>
+            <ng-template #txt>YES</ng-template>
+        </button>
+        <button [disabled]="isWorking" (click)="submitForm()" *ngIf="avModel.validationType === vTypes.dynamicForm"
+            type="button" class="btn btn-primary mx-1">
+            <mat-spinner color="warn" [diameter]="24" [strokeWidth]="2" *ngIf="isWorking else txt"></mat-spinner>
+            <ng-template #txt>Submit & Apply</ng-template>
+        </button>
+        <button (click)="matButtonSheetRef.dismiss()"
+            class="btn btn-secondary m-btn m-btn--custom m-btn--label-danger mx-1">Dismiss</button>
+    </div>
+</div>

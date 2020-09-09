@@ -1,0 +1,149 @@
+<div class="m-container m-page__container m-container--full-height m-container--responsive m-container--xxl">
+    <div class="m-footer__wrapper">
+        <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop m--font-light">
+            <div class="row">
+                <div class="col-md-3 mb-5">
+                    <div class="m-list-search">
+                        <div class="m-list-search__results">
+                            <span class="m-list-search__result-category m--font-light">
+                                About
+                            </span>
+                            <div class="pre-footer-header-underline"></div>
+                            <p style="color: #7b7e8a; margin-top: 15px; text-align: justify">
+                                <span *ngIf="userInfo?.domain && userInfo?.about else s1">
+                                    {{userInfo?.about | slice:'0':'430'}}
+                                    <a routerLink="/about-us" *ngIf="(userInfo?.about|| '').length >430" class="m-link m-link--accent">read more..</a>
+                                </span>
+                                <ng-template #s1>
+                                    Jobharu is cloud base (SaaS) online web package job portal system is be used by
+                                    agencies to improve the efficiency of their business with ‘right person, right job,
+                                    and right time’. It helps to job seeker for viewing available jobs or applying for
+                                    the job at the agency can be done for which job seekers has to go to the agency and
+                                    check the available jobs at the agency. Job seekers check the list of jobs available
+                                    and apply the job. The agency will show available jobs for the job seeker for his on
+                                    the basis of different criteria and then updates the jobs database.
+                                </ng-template>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-5">
+                    <div class="m-list-search">
+                        <div class="m-list-search__results">
+                            <span class="m-list-search__result-category m--font-light">
+                                Job Seekers
+                            </span>
+                            <div class="pre-footer-header-underline"></div>
+                            <a href="/jobseeker/login" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Login</span>
+                            </a>
+                            <a href="/jobseeker/register" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Register</span>
+                            </a>
+                            <!-- <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Create Job Alert</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Career Services</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Browse Jobs</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Success Stories</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Report a Problem</span>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-5">
+                    <div class="m-list-search">
+                        <div class="m-list-search__results">
+                            <span class="m-list-search__result-category m--font-light">
+                                Employers
+                            </span>
+                            <div class="pre-footer-header-underline"></div>
+                            <a href="/employer/login" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Login</span>
+                            </a>
+                            <a href="/employer/register" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Register</span>
+                            </a>
+                            <!-- <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Post Jobs</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Recruitment Services</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Service Plans</span>
+                            </a>
+                            <a href="javascript:;" class="m-list-search__result-item">
+                                <span class="m-list-search__result-item-text">Report a Problem</span>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-5">
+                    <div class="m-list-search">
+                        <div class="m-list-search__results">
+                            <span class="m-list-search__result-category m--font-light">
+                                Information
+                            </span>
+                            <div class="pre-footer-header-underline"></div>
+                            <div class="newsletter">
+                                <input type="email" name="EMAIL" placeholder="Enter your email to subscribe newsletter">
+                                <button class="btn btn-accent m-btn m-btn--pill" type="button">Submit</button>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="text-center mb-1" style="width: 100%">
+                                    Address
+                                </div>
+
+                                <div class="col-md-12 text-center" style="color: #7b7e8a">
+                                    <i class="fa flaticon-placeholder-1 m--font-primary"></i>
+                                    <span *ngIf="userInfo?.domain else s2"> {{userInfo?.address}} </span>
+                                    <ng-template #s2> H.N 02, Baisnodevi Marg, Ekantakuna-13 <br>Lalitpur, Nepal 44600
+                                    </ng-template>
+                                </div>
+                                <div class="col-md-12 mt-1 text-center" style="color: #7b7e8a">
+                                    <span *ngIf="userInfo?.domain else s3">
+                                        {{userInfo?.contacts | mJoin:', '}}
+                                    </span>
+                                    <ng-template #s3>
+                                        <i class="fa fa-phone m--font-primary"></i> +977 984 719 1542
+                                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                                        <i class="la la-mobile-phone m--font-primary"></i>
+                                        +977 985 118 1542
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="row mt-3 " *ngIf="!(userInfo?.domain)">
+                                <div class="text-center mb-1" style="width: 100%">
+                                    Follow Us
+                                </div>
+                                <div class="col-12 text-center">
+                                    <div class="m-list-pics m-list-pics--sm ">
+
+                                        <a href="https://www.facebook.com/jobharu"
+                                            class="ml-1 btn btn-outline-info btn-sm m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill">
+                                            <i class="socicon-facebook"></i>
+                                        </a>
+                                        <!-- <a href="#" class="ml-1 btn btn-outline-accent btn-sm m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill">
+                                            <i class="socicon-twitter"></i>
+                                        </a>
+                                        <a href="#" class="ml-1 btn btn-outline-primary btn-sm m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill">
+                                            <i class="socicon-linkedin"></i>
+                                        </a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

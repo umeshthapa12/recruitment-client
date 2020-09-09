@@ -1,0 +1,28 @@
+
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragBoundary=".cdk-overlay-container" class="mat-form-field__box position-relative">
+    <i cdkDragHandle class="la la-arrows m--font-metal fixed-close-icon" title="close" style="margin-left: 283px;cursor: move" title="drag me around"></i>
+    <i (click)="dialogRef.close()" class="la la-close m--font-metal fixed-close-icon" title="close"></i>
+    <div class="mb-2 w-100" >
+        <label>You'll be taken to the <span class="m--font-primary m--font-bold">{{data.takenArea}}</span>
+        </label>
+    </div>
+    <div *ngIf="response" [ngClass]="isError ?'alert-danger':'alert-success'"
+        class="m-alert m-alert--outline m-alert--outline-2x alert px-2 pt-2 pb-2" role="alert">
+        <button type="button" class="close pt-0" (click)="reset()">
+        </button>
+        {{response.messageBody}}
+    </div>
+    <mat-form-field appearance="outline" floatLabel="never" class="w-100">
+        <input [disabled]="isWorking" [(ngModel)]="password" matInput type="password"
+            placeholder="Enter account password">
+        <button [style.marginRight]="isWorking ?'-8px':'-4px'" [disabled]="isWorking"
+            [ngClass]="isWorking ? 'btn-metal':'m-btn--gradient-from-info m-btn--gradient-to-accent'"
+            style="margin-right: -8px;margin-top: -15px;" matSuffix (click)="goto()" type="button"
+            class="btn m-btn--square  m-btn btn-metal">
+            <mat-spinner *ngIf="isWorking else txt" [diameter]="20" [strokeWidth]="2" color="warn"> </mat-spinner>
+            <ng-template #txt>Go</ng-template>
+        </button>
+        <mat-hint>Hint: Enter account password and click to <span class="m--font-danger">Go</span> button </mat-hint>
+
+    </mat-form-field>
+</div>

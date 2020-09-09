@@ -1,0 +1,43 @@
+<!-- <li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="true"> -->
+<a href="javascript:;" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
+	<span *ngIf="newCounts() > 0" class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"
+		  [ngClass]="animateBlink"></span>
+	<span class="m-nav__link-icon" [ngClass]="animateShake">
+		<span class="m-nav__link-icon-wrapper">
+			<i class="flaticon-alarm"></i>
+		</span>
+	</span>
+</a>
+<div class="m-dropdown__wrapper">
+	<span class="m-dropdown__arrow m-dropdown__arrow--center" style="color: #1bb4e9 !important"></span>
+	<div class="m-dropdown__inner" (click)="$event.stopPropagation()" [@collectionInOut]="newCounts()">
+		<div class="m-dropdown__header m--align-center custom-bg">
+			<span *ngIf="newCounts()" class="m-dropdown__header-title">
+				{{newCounts()}} New
+			</span>
+			<span class="m-dropdown__header-subtitle">
+				User Notifications
+			</span>
+		</div>
+		<div class="m-dropdown__body">
+			<div class="m-dropdown__content">
+				<perfect-scrollbar style="height: 250px;">
+					<m-list-timeline *ngIf="notify?.length>0 else allCaught" [logList]="notify"></m-list-timeline>
+					<ng-template #allCaught>
+						<div class="m--font-metal text-center mt-3">
+							<div>all caught up</div>
+							<i class="flaticon-tea-cup mt-2" style="font-size: 70px"></i>
+						</div>
+					</ng-template>
+				</perfect-scrollbar>
+				<div class="row" *ngIf="notify?.length>0">
+					<div class="col-12 text-right">
+						<a href="javascript:;" (click)="deleteAll()" class="m-link m-link--info"><span class="m--font-danger">Delete </span> all
+							notifications</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- </li> -->

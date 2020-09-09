@@ -1,0 +1,63 @@
+<div class="row p-5" style="background-color:#f5f7fc">
+    <div class="col-md-12 text-center">
+        <h1>Our Services</h1>
+    </div>
+
+    <div class="col-md-6">
+        <h3 class="text-center m--font-brand">Recruiter</h3>
+        <mat-accordion class="p-5">
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Apply for a job
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>When You searching a job and Vacant post's requirements meet your qualifications then you can
+                    instantly apply for a Job.</p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Search a Job
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>You need some keywords for your job search. Using keywords that match your skills and interests is
+                    the best way to
+                    narrow down job listings to find those that are a good fit for your background.</p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Faster and Easier
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Easier to apply for a job and instantly response by Employer.</p>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+
+    <div class="col-md-6">
+        <h3 class="text-center m--font-brand">Company</h3>
+        <mat-accordion class="p-5">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Post a Job
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Search for employees, resumes, and post jobs on Jobharu.</p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Identify Jobseeker
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Jobs are showing by it's type like top jobs, hot jobs, feature job, newspaper job etc.</p>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

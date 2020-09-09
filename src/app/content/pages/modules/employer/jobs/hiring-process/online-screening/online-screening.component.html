@@ -1,0 +1,87 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-4 pt-2">
+    <div class="row pt-2 mb-2">
+        <div class="col-md-12 mb-2" style="display: flex; justify-content: space-between;">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-book"></i> Online Screening Answers </h4>
+            </div>
+            <div>
+                <button *ngIf="query?.filters?.length >0 || hasFilter" type="button" (click)="resetFilters()"
+                    class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                    matTooltip="Clear filters">
+                    <i class="flaticon-refresh"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <mat-divider class="mb-2"></mat-divider>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+    </div>
+    <div style="height: 600px" *ngIf="!(isLoadingResults || items?.length >0 ) else table" class="alert alert-secondary"
+        role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="list-wrap">
+            <div class="row" [@collectionInOut]="items.length" perfectScrollbar
+                style="height: calc(100vh - 330px); margin-right: 0">
+                <div class="col-md-4 mb-5" *ngFor="let x of items">
+                    <mat-card class="px-0 pt-0 pb-0">
+                        <mat-card-header class="pt-2 px-2" style="    background: #fafdff;">
+                            <div mat-card-avatar>
+                                <img [title]="x.avatarUrl ? '':'Avatar placeholder from: avatars.adorable.io'"
+                                    style="height: inherit;border-radius: inherit;"
+                                    [src]="x.avatarUrl ? getUrl(x.avatarUrl):'https://api.adorable.io/avatars/face/eyes1/nose3/mouth9/7e7acc/200'"
+                                    alt="A">
+                            </div>
+                            <mat-card-title>
+                                <span [title]="x.fullName">
+                                    {{(x.fullName|| '').trim() | slice:0:28}}
+                                    {{ (x.fullName|| '').trim().length>28 ? '..':''}}
+                                </span>
+                                <span matTooltip="Total screening answers." class="m-badge x-badge m-badge--info">
+                                    {{x.answeredApplicationCounts}}
+                                </span>
+                            </mat-card-title>
+                            <mat-card-subtitle style="min-height: 40px">
+                                <span [title]="x.email" style="word-break: break-all"
+                                    *ngIf="!(x.experienceLevel && x.designation) else desi">
+                                    {{x.email | slice:0:30}}
+                                    {{(x.email || '').trim().length > 30 ? '..':''}}
+                                </span>
+                                <ng-template #desi>
+                                    <span [title]="(x.experienceLevel +' '+ x.designation)">
+                                        {{(x.experienceLevel +' '+ x.designation) | slice:0:30}}
+                                        {{(x.experienceLevel +' '+ x.designation || '').trim().length > 30 ? '..':''}}
+                                    </span>
+                                </ng-template>
+                            </mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content [title]="x.introText" class="px-3 pt-2">
+                            {{x.introText | slice:0:100}} {{(x.introText || '').length >100 ? '..':''}}
+                        </mat-card-content>
+                        <mat-card-actions class="d-flex justify-content-center pb-4">
+                            <button (click)="view(x.jobSeekerGuid)"
+                                class="btn m-btn--air  btn-sm btn-secondary m-btn m-btn--label-info m-btn--bolder x-btn"
+                                type="button"> View Answers
+                                <span class="m-type m--bg-info type-fixed-size ml-1 x-icon">
+                                    <i class="flaticon-eye m--font-light"></i>
+                                </span>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+    <div class="row mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || items?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

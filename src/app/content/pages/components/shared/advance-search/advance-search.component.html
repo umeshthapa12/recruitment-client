@@ -1,0 +1,6 @@
+<div  class="row mt-3 adjust-row-margin-for-mat-panel" [@collectionInOut]="items.length">
+    <div class="col-md-4" *ngFor="let d of items">
+       <chip-list-auto [clearSelected]="clearInputs" [controlName]="d.formControlName" [filterFormGroup]="filterForm" [inputPlaceholder]="d.label"
+                       [masterChips]="d.data"></chip-list-auto>
+    </div>
+</div>

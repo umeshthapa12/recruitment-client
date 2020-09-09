@@ -1,0 +1,107 @@
+<div class="m-widget4" [@collectionInOut]="jobLists?.length">
+    <div class="m-widget4__item mb-5 mt-2" *ngFor="let opening of jobLists; let i=index;">
+        <div class="m-widget4__img m-widget4__img--pic pt-3 pl-3"
+            style="border-radius: 0; width: 6rem; vertical-align: top">
+            <img fallback-img-src [src]="(opening?.companyLogoUrl)" alt="Logo" style="border-radius: 0; width: 6rem;">
+        </div>
+        <div class="m-widget4__info">
+            <div class="row" style="position: relative;">
+                <div class="pt-3 mb-4 pb-1" [ngClass]="windowWidth <= 1366 ?'col-md-7': 'col-md-8'">
+                    <div class="h4 m--font-info">
+                        <a [routerLink]="createJobLink(opening)" class="m-link m-link--primary font-dark">
+                            {{opening?.jobTitle}}
+                        </a>
+                    </div>
+                    <div class="h6 mt-2 mb-1">
+                        <a [routerLink]="createCompanyLink(opening)" class="m-link m-link--primary font-dark"><i class="la la-industry"></i>
+                            {{opening?.companyName}}
+                        </a>
+                    </div>
+                    <div class="h6 mt-2 mb-1">
+                        <i class="flaticon-pin"></i>
+                        {{opening?.companyAddress}}
+                    </div>
+                    <div class="col px-0 mt-3" id="skills">
+                        <span [title]="s" *ngFor="let s of opening?.skillKeywords"
+                            class="m-badge m-badge--wide badge-secondary mb-1 mr-1"
+                            style="padding: 1px 6px; border-radius: 0">
+                            {{(s || '').length > 20 ? ((s|slice:0:20) +'..'):s}}
+                        </span>
+                    </div>
+                </div>
+                <div class="custom-background-reverse" [ngClass]="windowWidth <= 1366 ? 'col-md-5': 'col-md-4'">
+                    <div class="row">
+                        <div class="col-12 px-0">
+                            <a
+                                class=" btn m-btn--square btn-block m-btn btn-sm m-btn--secondary text-center m--font-bolder m--font-brand custom-background">
+                                <span class="m-link m-link--accent font-dark">
+                                    {{opening?.jobTypes | mJoin:', '}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 px-0 pb-0 adjust-mobile-position">
+                            <div class="px-3  mb-2" style="color: #636363 !important; font-size: 12px;">
+                                <div class="row">
+                                    <div class="col-6 pr-0"
+                                        [title]="((opening?.visitCounts || 0) | number)+ ' times viewed'">
+                                        <i class="flaticon-eye m--font-danger" style="vertical-align: middle;"></i>
+                                        <span class="m--font-bolder ml-2">
+                                            {{(opening?.visitCounts || 0) | number}}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 pr-0" [matTooltipDisabled]="!opening?.salary"
+                                        [matTooltip]="(opening?.salary || 'negotiable')" matTooltipPosition="above"
+                                        matTooltipClass="m--bg-light m--font-primary m--font-bold mat-elevation-z5 mb-1">
+                                        <i class="la la-money  m--font-primary"
+                                            style="vertical-align: text-bottom;"></i>
+                                        <span class="m--font-bolder ml-2">
+                                            {{(opening?.salary || '').length > 15 ? ((opening?.salary|slice:0:15) +'..'):(opening?.salary || 'negotiable')}}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 pr-0" [matTooltip]="(opening?.defaultExperience || 'Check in the job description.')"
+                                        matTooltipPosition="above"
+                                        matTooltipClass="m--bg-light m--font-primary m--font-bold mat-elevation-z5 mb-1">
+                                        <i class="flaticon-suitcase  m--font-metal" style="vertical-align: middle;"></i>
+                                        <span class="m--font-bolder ml-2">
+                                            {{
+                                            (opening?.defaultExperience || '').length > 10 ?
+                                            ((opening.defaultExperience|slice:0:10) +'..') :
+                                             (opening?.defaultExperience || 'unspecified')
+                                            }}
+                                        </span>
+                                    </div>
+                                    <div class="col-6 pr-0" [title]="'Valid until '+ (opening?.expiresOn | date) ">
+                                        <i class="flaticon-stopwatch  m--font-warning"></i>
+                                        <span class="m--font-bolder ml-2">{{opening?.expiresOn | remainingDays }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group m-btn-group btn-group-sm m-btn-group--air pull-right btn-block icon-animator custom-box-shadow-group"
+                                role="group">
+                                <button (click)="onAction('like',opening)" type="button"
+                                    class="m-btn btn btn-secondary action-icon" style="width: 100%">
+                                    <i [ngClass]="hasValue((jsLikedId$ | async),opening.id) ? 'fa fa-thumbs-up':'flaticon-like'"
+                                        class=" m--font-info"></i>
+                                    {{opening?.likeCounts || 0}}
+                                </button>
+                                <button (click)="onAction('fav',opening)" type="button"
+                                    class="m-btn btn btn-secondary action-icon" style="width: 100%">
+                                    <i [ngClass]="hasValue((jsFavJobId$ | async),opening.id) ? 'la-star':'la-star-o'"
+                                        class="la m--font-warning"></i>
+                                </button>
+                                <a [href]="'/jobs/api/v2.0/Job/DownloadJobAsPdf/'+opening.id" target="_blank"
+                                    class="m-btn btn btn-secondary action-icon" style="width: 100%"><i
+                                        class="flaticon-download m--font-metal"></i></a>
+                                <button (click)="onAction('share',opening)" type="button"
+                                    class="m-btn btn btn-secondary action-icon" style="width: 100%"><i
+                                        class="flaticon-share m--font-primary"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

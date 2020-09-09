@@ -1,0 +1,106 @@
+<div class="m-login m-login--6">
+    <div class="m-login__wrapper" style="padding: 5px">
+
+        <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-dismissible" role="alert"
+            [ngClass]="{'alert-success':!isError,'alert-danger':isError}"  *ngIf="response || response?.error?.messageBody">
+            <div class="m-alert__icon">
+                <i class="flaticon-exclamation-1"></i>
+                <span></span>
+            </div>
+            <div class="m-alert__text">
+                {{ response?.messageBody || response?.error?.messageBody }}
+            </div>
+            <div class="m-alert__close">
+                <button (click)="response = null" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+        </div>
+        <div class="m-login__body mt-0">
+
+            <!--begin::Signin-->
+            <div class="m-login__signin" style="max-width: 100%;">
+                <div class="m-login__title mt-2 mb-1">
+                    <h4>Login to <span class="m--font-primary">Job Seeker</span> account</h4>
+                </div>
+
+                <!--begin::Form-->
+                <form (keyup.enter)="lgn.click()" class="m-login__form m-form no-margin" [formGroup]="loginForm">
+                    <div class="form-group m-form__group">
+                        <input class="form-control m-input form-control-sm" formControlName="email" type="text"
+                            placeholder="Email" style="border-radius: 0">
+                        <span *ngIf="displayMessage?.email" class="m--font-danger">{{displayMessage?.email}}</span>
+
+                    </div>
+                    <div class="form-group m-form__group">
+                        <input class="form-control m-input m-login__form-input--last form-control-sm" type="password"
+                            placeholder="Password" formControlName="password" style="border-radius: 0">
+                        <span class="m--font-danger" *ngIf="displayMessage?.password">
+                            {{displayMessage?.password}}
+                        </span>
+                    </div>
+                </form>
+                <!--end::Form-->
+                
+                <!--begin::Action-->
+                <div class="m-login__action mt-3 mb-2">
+
+                    <label class="m-checkbox m-checkbox--check-bold m-checkbox--state-brand">
+                        <input type="checkbox">Remember me
+                        <span></span>
+                    </label>
+
+                    <a routerLink="/jobseeker/password-recover" class="m-link no-margin">
+                        <span style="color: #aba9b4">Forgot password?</span>
+                    </a>
+                </div>
+                <div class="m-login__action mt-3 mb-2" style="justify-content: center">
+
+                    <button #lgn [disabled]="isWorking" [ngClass]="{'m-loader m-loader--info m-loader--right':isWorking}" (click)="login()" class="btn btn-outline-primary  m-btn  m-btn  m-btn--air m-login__btn m-login__btn--primary pt-2 pb-2 ">  <span>Login</span></button>
+
+                </div>
+                <div class="m-login__action mt-4 mb-2" style="justify-content: center">
+                    Don't have an account yet? <a routerLink="/jobseeker/register" class="m-link no-margin">
+                        <span class="ml-1"> Register now!</span>
+                    </a>
+                </div>
+                <!--end::Action-->
+
+                <!--begin::Divider-->
+                <div class="m-login__form-divider">
+                    <div class="m-divider">
+                        <span></span>
+                        <span>OR</span>
+                        <span></span>
+                    </div>
+                </div>
+                <!--end::Divider-->
+
+                <!--begin::Options-->
+                <div class="m-login__options mb-4">
+                    <a href="javascript:;" class="btn btn-outline-primary m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </span>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-outline-info m-btn--outline-2x m-btn  btn-sm  m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </span>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-outline-danger m-btn--outline-2x m-btn btn-sm m-btn  m-btn m-btn--icon">
+                        <span>
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </span>
+                    </a>
+                </div>
+                <!--end::Options-->
+            </div>
+            <!--end::Signin-->
+        </div>
+    </div>
+</div>

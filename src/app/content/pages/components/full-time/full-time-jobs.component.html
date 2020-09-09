@@ -1,0 +1,51 @@
+<!--Begin::Section-->
+<div class="m-portlet m-portlet--responsive-mobile m-portlet-no-top-shadow" style="margin: 0; position: relative;">
+	<div class="m-portlet__body">
+		<div list-sticky-header class="row">
+			<div class="col-md-12 px-0">
+				<div class="form-group m-form__group mb-0">
+					<label><i class="la la-filter"></i> Filter by</label>
+					<div class="input-group m-input-group--pill">
+						<input type="text" class="form-control m-input--solid m-input--square"
+							[formControl]="searchInputCtrl" placeholder="Keywords, company, location..">
+						<div class="input-group-append">
+							<button (click)="updateSearchInput()"
+								class="btn btn-accent btn-sm  parent-btn-hover-child-transform" type="button">
+								<span class=" icon-box m-badge m-badge--accent px-2 pt-1 m-badge--square">
+									<i class="fa flaticon-search"></i>
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 px-0">
+				<div *ngIf="isLoading && !(jobLists?.length > 0);">
+					<content-list-placeholder></content-list-placeholder>
+					<content-list-placeholder></content-list-placeholder>
+					<content-list-placeholder></content-list-placeholder>
+				</div>
+				<div *ngIf="!(isLoading || jobLists?.length > 0);" class="col m--font-metal px-0">
+					<div class="m-alert m-alert--icon m-alert--air m-alert--square alert" role="alert">
+						<div class="m-alert__icon">
+							<i class="la la-warning"></i>
+						</div>
+						<div class="m-alert__text px-1">
+							<strong>Whoops!</strong> There are no jobs matching your search terms.
+						</div>
+					</div>
+				</div>
+				<div *ngIf="!(isLoading && jobLists?.length > 0);">
+					<job-list (listActionEvent)="onListActionChange.emit($event)" [jobLists]="jobLists"></job-list>
+				</div>
+			</div>
+			<div class="col-12">
+				<!-- Disable when the total length is under the page size -->
+				<mat-paginator [disabled]="paginator.length <= 10" [showFirstLastButtons]="true"  [pageSize]="10" [pageSizeOptions]="[10, 20, 25, 50]">
+				</mat-paginator>
+			</div>
+		</div>
+	</div>
+</div>

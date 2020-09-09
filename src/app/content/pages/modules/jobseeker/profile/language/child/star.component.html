@@ -1,0 +1,10 @@
+<div [@fadeInX]="coppiedStars?.length" (mouseleave)="starFocus(null)">
+    <div style="display: inline-block;" *ngFor="let s of coppiedStars; trackBy: trackByStars" >
+        <i *ngIf="selectedLang === s.langId || s.langId <= 0 ; else readonlyEl" [matTooltip]="s.text" matTooltipPosition="above"  (mouseenter)="starFocus(s)"
+            class="la m--font-primary mr-2 lang-star" [ngClass]="{'m--font-warning la-star': s.isFocused || s.isSelected, 'la-star-o': !(s.isFocused || s.isSelected)}"
+            (click)="clickedStar(s)"></i>
+        <ng-template #readonlyEl>
+            <i [matTooltip]="s.text" matTooltipPosition="above" [ngClass]="{'m--font-warning la-star': s.isSelected, 'la-star-o': !s.isSelected}" (mouseenter)="starFocus(s)" class="la la-star-o m--font-brand mr-2 "></i>
+        </ng-template>
+    </div>
+</div>

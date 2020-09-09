@@ -1,0 +1,161 @@
+<mat-progress-bar style="height: 2px;" *ngIf="isLoading" mode="indeterminate" color="warn"></mat-progress-bar>
+<div *ngIf="!isLoading && content?.jobTitle" class="mb-5 px-3" style="background: #fcfcff">
+    <div class="row row-hover pt-2 mt-2">
+        <div class="col-md-3 col-12 mb-1">Job Title</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.jobTitle}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Job Category</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.jobCategory}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Experience Level(s)</div>
+        <div class="col-md-9 col-12 mb-1 d-inline-flex">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+            <span class="m--font-bolder">
+                <span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+                    *ngFor="let e of content?.experienceLevel; ">
+                    {{e}}
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Job Type(s)</div>
+        <div class="col-md-9 col-12 mb-1 d-inline-flex">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+            <span class="m--font-bolder">
+                <span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+                    *ngFor="let e of content?.jobTypes; ">
+                    {{e.jobType}}
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Job Location(s)</div>
+        <div class="col-md-9 col-12 mb-1 d-inline-flex">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+            <span class="m--font-bolder">
+                <span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+                    *ngFor="let j of content?.jobLocations; ">
+                    {{j.location}}
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Openings</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.noOfOpenings}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.salary">
+        <div class="col-md-3 col-12 mb-1">Salary</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.salary}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.defaultExperience">
+        <div class="col-md-3 col-12 mb-1">Required Work Experience</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.defaultExperience}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.minAge">
+        <div class="col-md-3 col-12 mb-1">Minimum Age</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.minAge}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.maxAge">
+        <div class="col-md-3 col-12 mb-1">Maximum Age</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.maxAge}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.maritalStatus">
+        <div class="col-md-3 col-12 mb-1">Marital Status</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.maritalStatus}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3" *ngIf="content?.gender">
+        <div class="col-md-3 col-12 mb-1">Gender</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.gender}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Valid Until</div>
+        <div class="col-md-9 col-12 mb-1">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3"></span>
+            <span class="m--font-bolder">{{content?.expiresOn | date}}</span>
+        </div>
+    </div>
+    <div class="row row-hover mt-3">
+        <div class="col-md-3 col-12 mb-1">Skill Keywords(s)</div>
+        <div class="col-md-9 col-12 mb-1 d-inline-flex">
+            <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mx-3 mt-2"></span>
+            <span class="m--font-bolder">
+                <span class="m-badge skills-badge m--font-bold mb-1 mr-1 skills-badge"
+                    *ngFor="let s of content?.skillKeywords; ">
+                    {{s}}
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12 h5 m-label-font-color-3">Job Description</div>
+            <div class="col-md-12" id="job-desc" [perfectScrollbar]="{wheelPropagation: true}"
+                style="max-height: 500px;"></div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="content?.jobSpecification">
+        <div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12 h5 m-label-font-color-3">Job Specification / Requirements</div>
+            <div class="col-md-12" id="job-spec" [perfectScrollbar]="{wheelPropagation: true}"
+                style="max-height: 500px;"></div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="content?.preferred">
+        <div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12 h5 m-label-font-color-3">Preferred</div>
+            <div class="col-md-12" id="job-pref" [perfectScrollbar]="{wheelPropagation: true}"
+                style="max-height: 500px;"></div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="content?.benefits">
+        <div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12 h5 m-label-font-color-3">Benefits</div>
+            <div class="col-md-12" id="job-benef" [perfectScrollbar]="{wheelPropagation: true}"
+                style="max-height: 500px;"></div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="content?.applyProcedure">
+        <div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+        <div class="row">
+            <div class="col-md-12 h5 m-label-font-color-3">Apply Procedure</div>
+            <div class="col-md-12" id="job-apply-proc" [perfectScrollbar]="{wheelPropagation: true}"
+                style="max-height: 500px;"></div>
+        </div>
+    </div>
+</div>

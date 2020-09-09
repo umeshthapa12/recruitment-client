@@ -1,0 +1,138 @@
+<div matDialogTitle class="mb-0" cdkDrag [cdkDragRootElement]="'.cdk-overlay-pane'"
+    [cdkDragBoundary]="'.cdk-overlay-container'">
+    <div class="row">
+        <div cdkDragHandle style="cursor: move" class="col-md-7">
+            <h5 class="m--font-brand"> Send Message </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<form [formGroup]="messageForm" autocomplete="off">
+    <div [@fadeIn]="responseMessage || errors?.length>0">
+        <div class="alert" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+            *ngIf="responseMessage || errors?.length>0">
+            <div class="alert-icon"><i class="flaticon-warning"></i></div>
+            <div class="alert-text" style="width: 93%">
+                <span *ngIf="errors?.length > 0; else msgBlock">
+                    <span class="row" [@fadeIn]="errors?.length">
+                        <div class="col-12 mb-1 m--font-bolder"> {{ responseMessage}} </div>
+                        <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+                    </span>
+                </span>
+                <ng-template #msgBlock> {{ responseMessage}} </ng-template>
+            </div>
+            <div class="alert-close pt-0" style="width: 20px">
+                <button type="button" class="close pt-0" (click)="clearErrors()" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div matDialogContent class="mr-0" perfectScrollbar>
+        <div class="row mat-form-field__box">
+            <div class="col-md-4">
+                <mat-form-field class="w-100" appearance="outline" floatLabel="always">
+                    <mat-label>Mail Template Subject</mat-label>
+                    <mat-select formControlName="mailTemplateId" placeholder="Select a mail template">
+                        <mat-option *ngFor="let j of mailTemplates" [value]="j.key">{{j.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="displayMessage?.mailTemplateId">
+                        {{displayMessage?.mailTemplateId}}
+                    </mat-error>
+                    <i matSuffix matTooltipPosition="above" matTooltipClass="m--font-warning m--font-boldest"
+                        matTooltip="Select a predefined template to populate message body where you can customize / change as necessary before you send to the end user. You can also copy paste your own template to the message body and use tools to readjustment."
+                        class="flaticon-questions-circular-button m--font-info ml-2" style="font-size: 25px;"></i>
+                </mat-form-field>
+            </div>
+            <div class="col-md-8">
+                <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+                    <mat-label>Subject</mat-label>
+                    <input matInput formControlName="subject" type="text"
+                        placeholder="Mail Subject / Title (customize as necessary)" required>
+                    <mat-error  *ngIf="displayMessage?.subject">
+                        {{displayMessage?.subject}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <mat-checkbox title="Default messaging option" disabled checked="true">Mail</mat-checkbox>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-checkbox matTooltip="Whether to send SMS message" #sms formControlName="isSendSms">SMS
+                        </mat-checkbox>
+                    </div>
+                    <mat-form-field appearance="outline" floatLabel="always" class="col-md-4">
+                        <mat-label>Appointment Date</mat-label>
+                        <input formControlName="appointmentDate" (focus)="apd.open()" (click)="apd.open()" matInput
+                            type="text" placeholder="Appointment Date" [matDatepicker]="apd">
+                        <mat-datepicker #apd></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="col-md-4">
+                        <mat-label>Appointment Time</mat-label>
+                        <input formControlName="appointmentTime" matInput type="time" placeholder="Appointment Time">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-12 form-group" [@fadeIn]="sms.checked">
+                <mat-form-field *ngIf="sms.checked" appearance="outline" floatLabel="always">
+                    <mat-label>SMS Text</mat-label>
+                    <textarea formControlName="smsText" matInput rows="2" placeholder="SMS text body"></textarea>
+                    <mat-error  *ngIf="displayMessage?.smsText">
+                        {{displayMessage?.smsText}}
+                        {{ (messageForm.get('smsText').value || '').trim().length+ ' / ' +'160'
+                    }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <mat-form-field appearance="fill" floatLabel="always" class="mb-3">
+            <mat-label>Message Body</mat-label>
+            <input type="text" class="m--hide" matInput formControlName="messageBody" required>
+            <div #messageBody style="min-height:200px; max-height: 250px; overflow: auto; border: none;"
+                perfectScrollbar>
+            </div>
+            <mat-error class="m--font-danger mb-2" *ngIf="displayMessage?.messageBody">
+                {{displayMessage?.messageBody}}
+            </mat-error>
+            <div [@fadeIn]="isMessageBodyLoading">
+                <mat-progress-bar *ngIf="isMessageBodyLoading" mode="indeterminate" color="warn"></mat-progress-bar>
+            </div>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+            <mat-label>Remarks</mat-label>
+            <textarea matInput rows="4" placeholder="Message remarks (Saves locally)"
+                formControlName="remarks"></textarea>
+            <mat-error  *ngIf="displayMessage?.remarks">
+                {{displayMessage?.remarks}}
+            </mat-error>
+
+        </mat-form-field>
+    </div>
+</form>
+<div matDialogActions style="display: flex; justify-content: center; margin-bottom: 0">
+    <button matTooltip="Send Message" matTooltipPosition="above"
+        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+        [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}" [matMenuTriggerFor]="ops">
+        <i *ngIf="!isWorking" class="la la-angle-up"></i>
+    </button>
+    <mat-menu #ops xPosition="before" yPosition="above">
+        <button mat-menu-item (click)="onSubmission('')">
+            <i class="flaticon-mail m--font-info mr-1"></i> Send Immediately</button>
+        <button mat-menu-item (click)="onSubmission('timer')">
+            <i class="flaticon-stopwatch m--font-warning mr-1"></i> Set Auto Send Timer</button>
+    </mat-menu>
+    <button matTooltip="Dismiss" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+</div>

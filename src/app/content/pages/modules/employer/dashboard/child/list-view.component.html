@@ -1,0 +1,42 @@
+<div  class="m-widget5">
+        <div class="m-widget5__item mb-0" *ngFor="let j of jobs; let o = odd;">
+            <div class="m-widget5__content pt-3">
+                <div class="m-widget5__section">
+                    <h4 class="m-widget5__title">
+                        <a href="javascript:;" class="m-link font-dark">{{j.jobTitle}}</a>
+                        <span class="job-action" title="Edit this job">
+                            <i class="flaticon-edit fa-1x m--font-bold"></i>
+                        </span>
+                    </h4>
+                    <!-- <span class="m-widget5__desc">
+                      
+                    </span> -->
+                    <div class="m-widget5__info">
+                        <span class="m-widget5__author">
+                           Openings:
+                        </span>
+                        <span class="m-widget5__info-author m--font-info">
+                            {{j.noOfOpenings}}
+                        </span>
+                        <span class="m-widget5__info-label">
+                            Valid until:
+                        </span>
+                        <span class="m-widget5__info-date m--font-info">
+                            {{j.expiresOn | date}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="m-widget5__content px-3 pull-right">
+                <div class="m-widget5__stats1">
+                    <span class="m-widget5__number">{{(j.visitCounts | number) || 0}}</span><br>
+                    <span class="m-widget5__sales">Job Views</span>
+                </div>
+                <div class="m-widget5__stats2">
+                    <span class="m-widget5__number">{{(j.applicantsCount | number) || 0}}</span><br>
+                    <span class="m-widget5__votes">Applied</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  

@@ -1,0 +1,56 @@
+<div class="cover-wrapper cover-wrapper-desktop" >
+	<div class="cover-bg" >
+		<div class="cover-overlay">
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body m-container m-container--responsive m-container--xxl m-page__container"
+				style="height:100%; padding-top: 0;align-items: flex-end;" >
+				<div class="m-grid__item m-grid__item--fluid m-wrapper position-relative" >
+					<div class="m-content m--font-light pb-0 pt-0" >
+						<div class="row" >
+							<div  class="inner-info-wrap">
+								<div class="col-12 mb-2">
+									<h1 style="font-size:45px ">Best Place To Grow Your Career!</h1>
+								</div>
+								<div class="col-12 mb-2">
+									<h5>Jobs, Employments, Career Opportunities & much more..</h5>
+								</div>
+								<div class="col-12 mb-2">
+									<p>
+										Finding your next job or career more than 1000+ availabilities
+									</p>
+								</div>
+								<div [@fadeInX]="isCoverPage"  class="col-md-12 search-input">
+									<mat-form-field *ngIf="isCoverPage" appearance="fill" floatLabel="never">
+										<input autocomplete="off" type="text" matInput placeholder="Search by: keywords, company, location, job type">
+										<span matSuffix>
+											<button type="button"
+												class="btn m-btn--square m-btn m-btn--gradient-from-primary m-btn--gradient-to-info">Search</button>
+										</span>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="col-12" *ngIf="mappedNavForCoverPage(nav$ | async)?.length >0">
+								<div style="min-height: 20px;width: 100%; position: relative;
+							bottom: -2px;
+							right: 0; font-weight: 900 !important">
+									<ul class="nav nav-tabs mb-0" role="tablist">
+										<li class="nav-item" *ngFor="let link of mappedNavForCoverPage(nav$ | async)"
+											style="margin: 0 0 0 1px">
+											<a class="nav-link {{ rla.isActive ?'m--font-brand':' m--font-light'}}"
+												[routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
+												[class.active]="rla.isActive" [routerLinkActiveOptions]={exact:true}>
+												{{link.label}}
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="cover-right-aside-desktop cover-right-aside-mobile-hide h-100">
+					<aside-right-cover></aside-right-cover>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

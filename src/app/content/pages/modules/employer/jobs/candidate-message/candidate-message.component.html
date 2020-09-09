@@ -1,0 +1,129 @@
+<div class="m-portlet position-relative bg-transparent mb-0 px-2 pt-2">
+    <div class="row pt-2 mb-2">
+        <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+            <div>
+                <h4 class=" m--font-brand"><i class="flaticon-mail"></i> Candidate Messages </h4>
+            </div>
+            <div>
+                <button *ngIf="query?.filters?.length >0 || hasFilter" type="button" (click)="resetFilters()"
+                    class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn ml-3"
+                    matTooltip="Clear filters">
+                    <i class="flaticon-refresh"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner strokeWidth="3" diameter="60"></mat-spinner>
+    </div>
+    <div style="height: 600px" *ngIf="!(isLoadingResults || items?.length >0 ) else table" class="alert alert-secondary"
+        role="alert">
+        <div class="alert-text text-center 	m-label-font-color-1">
+            <h4><i class="flaticon-information" style="font-size: 2.4rem"></i> No record found</h4>
+        </div>
+    </div>
+    <ng-template #table>
+        <div class="table-container">
+            <mat-accordion [@collectionInOut]="items?.length" displayMode="flat" class="xpan-table mat-table" hideToggle
+                perfectScrollbar>
+                <section matSort class="xpan-header mat-header-row">
+                    <div class="mat-header-cell" style="max-width: 85px">SN</div>
+                    <div class="mat-header-cell">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'fullName')" [sortLabel]="'fullName'"
+                            [headerLabel]="'Full Name'">
+                        </header-dropdown-filter>
+                    </div>
+                    <div class="mat-header-cell">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'email')" [sortLabel]="'email'"
+                            [headerLabel]="'Email'">
+                        </header-dropdown-filter>
+                    </div>
+                    <div class="mat-header-cell">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'age')" [sortLabel]="'age'"
+                            [headerLabel]="'Age'">
+                        </header-dropdown-filter>
+                    </div>
+                    <div class="mat-header-cell">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'totalMessage')"
+                            [sortLabel]="'totalMessage'" [headerLabel]="'Total Messages'">
+                        </header-dropdown-filter>
+                    </div>
+                    <div class="mat-header-cell">
+                        <header-dropdown-filter (filterSubmitted)="filter($event, 'lastSent')" [sortLabel]="'lastSent'"
+                            [headerLabel]="'Last Sent'">
+                        </header-dropdown-filter>
+                    </div>
+                </section>
+                <mat-expansion-panel #pnl *ngFor="let d of items;"
+                    (expandedChange)="xpanChange($event, d.id, d.jobSeekerGuid)"
+                    [style.background]="pnl.expanded ? '#f1f1f2':''">
+                    <mat-expansion-panel-header class="xpan-row mat-row" title="Toggle messages list">
+                        <span class="mat-cell" style="max-width: 85px">{{d.sn}}</span>
+                        <span class="mat-cell">{{d.fullName}}</span>
+                        <span class="mat-cell">{{d.email}}</span>
+                        <span class="mat-cell">{{d.age}}</span>
+                        <span class="mat-cell">{{d.totalMessage}}</span>
+                        <span class="mat-cell">{{d.lastSent | date}}</span>
+                    </mat-expansion-panel-header>
+                    <mat-progress-bar *ngIf="isLazyListLoading" color="warn" mode="indeterminate">
+                    </mat-progress-bar>
+                    <ng-template matExpansionPanelContent>
+                        <div *ngIf="!isLazyListLoading" class="child-data-container mb-5"
+                            [perfectScrollbar]="{swipeEasing:true}">
+                            <mat-table [trackBy]="trackById" [@collectionInOut]="dataSource?.data?.length"
+                                [dataSource]="dataSource" class="d-block border-0">
+                                <ng-container matColumnDef="jobTitle">
+                                    <mat-header-cell *matHeaderCellDef> Job Title / Position </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">{{el.jobTitle}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="subject">
+                                    <mat-header-cell *matHeaderCellDef> Subject </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">{{el.subject}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="email">
+                                    <mat-header-cell *matHeaderCellDef> Sent To </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">{{el.email}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="sentDate">
+                                    <mat-header-cell *matHeaderCellDef> Sent Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">{{el.sentDate | date}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="sentStatus">
+                                    <mat-header-cell *matHeaderCellDef>Sent Status </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">
+                                        <span class="m-badge m-badge--wide"
+                                            [ngClass]="el.sentStatus === true ? 'm-badge--success':'m-badge--warning'">
+                                            {{el.sentStatus === true ? 'Success':'Unsuccess'}}
+                                        </span>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="messageBody">
+                                    <mat-header-cell *matHeaderCellDef> Message Body </mat-header-cell>
+                                    <mat-cell *matCellDef="let el">
+                                        <button type="button" (click)="onAction(el.id,el.jobSeekerGuid)"
+                                            class="btn m-btn--pill btn-sm btn-secondary m-btn m-btn--label-info">
+                                            <span *ngIf="activatedId !== el.id">View</span>
+                                            <mat-spinner *ngIf="activatedId === el.id" [diameter]="20"
+                                                [strokeWidth]="2"></mat-spinner>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row [style.background]="selectedId === row.id?'#e7ebf9':''"
+                                    *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+                        </div>
+                    </ng-template>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </ng-template>
+    <div class="row mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <mat-paginator [disabled]="!(isLoadingResults || items?.length >0 )" [pageSize]="50"
+                [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

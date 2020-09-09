@@ -1,0 +1,78 @@
+<div class="row m-badge--dot-small">
+    <div class="col-md-6" *ngFor="let j of jobs">
+        <div class="m-widget24 mb-4">
+            <div class="m-widget24__item">
+                <h4 class="m-widget24__title mt-3">
+                    <a [href]="createJobLink(j)" target="_blank" class="m-link text-dark">{{j.jobTitle}}</a>
+                    <span class="job-action " title="Edit this job">
+                        <i class="flaticon-edit fa-1x m--font-bold"></i>
+                    </span>
+                </h4><br>
+                <span  class="m-widget24__desc text-dark desc-block">
+                    {{j.jobDescription }}
+                </span>
+                <span class="m-widget24__stats m--font-brand m--visible-desktop">
+                    <a href="#"
+                        class="btn btn-secondary m-btn--hover-accent m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill">
+                        <i class="flaticon-edit"></i>
+                    </a>
+                </span>
+                <div  class="col-12 px-0 pt-1 pb-1 m--margin-top-10 opening-detail-row">
+
+                    <span class="m-widget24__change mb-0">
+                        <span class="m-badge m-badge--brand m-badge--dot  m-badge--dot-small mx-2"></span>
+                        Openings
+                    </span>
+                    <span class="m-widget24__number mb-0 m--font-bolder">
+                        {{j.noOfOpenings}}
+                    </span>
+                </div>
+                <div  class="col-12 px-0 pt-1 pb-1 opening-detail-row">
+                    <span class="m-widget24__change mb-0">
+                        <span class="m-badge m-badge--brand m-badge--dot  m-badge--dot-small mx-2"></span>
+                        Experience Level
+                    </span>
+                    <span class="m-widget24__number mb-0 m--font-bolder">
+                        {{((j.experienceLevel | mJoin:', ') || '-')}}
+                    </span>
+                </div>
+                <div  class="col-12 px-0 pt-1 pb-1 opening-detail-row">
+                    <span class="m-widget24__change mb-0">
+                        <span class="m-badge m-badge--brand m-badge--dot  m-badge--dot-small mx-2"></span>
+                        Job Type
+                    </span>
+                    <span class="m-widget24__number mb-0 m--font-bolder">
+                        {{j.jobTypesDto | mJoin:', '}}
+                    </span>
+                </div>
+                <div  class="col-12 px-0 pt-1 pb-1 opening-detail-row">
+                    <span class="m-widget24__change mb-0">
+                        <span class="m-badge m-badge--brand m-badge--dot  m-badge--dot-small mx-2"></span>
+                        Valid until
+                    </span>
+                    <span class="m-widget24__number mb-0 m--font-bolder"> {{j.expiresOn |date}}</span>
+                </div>
+                <div class="col-12 px-0 pb-2 pt-2 opening-detail-row-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="m-widget24__change mb-0">
+                                <span class="m-badge m-badge--warning m-badge--dot  m-badge--dot-small mx-2"></span>
+                                Views
+                            </span>
+                            <span class="m-widget24__number mb-0 m--font-bolder">
+                                {{ (j?.visitCounts || 0)}}
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="m-widget24__change mb-0">
+                                <span class="m-badge m-badge--warning m-badge--dot  m-badge--dot-small mx-2"></span>
+                                Total Applied
+                            </span>
+                            <span class="m-widget24__number mb-0 m--font-bolder"> {{(j?.applicantsCount || 0)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

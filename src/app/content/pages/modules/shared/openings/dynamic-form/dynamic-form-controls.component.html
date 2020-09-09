@@ -1,0 +1,83 @@
+<div *ngIf="viewItem" [formGroup]="form" class="position-relative mt-2"
+        (click)="actionInvoked('selected',viewItem.key)" >
+        <div [ngSwitch]="viewItem.type" class="position-relative">
+                <div class="row mx-0 pb-3" *ngIf="(viewItem.type === type.checkbox || viewItem.type === type.radio)">
+                        <div class="col-md-9 px-0" title="Click to activate properties tab of this field">
+                                <mat-radio-group class="row w-100 mx-0" *ngSwitchCase="type.radio" [tabindex]="-1"
+                                        [id]="viewItem.key" [@fadeIn]="viewItem?.options?.length">
+                                        <mat-radio-button [id]="x.key" *ngFor="let x of viewItem.options; trackBy:trackByFn"
+                                                class="col-md-6" [required]="viewItem.required" [value]="x.label">
+                                                {{x.label}}</mat-radio-button>
+                                </mat-radio-group>
+                                <div class="row mx-0" *ngSwitchCase="type.checkbox" [tabindex]="-1" [id]="viewItem.key" [@fadeIn]="viewItem?.options?.length">
+                                        <mat-checkbox [id]="x.key" *ngFor="let x of viewItem.options; trackBy:trackByFn"
+                                                class="col-md-6" [required]="viewItem.required">
+                                                {{x.label}}
+                                        </mat-checkbox>
+                                </div>
+                        </div>
+                        <div class="col-md-3" (click)="$event.stopPropagation()"
+                                style="display: flex;justify-content: flex-end;padding-right: 8px;">
+                                <button (click)="actionInvoked('copy',viewItem.key)" matTooltip="Make a copy"
+                                        matTooltipPosition="above" type="button"
+                                        class="btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="la la-copy"></i>
+                                </button>
+                                <button (click)="actionInvoked('remove',viewItem.key)" matTooltip="Remove"
+                                        matTooltipPosition="above" type="button"
+                                        class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-delete"></i>
+                                </button>
+                        </div>
+                        <div class="col-12">
+                                <mat-hint *ngIf="viewItem.description">{{viewItem.description}}</mat-hint>
+                        </div>
+                </div>
+
+                <mat-form-field *ngIf="!(viewItem.type === type.checkbox || viewItem.type === type.radio)"
+                        appearance="outline" title="Click to activate properties tab of this field">
+                        <input [tabindex]="-1" *ngSwitchCase="type.textbox" 
+                                [id]="viewItem.key" matInput type="text" [placeholder]="viewItem.placeholder"
+                                [required]="viewItem.required">
+
+                        <!-- <input [tabindex]="-1" *ngSwitchCase="type.date" [formControlName]="viewItem.key"
+                                [id]="viewItem.key" matInput type="text" [placeholder]="viewItem.placeholder"
+                                (click)="dp.open()" [matDatepicker]="dp" [required]="viewItem.required"> -->
+
+                        <input [tabindex]="-1" *ngSwitchCase="type.date"
+                                [id]="viewItem.key" matInput type="text" [placeholder]="viewItem.placeholder"
+                                (click)="dp.open()" [matDatepicker]="dp" [required]="viewItem.required">
+                        <mat-datepicker #dp></mat-datepicker>
+
+                        <input [tabindex]="-1" *ngSwitchCase="type.time" 
+                                [id]="viewItem.key" matInput type="time" [placeholder]="viewItem.placeholder"
+                                [required]="viewItem.required">
+
+                        <textarea [tabindex]="-1" *ngSwitchCase="type.textarea" 
+                                [id]="viewItem.key" rows="2" matInput [placeholder]="viewItem.placeholder"
+                                [required]="viewItem.required"></textarea>
+
+                        <mat-select [tabindex]="-1" [id]="viewItem.key" *ngSwitchCase="type.dropdown"
+                                 disableRipple [placeholder]="viewItem.placeholder"
+                                [required]="viewItem.required">
+                                <mat-option *ngFor="let opt of viewItem.options; trackBy:trackByFn" [value]="opt.label">
+                                        {{opt.label}}
+                                </mat-option>
+                        </mat-select>
+
+                        <div title="Field Action" matSuffix style="display: table-caption;" (click)="$event.stopPropagation()">
+                                <button (click)="actionInvoked('copy',viewItem.key)" matTooltip="Make a copy"
+                                        matTooltipPosition="above" type="button"
+                                        class="btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="la la-copy"></i>
+                                </button>
+                                <button (click)="actionInvoked('remove',viewItem.key)" matTooltip="Remove"
+                                        matTooltipPosition="above" type="button"
+                                        class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+                                        <i class="flaticon-delete"></i>
+                                </button>
+                        </div>
+                        <mat-hint>{{viewItem.description}}</mat-hint>
+                </mat-form-field>
+        </div>
+</div>

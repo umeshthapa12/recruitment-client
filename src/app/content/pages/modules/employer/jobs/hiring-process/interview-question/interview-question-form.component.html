@@ -1,0 +1,112 @@
+<div matDialogTitle class="mb-0" cdkDrag [cdkDragRootElement]="'.cdk-overlay-pane'"
+    [cdkDragBoundary]="'.cdk-overlay-container'">
+    <div class="row">
+        <div cdkDragHandle style="cursor: move" class="col-md-7">
+            <h5 class="m--font-brand"> Set Question </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<form [formGroup]="questionForm" autocomplete="off">
+    <div [@fadeIn]="responseMessage || errors?.length>0">
+        <div class="alert" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+            *ngIf="responseMessage || errors?.length>0">
+            <div class="alert-icon"><i class="flaticon-warning"></i></div>
+            <div class="alert-text" style="width: 93%">
+                <span *ngIf="errors?.length > 0; else msgBlock">
+                    <span class="row" [@fadeIn]="errors?.length">
+                        <div class="col-12 mb-1 m--font-bolder"> {{ responseMessage}} </div>
+                        <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+                    </span>
+                </span>
+                <ng-template #msgBlock> {{ responseMessage}} </ng-template>
+            </div>
+            <div class="alert-close pt-0" style="width: 20px">
+                <button type="button" class="close pt-0" (click)="clearErrors()" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-close"></i></span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div matDialogContent class="mr-0" perfectScrollbar>
+        <div class="row mat-form-field__box">
+            <div class="col-md-8">
+                <mat-form-field class="w-100" appearance="outline" floatLabel="always">
+                    <mat-label>Question Title</mat-label>
+                    <input formControlName="questionTitle" matInput type="text" placeholder="Question Title">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+                    <mat-label>Difficulty</mat-label>
+                    <mat-select placeholder="Difficulty" formControlName="difficulty">
+                        <mat-option>Very Easy</mat-option>
+                        <mat-option>Easy</mat-option>
+                        <mat-option>Normal</mat-option>
+                        <mat-option>Hard</mat-option>
+                        <mat-option>Very Hard</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-form-field appearance="outline" class="w-100" floatLabel="always">
+            <mat-label>Question</mat-label>
+            <textarea formControlname="question" matInput rows="4" placeholder="Question"
+                formControlName="question"></textarea>
+        </mat-form-field>
+    </div>
+
+    <div class="row">
+        <div class="col-12" formArrayName="phoneNumbers">
+            <div class="form-group mb-0">
+                <div style="display: flex; justify-content: stretch; flex-wrap: wrap">
+                    <div class="col-md-10 px-0">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Question</mat-label>
+                            <input matInput type="text" placeholder="Enter a question." required>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 px-0" style="display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                height: 50px;">
+                        <button type="button"
+                            class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill"
+                            matTooltip="Remove this">
+                            <i class="flaticon-delete"></i>
+                        </button>
+                        <button type="button"
+                            class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill"
+                            matTooltip="Add another">
+                            <i class="flaticon-add"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div matDialogActions style="display: flex; justify-content: center; margin-bottom: 0">
+    <button matTooltip="Send Message" matTooltipPosition="above"
+        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+        [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}" [matMenuTriggerFor]="ops">
+        <i *ngIf="!isWorking" class="la la-angle-up"></i>
+    </button>
+    <mat-menu #ops xPosition="before" yPosition="above">
+        <button mat-menu-item (click)="onSubmission('')">
+            <i class="flaticon-mail m--font-info mr-1"></i> Send Immediately</button>
+        <button mat-menu-item (click)="onSubmission('timer')">
+            <i class="flaticon-stopwatch m--font-warning mr-1"></i> Set Auto Send Timer</button>
+    </mat-menu>
+    <button matTooltip="Dismiss" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+</div>

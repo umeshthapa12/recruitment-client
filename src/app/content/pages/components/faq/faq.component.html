@@ -1,0 +1,473 @@
+<div class="m-content">
+    <div class="m-portlet m-portlet--space" style="background-color: #f7f8fa;box-shadow: none;">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        FAQ
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="col-xl-3">
+                    <div class="m-tabs" data-tabs="true" data-tabs-contents="#m_sections">
+                        <ul class="m-nav m-nav--active-bg m-nav--active-bg-padding-lg m-nav--font-lg m-nav--font-bold m--margin-bottom-20 m--margin-top-10 m--margin-right-40"
+                            id="m_nav" role="tablist">
+                            <li class="m-nav__item">
+                                <a class="m-nav__link m-tabs__item" href="#">
+                                    <span class="m-nav__link-text">Jobseeker</span>
+                                </a>
+                                <ul
+                                    class="m-nav m-nav--active-bg m--margin-bottom-20 m--margin-top-10 m--margin-left-10">
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Profile
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Jobs
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >About Jobharu
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Profile Update
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="m-nav__item">
+                                <a class="m-nav__link m-tabs__item" data-tab-target="#m_section_2" href="#">
+                                    <span class="m-nav__link-text">Employer</span></a>
+                                <ul
+                                    class="m-nav m-nav--active-bg m--margin-bottom-20 m--margin-top-10 m--margin-left-10">
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Posting & Updating Vacancy Posts
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Types of Vacancy
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >About Jobharu Employer
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Service Costs
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a class="m-nav__link m-tabs__item" >Account/Profile
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="m-demo__preview">
+                            <div class="m-list-search">
+                                <div class="m-list-search__results">
+                                    <span class="m-list-search__result-category m-list-search__result-category--first">
+                                        Jobseeker
+                                    </span>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">Profile Registration</span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">Job Application</span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">About Jobharu</span>
+                                    </a>
+                                    <span class="m-list-search__result-category m-list-search__result-category--first">
+                                        Employer
+                                    </span>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">Profile Registration</span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">Job Application</span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-text">About Jobharu</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div> -->
+                </div>
+                <div class="col-xl-9">
+                    <div class="m-tabs-content" id="m_sections">
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Profile</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Which is the basic details for register at jobharu?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Registration is easy. Just Register for a new account by filling in the form
+                                    completely with your full name, a valid
+                                    email id, mobile number and password and click on the Create an Account button.</p>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        How much do you charge for job placement?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>We do not take charges from the candidates.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        How can I upload my Profile picture?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>It's simple. Just go to your profile and scroll to profile picture section and select
+                                    picture and click crop and save button.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        I have forgotten my password?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Don't worry! there is an option to reset your password.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Our data are safe in jobharu?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Yes, we are not use your data for other purpose.</p>
+                            </mat-expansion-panel>
+
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Jobs</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Can jobseeker post a job?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, only employer can post a job.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        I have applied for a job, who will respond me?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>The respective organizations will response you for the applied job vacancy.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Do I need to pay if I get job through jobharu?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, you don’t have to pay if you get hired through jobharu.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Can I apply for more than one job at a time?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Yes, you can apply more than one job at a time.
+                                </p>
+                            </mat-expansion-panel>
+                            <!-- <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Can we meet in person?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>It is normally not required to meet in person as part of jobharu's recruiting
+                                    process.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Can I reapply for the vacancy which I have already applied?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, you cannot reapply for the vacancy which you have already applied.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Can I find a job based on location?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Of course, you can search jobs by locations.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Does it cost anything to post my resume/ profile on merojob?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, it does not cost anything to register with jobharu. It is absolutely free to
+                                    register and apply.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What if my question is unanswered here?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Please contact us! We are committed to providing the easiest, fastest ways to find
+                                    reliable flexible jobs. We will always try to help you as best as we can.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        How will employers reach me?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Employers will reach you through your profile visit only after you have applied for
+                                    the job.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        How do I know if I have been selected for the job I have applied for?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>If you have been selected for the applied job, the respective organization will
+                                    inform you via telephone, sms or Email for further procedure.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        I have seen multiple jobs on your website, should I apply for all?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, you must apply for the jobs according to your background match and your
+                                    qualification.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        I am not registered with jobharu. Can I apply for vacancies?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>You must have to be a registered member at jobharu in order to apply for the
+                                    vacancies that are posted at jobharu.
+                                </p>
+                            </mat-expansion-panel> -->
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">About Jobharu</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Does jobharu guarantees us with Jobs?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>jobharu is an online job search portal in Nepal. We only act as mediator between
+                                    jobseekers and employer. If you meet all the requirements for any job you will have
+                                    to apply for the jobs yourself. If you are shortlisted for the applied post the
+                                    hiring company will contact you for further process.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Where is jobharu office located at?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Jobharu Located at Baisnodevi Marg, Ekantakuna-13 Lalitpur, Nepal
+                                </p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Profile update</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Do I need to update my profile before applying to a job vacancy?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Yes, you need to update your profile before applying for a job.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        How often do I need to update my profile?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>You have to update your profile at least once in six months to add new skills and
+                                    experiences.</p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Posting & Updating Vacancy Posts
+                        </h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        I am not registered with jobharu. Can I post job vacancies?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    You must have to be a registered member at jobharu in order to POST vacancies at
+                                    jobharu.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Is it possible to publish a job vacancy without disclosing my organization's
+                                        identity?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    No, you can not publish the job vacancy without the company name.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Will my posting appear on top of your page always?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    No, only jobs which is categorized by top jobs are appear on the top of the page.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        For how long will my published job vacancy remain at jobharu website?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    We have different job posting available. For more information contact us at
+                                    +9779851181542.
+                                </p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        When a job-seeker click on the Job tittle of the vacancy announced, where is
+                                        s/he redirected?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>If you clicked on the job title you will redirect at clicked job's more details page.
+                                </p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Types of Vacancy</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What do you mean by Top Job Service & Hot Job service?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p></p>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What is category Jobs?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    Job category is a section at jobharu that classifies the jobs according to various
+                                    categories. Some of the categories may be accounting, human resource, banking,
+                                    administration. This section is created to simplify the job search and posting for
+                                    both the job seekers &amp; the employers. Through job category, candidates can
+                                    search for jobs according to their field of interest. This section can be seen at
+                                    the bottom of the featured jobs.
+                                </p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">About Jobharu Employer</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What is Employer Account and why is it required?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>Employer is an Organization/Company who post the jobs. Only employer can post a job
+                                    so it is required.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Will I need to download any software to use jobharu?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>No, jobharu does not require any software, other than an Internet browser.</p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Service Costs</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What are the payment options available to us?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>You can pay through bank.
+                                    For bank account detail please contact your Client Relation Executive.</p>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Why do you charge higher service cost?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p></p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                        <h4 class="m--font-bold m--margin-top-15 m--margin-bottom-20">Account/Profile</h4>
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        What are the basic requirements for register employer account?
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>For create employer account you need to fill Organization name, email, contact number
+                                    and password.
+                                    For posting you need to update your profile.
+                                </p>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

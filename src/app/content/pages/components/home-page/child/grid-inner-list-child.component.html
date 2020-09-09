@@ -1,0 +1,12 @@
+<div class="m-list-timeline mt-1" style="min-height: 63px;">
+    <div class="m-list-timeline__items" [@collectionInOut]="limitedItems?.length">
+        <div  class="m-list-timeline__item" *ngFor="let op of limitedItems; let o = odd;" style="margin: 0; padding: 0">
+            <span class="m-list-timeline__badge m-list-timeline__badge--{{!o?'metal':'secondary'}}"></span>
+            <span class="m-list-timeline__text">
+                <a [routerLink]="createJobLink(op)" class="m-link m-link--primary font-dark">{{op.jobTitle}}</a>
+            </span>
+        </div>
+    </div>
+    <a href="javascript:;" *ngIf="openings?.length > 2" (click)="seeMoreJobs()" class="m-link m-link--info mt-1">See
+        {{state == 'more' ? 'More':'Less'}}</a>
+</div>

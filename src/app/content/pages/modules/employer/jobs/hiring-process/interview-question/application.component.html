@@ -1,0 +1,21 @@
+<h4 mat-dialog-title style="font-size: 14px;" cdkDrag [cdkDragRootElement]="'.cdk-overlay-pane'"
+    [cdkDragBoundary]="'.cdk-overlay-container'">
+    <span cdkDragHandle style="cursor: move" title="Drag me around">
+        Intro
+    </span>
+    <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right ml-3"
+        (click)="dialogRef.close()">
+        <i class="la la-close"></i>
+    </a>
+</h4>
+
+<!-- <mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoadingResults"></mat-progress-bar> -->
+<div mat-dialog-content class="table-container" perfectScrollbar>
+
+</div>
+<div mat-dialog-actions class="d-flex justify-content-center pb-4 pt-3">
+
+    <button type="button" class="btn btn-outline-metal m-btn btn-sm m-btn--outline-2x mx-2" mat-dialog-close>
+        <i class="la la-close"></i> Close
+    </button>
+</div>

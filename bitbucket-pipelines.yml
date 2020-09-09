@@ -1,0 +1,40 @@
+# guideline link: https://confluence.atlassian.com/bitbucket/yaml-anchors-960154027.html
+image: node:10.15.3
+definitions: 
+  steps:
+    - step: &build-test
+          name: "Build, Test & Publish"
+          caches:
+            - node
+          script:
+            - echo "runs an all branches if pipeline is enabled"
+            - npm install
+            - npm install @angular/cli -g
+            - ng build --prod --outputPath=dist  
+          artifacts: # defining the artifacts to be passed to each future step.
+            - dist/**
+    - step: &deploy
+           name: "Deploy to the FTP"         
+           deployment: test
+           script:
+             - echo "Deploy to the test server"
+             - pipe: atlassian/ftp-deploy:0.3.0
+               variables:
+                 USER: $DEV_STATIC_USERNAME      # username of the FTP server
+                 PASSWORD: $DEV_STATIC_PASSWORD  # password of the FTP server
+                 SERVER: "ftp://dev.jobharu.com" # Host of the FTP server
+                 REMOTE_PATH: "static/home"      # main path for static files.
+                 LOCAL_PATH:  dist               # local file path. (artifact)
+                 DEBUG: "true"
+
+pipelines:
+  branches:
+    release/*:
+      - step: *build-test
+      - step: *deploy
+    master:
+      - step: *build-test
+      - step:
+          <<: *deploy
+          deployment: production
+          trigger: manual

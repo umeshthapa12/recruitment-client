@@ -1,0 +1,37 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col md-7">
+            <h5 class="m--font-brand">{{title()}}</h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="onCancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<form class="m-form" [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div matDialogContent>
+        <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{title()}} Editor</mat-label>
+            <!--Just to make same design as material formField. Ugly fix -->
+            <input type="text" matInput [formControlName]="formControlName" required class="m--hide">
+            <!--this is the main editor to working with-->
+            <div #editor style="min-height:200px; max-height: 600px; overflow: auto; border:none"></div>
+        </mat-form-field>
+    </div>
+    <div class="m-separator m-separator--dashed m--space-10"></div>
+    <div style="display: flex; justify-content: center">
+        <button [disabled]="form.invalid" matTooltip="Save changes" matTooltipPosition="above"
+            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+            >
+            <i class="la la-check"></i>
+        </button>
+        <button type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipPosition="above"
+            class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+            <i class="la la-close"></i>
+        </button>
+    </div>
+</form>

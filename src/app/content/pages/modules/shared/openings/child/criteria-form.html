@@ -1,0 +1,213 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-7">
+            <h5 class="m--font-brand">
+                Criteria <span style="font-size: 12px;color: #9e9d9f;">(Values are compared & validated with candidate
+                    profile)</span>
+            </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="cancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<form [formGroup]="criteriaForm" autocomplete="off" style="background: #f9f9f9;">
+
+    <div [@fadeIn]="response || errors?.length>0 || isLoading">
+        <div *ngIf="isLoading">
+            <h5>Loading..</h5>
+            <mat-progress-bar color="warn" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div class="alert" role="alert" [ngClass]="{'alert-danger':isError, 'alert-success':!isError}"
+            *ngIf="response || errors?.length">
+            <button type="button" class="close pt-0" (click)="resetStates()">
+                <span><i class="la la-close"></i></span>
+            </button>
+            <i class="flaticon-warning"></i>
+            <span *ngIf="errors?.length > 0; else msgBlock">
+                <span class="row" [@fadeIn]="errors?.length">
+                    <div class="col-12 mb-1 m--font-bolder"> {{ response.messageBody}} </div>
+                    <div class="col-6" *ngFor="let e of  errors"> {{e.message}} </div>
+                </span>
+            </span>
+            <ng-template #msgBlock> {{ response.messageBody}} </ng-template>
+        </div>
+    </div>
+    <div matDialogContent class="mx-0">
+        <div class="row pb-4">
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="experience-level" class="col-8 col-form-label">Experience Level</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':exl?.checked,'m-switch--brand':!exl?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon"
+                            matTooltip="Evaluate Candidate's Experience Level" matTooltipPosition="above">
+                            <label>
+                                <input #exl formControlName="experienceLevel" id="experience-level" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="job-type" class="col-8 col-form-label">Job Type</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':jt?.checked,'m-switch--brand':!jt?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Job Type"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #jt formControlName="jobType" id="job-type" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="work-experience" class="col-8 col-form-label">Work Experience</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':de?.checked,'m-switch--brand':!de?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon"
+                            matTooltip="Evaluate Candidate's Work Experience" matTooltipPosition="above">
+                            <label>
+                                <input #de formControlName="defaultExperience" id="work-experience" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="skills" class="col-8 col-form-label">Skillset</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':sk?.checked,'m-switch--brand':!sk?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Skillset"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #sk formControlName="skillKeywords" id="skills" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 toggle-column">
+                <div class="row">
+                    <label for="location" class="col-8 col-form-label">Job Location</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':lo?.checked,'m-switch--brand':!lo?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Location"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #lo formControlName="location" id="location" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="qualification" class="col-8 col-form-label">Qualification</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':q?.checked,'m-switch--brand':!q?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon"
+                            matTooltip="Evaluate Candidate's Qualification" matTooltipPosition="above">
+                            <label>
+                                <input #q formControlName="qualification" id="qualification" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column">
+                <div class="row">
+                    <label for="gender" class="col-8 col-form-label">Gender</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':g?.checked,'m-switch--brand':!g?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Gender"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #g formControlName="gender" id="gender" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="marital-status" class="col-8 col-form-label">Marital Status</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':ms?.checked,'m-switch--brand':!ms?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon"
+                            matTooltip="Evaluate Candidate's Marital Status" matTooltipPosition="above">
+                            <label>
+                                <input #ms formControlName="maritalStatus" id="marital-status" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="min-age" class="col-8 col-form-label">Min Age</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':mn?.checked,'m-switch--brand':!mn?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Minimum Age"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #mn formControlName="minAge" id="min-age" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 toggle-column ">
+                <div class="row">
+                    <label for="max-age" class="col-8 col-form-label">Max Age</label>
+                    <div class="col-4">
+                        <span [ngClass]="{'m-switch--info':mx?.checked,'m-switch--brand':!mx?.checked}"
+                            class="m-switch m-switch--sm  m-switch--icon" matTooltip="Evaluate Candidate's Maximum Age"
+                            matTooltipPosition="above">
+                            <label>
+                                <input #mx formControlName="maxAge" id="max-age" type="checkbox">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<div matDialogActions style="display: flex;justify-content: center; margin: 1rem 0">
+    <button type="button" [disabled]="isWorking" matTooltip="Save Changes" matTooltipPosition="above" (click)="saveChanges('save')"
+        class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+        [ngClass]="{'m-loader m-loader--info':isWorking && workingFor === 'save', 'm-btn--hover-accent':!isWorking}">
+        <i *ngIf="!(isWorking && workingFor === 'save')" class="la la-check"></i>
+    </button>
+    <button matTooltip="Cancel" matTooltipPosition="above" [disabled]="isWorking" type="button" (click)="cancel()"
+        class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+        <i class="la la-close"></i>
+    </button>
+    <button type="button" [disabled]="notExist || isWorking || isLoading" matTooltip="Remove saved criteria data" matTooltipPosition="above"
+    class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+    [ngClass]="{'m-loader m-loader--danger':isWorking && workingFor === 'remove', 'm-btn--hover-danger':!isWorking}">
+         <i *ngIf="!(isWorking && workingFor === 'remove')" class="flaticon-delete" (click)="saveChanges('remove')"></i>
+    </button>
+</div>

@@ -1,0 +1,131 @@
+.mat-menu-item{
+    line-height: 0px !important;
+    height: 33px !important;
+}
+.icon-animator .icon-box, .animator span{
+    transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+    /*display:inline-block*/
+}
+.icon-animator button:hover .icon-box, .animator:hover span{
+    transform:  translate(-2px,0px) scale(1.07) rotate(-5deg);
+    box-shadow: 0.5px 0.5px 4px 0px rgba(100, 100, 100, 0.7);
+}
+
+.font-dark{
+    color:#1b1b1f;
+}
+
+.type-fixed-size{
+    height:22px;
+    width:22px;
+}
+
+.m-widget4__img--icon{
+    vertical-align: baseline !important;
+}
+.m-widget4__img--icon img{
+    width: 3.1rem !important;
+}
+.m-widget4__text{
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+.btn-placeholder{
+    background: #ececec; height: 25px; width: 100%;
+    -webkit-animation: pulse-aside 1s infinite ease-in-out;
+    animation: pulse-aside 2s infinite ease-in-out;
+}
+.text-placeholder{
+    background: #e8eaf7; height: 5px; width: 10%; border-radius: 15%;
+    -webkit-animation: pulse-aside 1s infinite ease-in-out;
+    animation: pulse-aside 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes pulse-aside-aside {
+    0% {
+        background-color: rgba(208, 211, 232, 0.1);
+    }
+    50% {
+        background-color: rgba(208, 211, 232, 0.5);
+    }
+    100% {
+        background-color: rgba(208, 211, 232, 0.1);
+    }
+}
+
+@keyframes pulse-aside {
+    0% {
+        background-color: rgba(208, 211, 232, 0.1);
+    }
+    50% {
+        background-color: rgba(208, 211, 232, 0.5);
+    }
+    100% {
+        background-color: rgba(208, 211, 232, 0.1);
+    }
+}
+
+.m-link{
+    color:#575962 !important
+}
+.user-avatar-circle{
+    position: absolute;
+    top: -68px;
+    left: 33%;
+    background: #fff;
+    padding: 3px;
+    border-radius: 50%;
+}
+.user-job-title{
+    font-size: 0.9rem; margin-top: 5px;
+}
+.custom-badge{
+    padding: 2px 5px !important;
+    font-size: 10px !important;
+    border-radius: unset !important;
+}
+.parent-btn-hover-child-transform span, .parent-btn-hover-icon-transform span:first-child{
+    transition: all .2s ease-in-out;
+
+}
+.parent-btn-hover-child-transform:hover span{
+    transform: rotate(-6deg) scale(1.05);
+    /*transform:  translate(4px,0px) scale(1.1)*/;
+    box-shadow: 0px 0px 2px 0px rgba(81, 77, 92, 0.7);
+}
+.parent-btn-hover-icon-transform:hover span:first-child{
+    transform:  translate(4px,0px) scale(1.1);
+
+}
+
+// employer
+.m-list-timeline__items .m-list-timeline__item .m-list-timeline__text{
+    font-size: 0.90rem !important;
+}
+.company-avatar-circle{
+    position: absolute;
+    top: -68px;
+    left: 33%;
+    background: #fff;
+    padding: 3px;
+    border-radius: 50%;
+    height: 90px;
+    width: 90px;
+}
+.company-avatar-circle-img{
+    height: 100%;
+    width: 100%;
+}
+.company-job-title{
+    font-size: 0.9rem; margin-top: 5px;
+}
+.custom-badge{
+    padding: 2px 5px !important;
+    font-size: 10px !important;
+    border-radius: unset !important;
+}
+
+.link-badge{
+    padding: 1px 2px; min-height: 10px; display: inline; line-height: normal
+}

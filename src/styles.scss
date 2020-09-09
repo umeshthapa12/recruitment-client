@@ -1,0 +1,333 @@
+/* You can add global styles to this file, and also import other style files */
+//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.no-padding{
+	padding: 0 !important;
+}
+.no-margin{
+	margin: 0 !important;
+}
+
+/*--- space fixig on mobile devices. modified by robin */
+@media (max-width: 1024px){
+	.m-aside-header-menu-mobile .m-menu__nav {
+		list-style: none;
+		padding: 70px 0 30px 0 !important;
+	}
+	.m-topbar .m-topbar__nav.m-nav>.m-nav__item.m-topbar__user-profile {
+		padding-right: 15px !important;
+	}
+}
+
+// box- border
+.box-border{
+	border-radius: 0 !important;
+}
+
+// header adjust by robin
+@media (min-width: 1025px){
+
+	.m-grid.m-grid--ver-desktop.m-grid--desktop {
+		padding-top: 120px;
+	}
+
+	.m-header-menu .m-menu__nav>.m-menu__item.m-menu__item--expanded>.m-menu__link>.m-menu__item-here:before, .m-header-menu .m-menu__nav>.m-menu__item.m-menu__item--active>.m-menu__link>.m-menu__item-here:before {
+		text-shadow: 0px 1px 4px rgba(255, 255, 255, 0.19);
+	}
+
+	.m-header--fixed.m-header--minimize-off .m-header .m-header__bottom {
+		box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.1);
+	}
+	.m-container {
+		width: 90%;
+	}
+	.m-header--fixed.m-header--minimize-off .m-header {
+		height: auto !important;
+	}
+	.m-header .m-header__top,
+	.m-header--fixed.m-header--minimize-off .m-header .m-header__top {
+		height: 60px !important;
+	}
+	.m-header .m-header__bottom{
+		height: 45px !important;
+	}
+}
+
+.apply-wrapper-shadow-both{
+	position: sticky;
+}
+.apply-wrapper-shadow-both:before, .apply-wrapper-shadow-both:after
+{
+	z-index: -1;
+	position: absolute;
+	content: "";
+	bottom: 14px;
+	left: 10px;
+	width: 50%;
+	top: 82%;
+	max-width: 190px;
+	background: transparent;
+	box-shadow: 0 15px 10px #304861;
+	-webkit-transform: rotate(-3deg);
+	-moz-transform: rotate(-3deg);
+	-o-transform: rotate(-3deg);
+	transform: rotate(-3deg);
+}
+
+
+.apply-wrapper-shadow-both:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+
+.pre-footer-bg{
+	box-shadow: none !important;
+    height: auto !important;
+	position: relative;
+	background: #201f2d;
+	background: -webkit-linear-gradient(to right, #201f2d, #1e272f) !important;
+	background: linear-gradient(to right, #201f2d, #1e272f) !important;
+}
+
+
+.pre-mobile-footer-bg{
+	box-shadow: none !important;
+    height: auto !important;
+	position: relative;
+	background: #2f80ed  !important;
+	background: -webkit-linear-gradient(to right, #00bed4, #2f80ed) !important;
+	background: linear-gradient(to right, #00bed4, #2f80ed) !important;
+}
+
+.newsletter {
+    position: relative;
+    width: 100%;
+    height: 35px;
+    border: 1px solid #7b7e8a63;
+   border-radius: 50px;
+	margin-top: 30px;
+}
+
+.newsletter INPUT {
+    padding: 0 90px 0 10px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    font-family: "hindlight";
+    color: #7b7e8a;
+}
+
+.newsletter INPUT:focus{
+	outline: none;
+}
+
+.newsletter BUTTON {
+	position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+    padding: 0 10px;
+    height: 23px;
+}
+
+// portlet shadow
+.m-portlet-no-top-shadow {
+    box-shadow: 0px 15px 15px 1px rgba(81,77,92,0.08) !important;
+}
+.mat-form-field{
+	width: 100%;
+}
+.mat-menu-panel-custom{
+	max-width: inherit !important;
+	border-radius: 0 !important;
+}
+
+// adjust default padding to custom on homepage company gird list
+#top-jobs .mat-expansion-panel-body {
+	padding: 0 1rem !important;
+}
+
+
+// custom badge
+.skills-badge{
+	transition: background .2s ease-in-out;
+	padding: 1px 6px; background: #e7eef8; color: #3e63a3;
+}
+
+.skills-badge:hover{
+
+	cursor:pointer;
+	color: #18376f;
+	background: #dae3f3;
+}
+
+.no-border{
+	border: none !important;
+}
+
+/*---------- Sticky header rules --------*/
+.sticky-header{
+	transition :all .2s ease-in-out;
+	margin :0 -28px;
+	top :60px;
+	position :-webkit-sticky;
+	position :sticky;
+	background :#FFFFFF !important;
+	padding :10px 15px;
+	overflow: hidden;
+}
+
+.sticky-header-show{
+	visibility: visible;
+	opacity: 1;
+	position: sticky;
+	position: -webkit-sticky;
+	transform: translateY(0px);
+}
+.sticky-header-hide{
+	visibility: hidden;
+	height: 0;
+	opacity: 0;
+	transform: translateY(-30px);
+	position: relative;
+}
+
+.sticky-header-shadow-active{
+	box-shadow: rgba(72, 71, 71, 0.28) 0px 10px 15px 0px !important;
+	z-index: 101 !important;
+}
+
+.sticky-header-shadow-inactive{
+	box-shadow:none !important;
+	z-index: 2 !important;
+}
+
+// snack bar
+.custom-snackbar{
+	background: transparent;
+	box-shadow: none;
+}
+
+.pre-footer-header-underline{
+	width: 100%; float: left; margin-bottom: 15px; height: 1px;
+                            background:  #5691c88a;
+                            background: -webkit-linear-gradient(to right, #5691c88a, #457fca40);
+                            background: linear-gradient(to right, #5691c88a, #457fca40);
+}
+.bottom-footer-height{
+	max-height: 60px !important; height: 60px !important;
+}
+
+.m-list-timeline__item{
+	transition: box-shadow .3s cubic-bezier(.77, .58, .42, .96);
+}
+
+.m-topbar__notifications  .m-list-timeline__item:hover{
+	box-shadow: 0 0 10px 0 rgba(180,160,148,0.2);
+}
+
+
+// remove border radius when this selector applied to the parent element
+.mat-form-field__box .mat-form-field-outline-start,
+.mat-form-field__box .mat-form-field-outline-end{
+	border-radius: 0 !important;
+}
+
+// quill-js image block
+.ql-editor img{
+	position: relative;
+    max-width: 100%;
+    clear: both;
+    vertical-align: unset;
+}
+
+.left-aside-box-shadow{
+	height: inherit;
+	box-shadow:inset -30px 0px 20px -10px #f8f8fbe8 !important;
+}
+
+.right-aside-box-shadow{
+    box-shadow:inset 20px 0px 50px -20px rgba(81, 77, 92, 0.08);
+}
+
+// mat-table rules
+.table-container {
+	display: block;
+    position: relative;
+    min-height: 50vh;
+    overflow: auto;
+    z-index: 1;
+}
+.loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+mat-row:not(.expanded-detail){
+	min-height: 40px !important;
+}
+
+mat-row:not(.expanded-detail):hover{
+	background: rgb(248, 248, 248);
+}
+
+.mat-column-select {
+	overflow: initial;
+}
+
+.mat-header-cell{
+    border-top: 1px solid rgb(236, 236, 236) !important;
+}
+.mat-header-cell:first-child,
+.mat-cell:first-child{
+    border-left: 1px solid rgb(236, 236, 236) !important;
+}
+.mat-header-cell,
+.mat-cell{
+    border-right: 1px solid rgb(236, 236, 236) !important;
+	padding: 0 6px !important;
+	white-space: normal;
+}
+.mat-cell, .mat-footer-cell {
+	font-size: 12px;
+	word-break: break-all;
+}
+
+@media (max-width: 1024px){
+	.top-content__space-fix{
+		margin-top: 90px !important;
+	}
+}
+// fix left aside icon spacing
+.m-aside-menu .m-menu__nav>.m-menu__item>.m-menu__heading .m-menu__link-icon, .m-aside-menu .m-menu__nav>.m-menu__item>.m-menu__link .m-menu__link-icon {
+
+    width: 25px;
+}
+
+
+// https://github.com/mdbootstrap/perfect-scrollbar/issues/792
+.ps__rail-y {
+	left: auto !important;
+  }
+
+  // appointment component section css rules
+.mat-menu-esti-input-wrap{
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 10px !important;
+}

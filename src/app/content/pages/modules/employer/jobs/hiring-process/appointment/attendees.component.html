@@ -1,0 +1,202 @@
+<h4 mat-dialog-title style="font-size: 14px;" cdkDrag [cdkDragRootElement]="'.cdk-overlay-pane'"
+    [cdkDragBoundary]="'.cdk-overlay-container'">
+    <span cdkDragHandle style="cursor: move">
+        Add Or Remove Attendees.
+    </span>
+    <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right ml-3"
+        (click)="dialogRef.close()">
+        <i class="la la-close"></i>
+    </a>
+    <button [disabled]="isLoadingResults"
+        class="m-portlet__nav-link btn btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--pill pull-right ml-3"
+        (click)="initData(true)" matTooltip="Clear filter & Reload Table Data">
+        <i class="flaticon-refresh"></i>
+    </button>
+    <button [disabled]="isLoadingResults"
+        class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--pill pull-right ml-3"
+        matTooltip="Filter Applicants" #fTrigger="matMenuTrigger" [matMenuTriggerFor]="fl">
+        <i class="la la-filter"></i>
+    </button>
+    <mat-menu #fl="matMenu" xPosition="before" hasBackdrop="false" class="mat-elevation-z15">
+        <div [formGroup]="filterForm" class="row mx-0" (click)="$event.stopPropagation()" style="max-width: 600px">
+            <div class="col-12 h4 m--font-brand">Filter By: </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="fill">
+                    <mat-label>Full Name</mat-label>
+                    <input formControlName="fullName" matInput placeholder="Applicant's Name">
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="fill">
+                    <mat-label>Applicant Status</mat-label>
+                    <mat-select formControlName="isEligible">
+                        <mat-option value="1">Suitable</mat-option>
+                        <mat-option value="0">Unsuitable</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 mat-form-field__box">
+                <div class="row mx-0">
+                    <div class="col-md-6 px-0">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Applied On</mat-label>
+                            <input (click)="s1.open()" (focus)="s1.open()" formControlName="appliedStart"
+                                [matDatepicker]="s1" matInput placeholder="From">
+                            <mat-datepicker #s1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 px-0">
+                        <mat-form-field appearance="outline">
+                            <input (click)="s2.open()" (focus)="s2.open()" formControlName="appliedEnd"
+                                [matDatepicker]="s2" matInput placeholder="To">
+                            <mat-datepicker #s2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mat-form-field__box">
+                <div class="row mx-0">
+                    <div class="col-md-6 px-0">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Appointment Date</mat-label>
+                            <input (click)="s3.open()" (focus)="s3.open()" formControlName="appointmentStart"
+                                [matDatepicker]="s3" matInput placeholder="From">
+                            <mat-datepicker #s3></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 px-0">
+                        <mat-form-field appearance="outline">
+                            <input (click)="s4.open()" (focus)="s4.open()" formControlName="appointmentEnd"
+                                [matDatepicker]="s4" matInput placeholder="To">
+                            <mat-datepicker #s4></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center pb-3">
+                <button (click)="filter(fTrigger)"
+                    class="btn btn-outline-primary btn-sm 	m-btn m-btn--icon m-btn--outline-2x mx-1">
+                    <span>
+                        <i class="la la-search"></i>
+                        <span>Search</span>
+                    </span>
+                </button>
+                <button (click)="fTrigger.closeMenu()"
+                    class="btn btn-outline-warning btn-sm 	m-btn m-btn--icon m-btn--outline-2x mx-1">
+                    <span>
+                        <i class="la la-close"></i>
+                        <span>Dismiss</span>
+                    </span>
+                </button>
+                <button matTooltip="Reset filter form" type="button" (click)="filterForm.reset()"
+                    class="btn btn-outline-brand m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x">
+                    <i class="flaticon-refresh"></i>
+                </button>
+            </div>
+        </div>
+    </mat-menu>
+</h4>
+
+<div [@fadeIn]="isSelectionEmpty">
+    <div *ngIf="isSelectionEmpty" class="alert alert-danger row px-0" role="alert">
+        <div class="col-md-10"> Select a few applicants up and try again.</div>
+        <div class="col-md-2" style="width: 20px">
+            <button type="button" class="close pt-0" (click)="clearErrors()" aria-label="Close">
+                <span aria-hidden="true"><i class="la la-close"></i></span>
+            </button>
+        </div>
+    </div>
+</div>
+<mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoadingResults"></mat-progress-bar>
+<div mat-dialog-content class="table-container" perfectScrollbar>
+    <mat-table matSort [dataSource]="dataSource" multiTemplateDataRows>
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef class="cell-max-width ">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" class="d-table mx-auto">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row" class="cell-max-width justify-content-center">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" class="d-table mx-auto">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fullName">
+            <mat-header-cell *matHeaderCellDef>Full Name </mat-header-cell>
+            <mat-cell *matCellDef="let el"> {{el.fullName}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="appliedOn">
+            <mat-header-cell *matHeaderCellDef> Applied On </mat-header-cell>
+            <mat-cell *matCellDef="let el"> {{el.appliedOn | date:'MMM d, y h:m a'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="appointmentDate">
+            <mat-header-cell *matHeaderCellDef> Appointment Date</mat-header-cell>
+            <mat-cell *matCellDef="let el" [ngClass]="el.appointmentDate ? '':'m--font-warning m--font-bolder'">
+                {{el.appointmentDate ? (el.appointmentDate | date:'MMM d, y h:m a') : 'none'}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="isAttended">
+            <mat-header-cell *matHeaderCellDef> Appointment Status </mat-header-cell>
+            <mat-cell *matCellDef="let el">
+                <span class="m-badge m-badge--wide m--font-bolder"
+                    [ngClass]="el.isAttended ? 'm-badge--primary':'m-badge--warning'">{{el.isAttended ? 'Attended':'Unattended'}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef style="max-width: 150px;">
+                Actions
+            </mat-header-cell>
+            <mat-cell *matCellDef="let el" style="max-width: 150px;">
+                <span *ngIf="el.appointmentDate else non"
+                    (click)="onAction(el.isAttended === true ? 'unattended':'attended', el.messageId, el.jobSeekerGuid)"
+                    [ngClass]="el.isAttended ?'m-link--danger':'m--font-info'" class="m-link " style="cursor: pointer"
+                    [matTooltip]="el.isAttended === true ? ('Remove '+ el.fullName +' from appointment attendee?') : ('Add '+ el.fullName +' as an appointment attendee?')"
+                    matTooltipClass="mat-elevation-z2 bg-light m--font-primary m--font-bolder">
+                    {{el.isAttended === true ? 'Remove from attendee' :'Add as attendee'}}
+                </span>
+                <ng-template #non>
+                    <span class="m--font-metal">Appointment date unset</span>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+        <mat-row [class.selected]="selection.isSelected(row)" *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+
+    </mat-table>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-center pb-4 pt-3">
+
+    <div class="col-md-7">
+        <button matTooltip="Save Changes As:" matTooltipPosition="above"
+            class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill"
+            [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}"
+            [matMenuTriggerFor]="ops">
+            <i *ngIf="!isWorking" class="la la-angle-up"></i>
+        </button>
+        <mat-menu #ops xPosition="before" yPosition="above">
+            <button mat-menu-item (click)="onAction('attended',0,'')">
+                <i class="	flaticon-calendar-3 m--font-info mr-1"></i> Attended Applicants</button>
+            <button mat-menu-item (click)="onAction('unattended',0,'')">
+                <i class="	flaticon-cancel m--font-warning mr-1"></i> Unattended Applicants</button>
+        </mat-menu>
+        <button matTooltip="Dismiss" matTooltipPosition="above" [disabled]="isWorking" type="button" mat-dialog-close
+            class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1">
+            <i class="la la-close"></i>
+        </button>
+    </div>
+    <div class="col-md-5">
+        <mat-paginator [disabled]="!(isLoadingResults || dataSource.data?.length >0 )" [pageSize]="50"
+            [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 400, 500]"></mat-paginator>
+    </div>
+</div>

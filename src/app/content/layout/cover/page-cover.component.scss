@@ -1,0 +1,134 @@
+.cover-wrapper{
+    height: 460px;
+    position: relative;
+}
+@media(min-width: 1025px){
+    .cover-wrapper-desktop{
+        margin-bottom: -120px;
+        /*margin-top: 105px;*/
+    }
+}
+.cover-bg{
+    background-image:url(assets/app/media/img/bg/hand-shake.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    height: 100%;
+    width: 100%;
+
+}
+.cover-overlay{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(8, 8, 27, 0.57);  /* fallback for old browsers */
+    background: -webkit-linear-gradient(140deg, rgba(8, 8, 27, 0.57) 0%, rgba(16, 26, 70, 0.3) 100%);
+    background: linear-gradient(140deg, rgba(8, 8, 27, 0.57) 0%, rgba(16, 26, 70, 0.3) 100%);
+}
+
+.cover-right-aside{
+    position: relative;
+    height: 100%;
+    background-color: rgba(47, 60, 82, 0.16);
+    border-radius: 5px;
+    margin-top: -40px;
+    padding:0;
+    border: none;
+    box-shadow: inset 0 0 20px -10px #1b233385;
+}
+
+.cover-right-aside-desktop{
+    display: block;
+    padding-top: 24px;
+}
+@media(max-width: 1024px){
+   .cover-right-aside-mobile-hide{
+    display: none !important;
+   }
+}
+.inner-info-wrap{
+    position: relative;
+    width: 100%;
+    margin-bottom: 8%;
+    background: rgba(33, 42, 65, 0.36);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: linear-gradient(90deg, rgba(33, 42, 65, 0.34) 0%, rgba(33,42,65,0) 100%)
+}
+.cover-right-aside::before,
+.inner-info-wrap::before {
+    filter: blur(5px); /* Supported in old except IE */   
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: inherit;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .inner-info-wrap::before,
+    .cover-right-aside::before {
+        backdrop-filter: blur(5px); /* Supported in Chrome 76 */
+        -webkit-backdrop-filter: blur(5px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
+    }
+}
+
+.search-input{
+    ::ng-deep{
+        .mat-form-field-wrapper{
+            padding-bottom: 0;
+        }
+        .mat-form-field-underline{
+            display: none;
+        }
+        .mat-form-field-flex{
+            padding: 0px 3px 3px 10px;
+            background: linear-gradient(to left, #f8f8f863, #86889485);
+            // box-shadow: 0 0 20px -3px #6c6467;
+            color: #ffffff;
+           
+        }
+        
+    }
+    
+    input.mat-input-element::placeholder {
+        color: rgb(174, 176, 197);
+    }
+    .mat-input-element {
+        color: #FFF;
+        caret-color: #FFF;
+    }
+}
+.auto-write{
+    width: 175px;
+    display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	animation: typing 2s steps(17, end),
+               blink-caret .5s step-end infinite alternate;
+               animation-delay: 800ms;
+    -webkit-animation: typing 2s steps(17, end),
+    blink-caret .5s step-end infinite alternate;
+    border-right: 1px solid #00c5dc;
+    color: #00c5dc;
+            
+}
+@keyframes typing { from { width: 0; } }
+@keyframes blink-caret { 50% { border-color: transparent; } }
+@-webkit-keyframes typing { from { width: 0; } }
+@-webkit-keyframes blink-caret { 50% { border-color: transparent; } }
+
+.create-alert-text{
+    font-size: 19px;
+    text-align: center;
+    text-align: -webkit-center;
+    font-weight: 400;
+    text-shadow: -2px 1px 0 #3c4458, -3px 1px 3px #52565f;
+}
+
+.mobile-app-info{
+    text-shadow: -1px 1px 1px #222c41;
+}

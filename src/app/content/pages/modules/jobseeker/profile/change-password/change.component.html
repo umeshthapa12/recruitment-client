@@ -1,0 +1,96 @@
+<div class="m-login m-login--6">
+    <div class="m-login__wrapper" style="padding: 5px;">
+
+        <div class="m-login__body mt-0">
+            <div class="m-login__signin" style="max-width:100%;">
+
+                <div class="m-login__title mt-2 mb-1" list-sticky-header style="height:40px;">
+                    <h4 class="m--font-brand">Change Password</h4>
+                </div>
+
+                <div class="row mb-4">
+                        <div class="col-12">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+
+                <!--Required response message Start-->
+                <div id="res-messages" class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-dismissible"
+                    role="alert" [ngClass]="{'alert-danger': !response?.isSuccess}" *ngIf="response?.messageBody || response?.error?.messageBody">
+                    <div class="m-alert__icon">
+                        <i class="flaticon-exclamation-1"></i>
+                        <span></span>
+                    </div>
+                    <div class="m-alert__text">
+                        {{ response?.messageBody || response?.error?.messageBody }}
+                    </div>
+                    <div class="m-alert__close">
+                        <button (click)="response.messageBody = ''" type="button" class="close" data-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+                <!--Required response message End-->
+
+                <!--Form Start-->
+                <form [formGroup]="changeForm" (ngSubmit)="onSubmit()" class="m-form" autocomplete="off">
+
+                    <div class="m-portlet__body">
+                        <div class="m-form__section m-form__section--first">
+
+                            <div class="form-group" [ngClass]="{'has-error':displayMessage?.current}">
+                                <mat-form-field class="mat-form-field-width" appearance="outline">
+                                    <mat-label>Current Password</mat-label>
+                                    <input matInput placeholder="Current Password" [type]="hideCurrent ? 'password' : 'text'"
+                                        formControlName="current" tabindex="1" required>
+                                    <mat-icon matSuffix (click)="hideCurrent = !hideCurrent">{{hideCurrent ?
+                                        'visibility_off' : 'visibility'}}</mat-icon>
+                                    <mat-error class="m--font-danger" *ngIf="displayMessage?.current">
+                                        {{displayMessage?.current}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error': displayMessage?.newPassword}">
+                                <mat-form-field class="mat-form-field-width" appearance="outline">
+                                    <mat-label>New Password</mat-label>
+                                    <input matInput placeholder="New Password" [type]="hideNew ? 'password' : 'text'"
+                                        formControlName="newPassword" tabindex="2" required>
+                                    <mat-icon matSuffix (click)="hideNew = !hideNew">{{hideNew ? 'visibility_off':
+                                        'visibility'}} </mat-icon>
+                                    <mat-error class="m--font-danger" *ngIf="displayMessage?.newPassword">
+                                        {{displayMessage?.newPassword}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group" [ngClass]="{'has-error':displayMessage?.updated}">
+                                <mat-form-field class="mat-form-field-width" appearance="outline">
+                                    <mat-label>Confirm Password</mat-label>
+                                    <input matInput placeholder="Confirm Password" [type]="hideConfirm ? 'password' : 'text'"
+                                        formControlName="updated" compare="newPassword" tabindex="3"
+                                        required>
+                                    <mat-icon matSuffix (click)="hideConfirm = !hideConfirm">{{hideConfirm ?
+                                        'visibility_off': "visibility"}} </mat-icon>
+                                    <mat-error class="m--font-danger" *ngIf="displayMessage?.updated">
+                                        {{displayMessage?.updated}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <div class="mb-2">
+                                    <button [disabled]="changeForm.invalid" type="submit" class="btn btn-secondary m-btn btn-sm mx-1 m-loader--right"
+                                        [ngClass]="{'m-loader m-loader--info m-loader--right':isWorking, 'm-btn--hover-accent':!isWorking}">
+                                        <i *ngIf="!isWorking" class="la la-check"></i> Change Password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--Form End-->
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<mat-select *ngIf="!isReadonly else readonly" (selectionChange)="selectionChange($event)" [value]="currentStatus">
+    <mat-select-trigger>
+        <span class="status-wrap">
+            <span [ngClass]="contentStatus(currentStatus)" class="m-badge m-badge--inline m-badge--wide">
+                {{ currentStatus }}
+            </span>
+        </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let s of  status$ | async" [value]="s.key"> {{s.value}} </mat-option>
+</mat-select>
+<ng-template #readonly>
+    <span [ngClass]="contentStatus(currentStatus)" class="m-badge m-badge--inline m-badge--wide">
+        {{ currentStatus }}
+    </span>
+</ng-template>

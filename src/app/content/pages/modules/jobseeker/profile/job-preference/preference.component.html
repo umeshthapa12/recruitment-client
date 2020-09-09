@@ -1,0 +1,224 @@
+<div class="m-portlet shadow-none">
+    <div class="m-portlet__body px-0 pt-3">
+        <div class="row pt-2 mb-2  mx-0" list-sticky-header>
+            <div class="col-12 mb-2" style="display: flex; justify-content: space-between">
+                <div>
+                    <h4 class=" m--font-brand mt-3"><i class="flaticon-suitcase"></i> Job Preferences </h4>
+                </div>
+                <div>
+                    <a href="javascript:;" (click)="onEdit(null)" matTooltip="Edit this" class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill">
+                        <i class="flaticon-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <mat-divider></mat-divider>
+            </div>
+        </div>
+        <div class="row mb-5" *ngIf="isLoading && !jobPref">
+            <div class="col-md-12">
+                <w-grid-placeholder></w-grid-placeholder>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && jobPref">
+            <div class="row mx-0">
+                <div class="col-12">
+                    <h5> Career Objective Summary</h5>
+                </div>
+                <div class="col-12 m--font-bold">
+                    {{jobPref?.careerSummary}}
+                </div>
+            </div>
+            <div class="row mt-5 mb-5 px-4">
+                    <div class="col-12">
+                        <h5> <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span> Job search
+                            status</h5>
+                        <div class="text-muted pl-2 ml-1 mb-3"> Select your job search preferences. Let us know if you are
+                            currently looking for a job.</div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 text-center mb-3">
+                        <div class="search-status-wrapper" [ngClass]="{'search-status-box-selected':jobPref.jobSearchStatus === searchStatus.MaximumMatches,'search-status-box': jobPref.jobSearchStatus !== searchStatus.MaximumMatches}" (click)="onSearchStatusSelected(searchStatus.MaximumMatches)">
+                            <span class="m-type m--bg-metal icon-placeholder" [ngClass]="{'icon-checked':jobPref.jobSearchStatus === searchStatus.MaximumMatches}"><span
+                                    class="m--font-light">
+                                    <i class="la la-check"></i>
+                                </span></span>
+                            <h4 class="col-12 px-0">I am looking for a job</h4>
+                            <div class="col-12 px-0" style="color: #a4a6ae; font-weight:500">
+                                <div class="m--font-accent m--font-bolder mb-2">Maximum matches </div>
+                                <div>We'll get you in front of employers and send you any new jobs that match your
+                                    preferences.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 text-center mb-3">
+                        <div class="search-status-wrapper" [ngClass]="{'search-status-box-selected':jobPref.jobSearchStatus === searchStatus.FewerMatches,'search-status-box': jobPref.jobSearchStatus !== searchStatus.FewerMatches}" (click)="onSearchStatusSelected(searchStatus.FewerMatches)">
+                            <span class="m-type m--bg-metal icon-placeholder" [ngClass]="{'icon-checked':jobPref.jobSearchStatus === searchStatus.FewerMatches}"><span
+                                    class="m--font-light">
+                                    <i class="la la-check"></i>
+                                </span></span>
+                            <h4 class="col-12 px-0">Open, but not looking</h4>
+                            <div class="col-12 px-0" style="color: #a4a6ae; font-weight:500">
+                                <div class="m--font-warning m--font-bolder mb-2">Fewer matches </div>
+                                <div>Employers can find you and we'll be selective with the job matches we send.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 text-center mb-3">
+                        <div class="search-status-wrapper" [ngClass]="{'search-status-box-selected':jobPref.jobSearchStatus === searchStatus.NoMatches,'search-status-box': jobPref.jobSearchStatus !== searchStatus.NoMatches}" (click)="onSearchStatusSelected(searchStatus.NoMatches)">
+                            <span class="m-type m--bg-metal icon-placeholder" [ngClass]="{'icon-checked':jobPref.jobSearchStatus === searchStatus.NoMatches}"><span
+                                    class="m--font-light">
+                                    <i class="la la-check"></i>
+                                </span></span>
+                            <h4 class="col-12 px-0">Not looking for a job</h4>
+                            <div class="col-12 px-0" style="color: #a4a6ae; font-weight:500">
+                                <div class="m--font-danger m--font-bolder mb-2">No matches </div>
+                                <div>Employers won't find you and we won't send you any job that matches to your
+                                    preferences.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="m-widget28">
+                <div class="m-widget28__container">
+                    <div class="m-widget28__tab">
+                        <div class="m-widget28__tab-container">
+                            <div class="m-widget28__tab-items">
+                                <div class="row mx-0 mb-5" style="background: #fcfcfc;border: 1px solid #f1f5ff;">
+                                    <div class="col-md-12 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Job Category
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let c of jobPref?.jobCategories">{{c.value}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Preferred Job Location
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let l of jobPref?.prefLocation">{{l}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row mx-0 mb-5"  style="background: #fcfcfc;border: 1px solid #f1f5ff;">
+                                    <div class="col-md-6 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Experience Level
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let c of jobPref?.experienceLevel">{{c.value}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Job Type
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let c of jobPref?.jobType">{{c.value}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Current Salary
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span *ngIf="jobPref?.salaries?.current; else cSalary" class="job-pref__custom-badge m-badge m-badge--secondary">
+                                                    {{jobPref.salaries.current?.currencyCode}}
+                                                    {{jobPref.salaries.current?.amount | number}}
+                                                    <span class="m-badge m-badge--danger m-badge--dot m-badge--dot-small"></span>
+                                                    {{jobPref.salaries.current?.paymentBasis}}
+                                                </span>
+                                                <ng-template #cSalary>
+                                                    <div>
+                                                        <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                            (click)="onEdit('cSalary')">
+                                                            add now
+                                                        </a>
+                                                    </div>
+                                                </ng-template>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Expected Salary
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span *ngIf="jobPref?.salaries?.expected; else xSalary" class="job-pref__custom-badge m-badge m-badge--secondary">
+                                                    {{jobPref.salaries.expected?.currencyCode}}
+                                                    {{jobPref.salaries.expected?.amount | number}}
+                                                    <span class="m-badge m-badge--danger m-badge--dot m-badge--dot-small"></span>
+                                                    {{jobPref.salaries.expected?.paymentBasis}}
+                                                </span>
+                                                <ng-template #xSalary>
+                                                    <div>
+                                                        <a href="Javascript:;" class="m-link m-link--warning add-now-text"
+                                                            (click)="onEdit('xSalary')">
+                                                            add now
+                                                        </a>
+                                                    </div>
+                                                </ng-template>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mx-0 mb-5" style="background: #fcfcfc;border: 1px solid #f1f5ff;">
+
+                                    <div class="col-md-12 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Skills
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let s of jobPref?.skills">{{s}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 m--align-left widget-background">
+                                        <div class="m-widget28__tab-item">
+                                            <span>
+                                                <span class="m-badge m-badge--info m-badge--dot m-badge--dot-small mr-1"></span>
+                                                Specialization
+                                            </span>
+                                            <span class="mt-1 ml-2">
+                                                <span class="job-pref__custom-badge m-badge m-badge--secondary mx-1 mb-1"
+                                                    *ngFor="let s of jobPref?.specialization">{{s}} </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>

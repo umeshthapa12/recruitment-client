@@ -1,0 +1,185 @@
+<div matDialogTitle class="mb-0">
+    <div class="row">
+        <div class="col-md-7">
+            <h5 class="m--font-brand"> {{qualiForm.get('id').value > 0 ? 'Update Qualification':' Add Qualification'}}
+            </h5>
+        </div>
+        <div class="col-md-5">
+            <a class="m-portlet__nav-link btn btn-outline-metal m-btn m-btn--icon m-btn--icon-only m-btn--outline-2x m-btn--pill pull-right"
+                (click)="onCancel()">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed mt-2 mb-3"></div>
+<div id="res-messages" class="alert m-alert m-alert--air" role="alert"
+    [ngClass]="{'alert-danger':isError, 'alert-success':!isError}" *ngIf="responseMessage || errors?.length>0">
+    <button type="button" class="close pt-0" aria-label="Close" (click)="clearErrors()"></button>
+    <span *ngIf="errors?.length > 0; else msgBlock">
+        <span class="row" [@fadeInOutErrors]="errors?.length">
+            <div class="col-12 mb-1 m--font-bolder">
+                {{ responseMessage}}
+            </div>
+            <div class="col-6" *ngFor="let e of  errors">
+                {{e.message}}
+            </div>
+        </span>
+    </span>
+    <ng-template #msgBlock>
+        {{ responseMessage}}
+    </ng-template>
+</div>
+<!--Form Start-->
+<form [formGroup]="qualiForm" (ngSubmit)="onSubmit()" class="m-form" autocomplete="off">
+    <div matDialogContent>
+        <div class="m-portlet__body position-relative">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.qualificId}">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Qualification/Degree</mat-label>
+                            <mat-select class="m-input" formControlName="qualificId"
+                                [placeholder]="degree.length >0?'Select your highest qualification':'No content'"
+                                required>
+                                <mat-option *ngFor="let g of degree" [value]="g.key">
+                                    {{g.value}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.qualificId">
+                                {{displayMessage?.qualificId}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.dicipline}">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Discipline</mat-label>
+                            <input matInput type="text" placeholder="An academic discipline" formControlName="discipline"
+                                required>
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.dicipline">
+                                {{displayMessage?.dicipline}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error': displayMessage?.specialization}">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Specialization</mat-label>
+                            <input matInput type="text" placeholder="Academic specialization"
+                                formControlName="specialization">
+                            <mat-error class="m--font-danger" *ngIf="displayMessage?.specialization">
+                                {{displayMessage?.specialization}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Study Modes</mat-label>
+                            <mat-select class="m-input" formControlName="studyModeId"
+                                placeholder="Select a Mode of Study" required>
+                                <mat-option *ngFor="let m of studyModes" [value]="m.key">{{m.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>University/Institution</mat-label>
+                            <input matInput type="text" placeholder="Name of University/Institution"
+                                formControlName="nameOfInstitution" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Country</mat-label>
+                            <mat-select class="m-input" formControlName="countryId" placeholder="Select a Country"
+                                required>
+                                <mat-option *ngFor="let m of countries" [value]="m.key">{{m.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <mat-checkbox formControlName="isRunning" > Running? </mat-checkbox>
+                </div>
+                <span [@fadeIn]="!isStudyRunning" style="display: block; overflow: hidden; position: relative; width: 100%;">
+                    <div class="col-12" *ngIf="!isStudyRunning; else started">
+                        <div class="row mx-0" id="score-wrap">
+                            <div class="col-md-4 px-0">
+                                <div class="form-group">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Scored In</mat-label>
+                                        <mat-select #mode class="m-input" formControlName="scoredIn">
+                                            <mat-option *ngFor="let m of markIn" [value]="m">{{m}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0">
+                                <div class="form-group">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <mat-label>Total Score</mat-label>
+                                        <input matInput type="text"
+                                            [placeholder]="'Total score (e.g. '+(mode.value == markIn[0]? '3.5':'98.77')  +')'"
+                                            formControlName="score" required>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0">
+                                <div class="form-group">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <mat-label>Graduation Year</mat-label>
+                                        <input matInput [max]="maxDate" [matDatepicker]="complete" (focus)="complete.open()"
+                                            (click)="complete.open()" placeholder="Your graduation year"
+                                            formControlName="completedOn" required>
+                                        <mat-datepicker (monthSelected)="yearSelected($event, complete,true)" #complete
+                                            startView="multi-year">
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #started>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <mat-label>Started On</mat-label>
+                                    <input [max]="maxDate" matInput [matDatepicker]="start" (focus)="start.open()"
+                                        (click)="start.open()" placeholder="Started year"
+                                        formControlName="startedOn" required>
+                                    <mat-datepicker  (monthSelected)="yearSelected($event, start,false)" #start
+                                        startView="multi-year">
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </ng-template>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div matDialogActions style="display: flex; justify-content: center">
+        <div class="mb-2">
+            <button matTooltip="Save" type="submit" matTooltipPosition="above"
+                class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                [ngClass]="{'m-loader m-loader--info':isWorking, 'm-btn--hover-accent':!isWorking}">
+                <i *ngIf="!isWorking" class="la la-check"></i>
+            </button>
+            <button type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipPosition="above"
+                class="btn btn-default m-btn--hover-metal m-btn m-btn--icon m-btn--icon-only m-btn--pill mx-1"
+                tabindex="10">
+                <i class="la la-close"></i>
+            </button>
+        </div>
+    </div>
+</form>
+<!--Form End -->

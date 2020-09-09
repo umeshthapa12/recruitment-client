@@ -1,0 +1,23 @@
+<div [id]="item?.uid" style="transition: opacity .3s" class="mb-4" #el (mouseleave)="alertDuration(item?.duration, item?.uid, el)" (mouseenter)="alertDuration(0,'', el)">
+    <div class="alert custom-alert {{item?.typeClass}} mat-elevation-z5" role="alert">
+        <div class="row mx-0">
+            <div class="col-2 px-0 alert-icon-wrapper">
+                <mat-icon *ngIf="item.type == type.success" class="alert-icon">done</mat-icon>
+                <mat-icon *ngIf="item.type == type.Danger" class="alert-icon">error_outline</mat-icon>
+                <mat-icon *ngIf="item.type == type.Warn" class="alert-icon">warning</mat-icon>
+                <mat-icon *ngIf="item.type == type.Info" class="alert-icon">info</mat-icon>
+            </div>
+            <div class="col-10 px-0">
+                <div class="alert-header">
+                    <h6 class="m--font-boldest2">
+                        {{item?.title}}
+                    </h6>
+                    <i id="dismiss" class="la la-close" (click)="close(item?.uid)" matTooltip="Dismiss" style="cursor: pointer"></i>
+                </div>
+                <div class="alert-message">
+                    <p> {{item?.message}} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

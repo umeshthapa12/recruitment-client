@@ -1,0 +1,59 @@
+mat-row.detail-row{
+    height: 0 !important;
+}
+.cell-max-width{
+    max-width: 60px;
+}
+.cell-max-width-100{
+    max-width: 100px;
+}
+.cell-max-width-120{
+    max-width: 140px;
+}
+.cell-max-width-55{
+    max-width: 55px;
+}
+.selected{
+    background: #eef0fc;
+}
+
+.mat-menu-item {
+    line-height: 0px !important;
+    height: 30px !important;
+    font-size: 12px;
+}
+
+// rules for appointment component
+.detail-wrap{
+    font-size: 12px;font-weight: 400;
+}
+.detail-wrap .row:hover{
+    background: #f9faff
+}
+
+.appointment-col:hover .btn-estimation{
+    opacity: 1;
+}
+
+.appointment-col .btn-estimation{
+    height: 22px;width: 22px;
+    transition: opacity .2s ease;
+    opacity:.2;
+}
+
+.icon-spinner {
+   
+    animation-name: spin;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes spin {
+      from {
+          transform:rotate(0deg);
+      }
+      to {
+          transform:rotate(-360deg);
+      }
+  }
